@@ -19,7 +19,7 @@
   --shadow-lg: 0 10px 25px -5px rgba(10, 25, 47, 0.08), 0 8px 10px -6px rgba(10, 25, 47, 0.05);
   --shadow-xl: 0 20px 40px -10px rgba(10, 25, 47, 0.12), 0 10px 15px -3px rgba(10, 25, 47, 0.08);
 
-  /* Highlight/Accent Colors - New Purple Code #662d91 */
+  /* Highlight/Accent Colors - Light Mode Accent Purple Code #662d91 */
   --accent-purple: #662d91;
   --accent-purple-dark: #512075;
   --accent-purple-light: rgba(102, 45, 145, 0.08);
@@ -40,7 +40,7 @@
   --transition-fast: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dark Mode Variable Overrides */
+/* Dark Mode Variable Overrides - Converts all accents to white for visibility, excluding .nav-btn */
 [data-theme="dark"] {
   --bg-primary: #0B0F19;
   --bg-secondary: #111827;
@@ -51,9 +51,13 @@
   --text-light: #64748B;
   
   --border-light: #1E293B;
+  --border-focus: #FFFFFF;
   
-  --accent-purple-light: rgba(102, 45, 145, 0.15);
-  --accent-purple-glow: rgba(102, 45, 145, 0.4);
+  /* Convert accent color variables to white */
+  --accent-purple: #FFFFFF;
+  --accent-purple-dark: #E2E8F0; /* Soft light gray for hover links in dark mode */
+  --accent-purple-light: rgba(255, 255, 255, 0.08);
+  --accent-purple-glow: rgba(255, 255, 255, 0.25);
   
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
@@ -74,7 +78,6 @@ body {
   background-color: var(--bg-primary);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-  /* Apply smooth theme transition to elements */
   transition: var(--transition-theme);
 }
 
@@ -126,10 +129,10 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   transition: var(--transition-fast);
 }
 
-/* Logo Image Styling - Scaled correctly according to user logo aspect ratio */
+/* Logo Image Styling */
 .logo-img {
-  height: 52px; /* Set fixed premium height */
-  width: auto;  /* Width auto-scales to preserve aspect ratio (around 3:1) */
+  height: 52px;
+  width: auto;
   object-fit: contain;
   transition: var(--transition-smooth);
 }
@@ -208,23 +211,24 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   width: 100%;
 }
 
+/* Consultation button - STATIC Brand Purple as requested to exclude it from dark-mode white overrides */
 .nav-btn {
-  background-color: var(--accent-purple);
+  background-color: #662d91;
   color: white;
   padding: 12px 24px;
   border-radius: 9999px;
   text-decoration: none;
   font-weight: 600;
   font-size: 15px;
-  border: 1px solid var(--accent-purple);
+  border: 1px solid #662d91;
   transition: var(--transition-fast);
 }
 
 .nav-btn:hover {
   transform: translateY(-2px);
-  background-color: var(--accent-purple-dark);
-  border-color: var(--accent-purple-dark);
-  box-shadow: 0 4px 12px var(--accent-purple-glow);
+  background-color: #512075;
+  border-color: #512075;
+  box-shadow: 0 4px 12px rgba(102, 45, 145, 0.35);
 }
 
 /* Theme Toggle Button */
@@ -480,7 +484,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 .service-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-xl);
-  border-color: rgba(102, 45, 145, 0.3);
+  border-color: var(--accent-purple-glow);
 }
 
 .service-icon-wrapper {
@@ -496,8 +500,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .service-card:hover .service-icon-wrapper {
   background-color: var(--accent-purple);
-  color: white;
-  transform: rotate(5deg) scale(1.05);
+  color: var(--bg-card); /* White in dark mode, slate-900 in light mode - ensures perfect contrast on hover */
 }
 
 .service-title {
@@ -740,6 +743,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   border-bottom: none;
 }
 
+/* Styling for mobile drawer button matches STATIC brand purple */
 .mobile-menu-card .nav-btn {
   text-align: center;
   margin-top: 12px;
