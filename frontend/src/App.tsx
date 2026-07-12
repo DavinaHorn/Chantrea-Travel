@@ -85,7 +85,7 @@ function App() {
   }
 
   // Define active logo image path based on active theme
-  const logoSrc = theme === 'dark' ? '/CTT_LOGO-HP.webp' : '/CTT_LOGO-HW.webp'
+  const logoSrc = theme === 'dark' ? '/CTT_LOGO-HB.webp' : '/CTT_LOGO-HP.webp'
 
   return (
     <>

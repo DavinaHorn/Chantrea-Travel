@@ -348,12 +348,13 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   animation-delay: 0.3s;
 }
 
+/* Changed to white for legibility on dark background images in BOTH light and dark modes */
 .hero-subtitle {
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--accent-purple);
+  color: #FFFFFF; 
 }
 
 .hero-title {
@@ -364,8 +365,9 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   letter-spacing: -1.5px;
 }
 
+/* Changed to white for legibility on dark background images in BOTH light and dark modes */
 .hero-title span {
-  color: var(--accent-purple);
+  color: #FFFFFF; 
 }
 
 .hero-desc {
@@ -407,8 +409,9 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   transition: var(--transition-smooth);
 }
 
+/* Changed to white for legibility on dark background images in BOTH light and dark modes */
 .hero-pill-badge svg {
-  color: var(--accent-purple);
+  color: #FFFFFF; 
   transition: var(--transition-smooth);
 }
 
