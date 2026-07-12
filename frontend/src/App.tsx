@@ -426,42 +426,23 @@ function App() {
       {/* Mobile Menu Backdrop */}
       {mobileMenuOpen && (
         <div 
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(10, 25, 47, 0.4)',
-            backdropFilter: 'blur(8px)',
-            zIndex: 99,
-          }}
+          className="mobile-menu-overlay"
           onClick={() => setMobileMenuOpen(false)}
         >
           <div 
-            style={{
-              position: 'absolute',
-              top: '80px',
-              left: '24px',
-              right: '24px',
-              backgroundColor: 'var(--bg-card)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '24px',
-              border: '1px solid var(--border-light)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              boxShadow: 'var(--shadow-xl)',
-            }}
+            className="mobile-menu-card"
             onClick={(e) => e.stopPropagation()}
           >
-            <a href="#services" className="nav-link" style={{ fontSize: '18px', padding: '8px 0' }} onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
+            <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
               Our Services
             </a>
-            <a href="#about" className="nav-link" style={{ fontSize: '18px', padding: '8px 0' }} onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
+            <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
               About Us
             </a>
-            <a href="#contact" className="nav-link" style={{ fontSize: '18px', padding: '8px 0' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+            <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
               Contact
             </a>
-            <a href="#contact" className="nav-btn" style={{ textAlign: 'center', marginTop: '8px' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+            <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
               Book Consultation
             </a>
           </div>
