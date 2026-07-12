@@ -492,7 +492,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .service-block-title {
   font-family: var(--font-heading);
-  font-size: 32px;
+  font-size: clamp(24px, 3.5vw, 32px);
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
@@ -670,6 +670,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .china-vietnam-left {
   border-right: 1px solid var(--border-light);
+  padding: 48px;
 }
 
 .china-vietnam-right {
@@ -677,6 +678,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   flex-direction: column;
   justify-content: center;
   gap: 20px;
+  padding: 48px;
 }
 
 .china-vietnam-stat-row {
@@ -722,12 +724,14 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .extensions-left {
   border-right: 1px solid var(--border-light);
+  padding: 48px;
 }
 
 .extensions-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 48px;
 }
 
 .extensions-table {
@@ -762,8 +766,16 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   grid-template-columns: 1.2fr 1fr;
 }
 
+.visa-subsection {
+  padding: 48px;
+}
+
 .immigration-info {
   border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 48px;
 }
 
 .immigration-services-grid {
@@ -771,6 +783,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   flex-direction: column;
   justify-content: center;
   gap: 12px;
+  padding: 48px;
 }
 
 .immigration-service-row {
@@ -1171,6 +1184,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
     grid-template-columns: 1fr;
   }
   
+  .visa-subsection,
   .china-vietnam-left,
   .china-vietnam-right,
   .extensions-left,

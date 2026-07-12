@@ -422,7 +422,7 @@ function App() {
                   </div>
 
                   {/* Subsection A: Visa Consultation & Assistance */}
-                  <div style={{ padding: '48px', borderBottom: '1px solid var(--border-light)' }}>
+                  <div className="visa-subsection" style={{ borderBottom: '1px solid var(--border-light)' }}>
                     <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
                       Visa Consultation & Assistance
                     </h4>
@@ -447,7 +447,7 @@ function App() {
 
                   {/* Subsection B: China & Vietnam Visa Services */}
                   <div className="service-china-vietnam-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <div className="china-vietnam-left" style={{ padding: '48px' }}>
+                    <div className="china-vietnam-left">
                       <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
                         China & Vietnam Visa Services
                       </h4>
@@ -459,7 +459,7 @@ function App() {
                         <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
                       </ul>
                     </div>
-                    <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
+                    <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)' }}>
                       <h5 style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Key Processing Metrics</h5>
                       <div className="china-vietnam-stat-row">
                         <div className="china-vietnam-stat-card">
@@ -476,7 +476,7 @@ function App() {
 
                   {/* Subsection C: Cambodian Visa Extensions */}
                   <div className="service-cambodian-extensions-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <div className="extensions-left" style={{ padding: '48px' }}>
+                    <div className="extensions-left">
                       <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
                         Cambodian Visa Extensions
                       </h4>
@@ -488,7 +488,7 @@ function App() {
                         <li className="service-block-item"><CheckCircle size={16} /> Passport & Document Handling</li>
                       </ul>
                     </div>
-                    <div className="extensions-right" style={{ padding: '48px', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className="extensions-right" style={{ background: 'var(--bg-secondary)' }}>
                       <h5 style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Standard Extensions Available</h5>
                       <table className="extensions-table">
                         <tbody>
@@ -515,7 +515,7 @@ function App() {
 
                   {/* Subsection D: Chinese Immigration Assistance */}
                   <div className="service-chinese-immigration-section">
-                    <div className="immigration-info" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <div className="immigration-info">
                       <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
                         Chinese Immigration Assistance
                       </h4>
@@ -526,7 +526,7 @@ function App() {
                         Contact Representative
                       </a>
                     </div>
-                    <div className="immigration-services-grid" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                    <div className="immigration-services-grid">
                       <div className="immigration-service-row">
                         <span className="immigration-row-title">Visa Invitation Checklists</span>
                         <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
@@ -555,15 +555,15 @@ function App() {
                 </div>
                 
                 <div className="service-block" style={{ marginBottom: 0 }}>
-                  <div className="service-row" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-                    <div style={{ flex: '1 1 45%', minWidth: '320px', position: 'relative', overflow: 'hidden' }}>
+                  <div className="service-row">
+                    <div className="service-col-visual" style={{ flex: '1 1 50%', padding: 0 }}>
                       <img 
                         src={SAMPLE_BLOGS[0].image} 
                         alt={SAMPLE_BLOGS[0].title} 
-                        style={{ width: '100%', height: '100%', minHeight: '350px', objectFit: 'cover', display: 'block' }}
+                        style={{ width: '100%', height: '100%', minHeight: '320px', maxHeight: '420px', objectFit: 'cover', display: 'block' }}
                       />
                     </div>
-                    <div style={{ flex: '1 1 50%', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
+                    <div className="service-col-info" style={{ flex: '1 1 50%', gap: '20px' }}>
                       <span className="service-block-tag">Featured Post • {SAMPLE_BLOGS[0].date}</span>
                       <h3 className="service-block-title" style={{ fontSize: '28px' }}>{SAMPLE_BLOGS[0].title}</h3>
                       <p className="service-block-text">
@@ -642,7 +642,7 @@ function App() {
               </p>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '32px', marginBottom: '64px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '32px', marginBottom: '64px' }}>
               {SAMPLE_BLOGS.map((blog) => (
                 <div 
                   key={blog.id} 
@@ -713,7 +713,7 @@ function App() {
                     </h1>
                   </div>
                   
-                  <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', height: 'clamp(280px, 45vh, 480px)', marginBottom: '40px', boxShadow: 'var(--shadow-md)' }}>
+                  <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', height: 'clamp(200px, 35vh, 400px)', marginBottom: '40px', boxShadow: 'var(--shadow-md)' }}>
                     <img 
                       src={blog.image} 
                       alt={blog.title} 
