@@ -463,12 +463,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   line-height: 1.6;
 }
 
-/* 
- * ----------------------------------------------------
- * NEW RESTRICTURED SERVICES STYLING
- * Each service is on its own section with distinct styling.
- * ----------------------------------------------------
- */
+/* Services */
 .service-block {
   margin-bottom: 96px;
   background-color: var(--bg-card);
@@ -484,7 +479,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   box-shadow: var(--shadow-lg);
 }
 
-/* Service Row Split Layout */
 .service-row {
   display: flex;
   align-items: stretch;
@@ -511,7 +505,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   justify-content: center;
 }
 
-/* Service Info Text */
 .service-block-tag {
   font-size: 12px;
   font-weight: 700;
@@ -578,16 +571,13 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   transform: translateX(6px);
 }
 
-/* 
- * BENTO GRIDS STYLING
- */
+/* Bento Grids */
 .bento-grid {
   display: grid;
   width: 100%;
   gap: 16px;
 }
 
-/* Flights Bento Grid: 3 columns, 2 rows */
 .bento-grid-flights {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 190px);
@@ -598,7 +588,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 .bento-card-flights-3 { grid-column: 1; grid-row: 2; }
 .bento-card-flights-4 { grid-column: 2; grid-row: 2; }
 
-/* Hotels Bento Grid: 2 columns, 3 rows */
 .bento-grid-hotels {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 140px);
@@ -609,7 +598,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 .bento-card-hotels-3 { grid-column: 2; grid-row: 2; }
 .bento-card-hotels-4 { grid-column: 1 / 3; grid-row: 3; }
 
-/* General Bento Item Layout */
 .bento-card {
   position: relative;
   border-radius: var(--radius-md);
@@ -646,7 +634,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   z-index: 2;
 }
 
-/* Glassmorphic Badge Overlaying Pictures - Always White Accent style for legibility */
 .bento-badge {
   position: absolute;
   bottom: 16px;
@@ -669,9 +656,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* 
- * Visa Consultation Section Layout (Unique card list style)
- */
+/* Visas */
 .service-visas-section {
   padding: 54px;
   display: flex;
@@ -734,9 +719,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   color: var(--text-secondary);
 }
 
-/* 
- * China & Vietnam Visas Section Layout (Horizontal split banner)
- */
+/* China & Vietnam */
 .service-china-vietnam-section {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -791,9 +774,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   font-weight: 500;
 }
 
-/* 
- * Cambodian Visa Extensions (Pricing Table style)
- */
+/* Cambodian Visa Extensions */
 .service-cambodian-extensions-section {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -851,9 +832,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   display: inline-block;
 }
 
-/* 
- * Chinese Immigration Section (Corporate details list)
- */
+/* Chinese Immigration */
 .service-chinese-immigration-section {
   padding: 64px;
   display: grid;
@@ -899,18 +878,73 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 /* 
  * About Section Layout
+ * 2-Row Layout:
+ * Row 1 (.about-split): Left Column Portrait, Right Column narrative + Davina Horn Professional Experience biography.
+ * Row 2 (.about-features): Horizontal value cards grid.
  */
 .about-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.3fr;
   gap: 64px;
-  align-items: center;
+  align-items: start;
 }
 
+/* Professional Frame for Portrait Image */
+.about-founder-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.about-founder-img {
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 6px solid var(--bg-card);
+  box-shadow: var(--shadow-xl);
+}
+
+.about-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.about-paragraph {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.about-founder-bio {
+  border-top: 1px dashed var(--border-light);
+  padding-top: 24px;
+  margin-top: 8px;
+}
+
+.about-founder-bio h3 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+/* Spans value cards horizontally below story */
 .about-features {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+  margin-top: 72px;
+  width: 100%;
+  border-top: 1px solid var(--border-light);
+  padding-top: 56px;
 }
 
 .about-feature-card {
@@ -919,6 +953,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   border-radius: var(--radius-md);
   padding: 28px;
   box-shadow: var(--shadow-sm);
+  text-align: left;
 }
 
 .about-feature-card:hover {
@@ -934,7 +969,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .about-feature-title {
   font-family: var(--font-heading);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 8px;
   color: var(--text-primary);
@@ -943,19 +978,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 .about-feature-desc {
   font-size: 14.5px;
   line-height: 1.5;
-  color: var(--text-secondary);
-}
-
-.about-text-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  text-align: left;
-}
-
-.about-paragraph {
-  font-size: 16.5px;
-  line-height: 1.7;
   color: var(--text-secondary);
 }
 
@@ -1112,11 +1134,15 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   }
 }
 
-/* Responsive Styles for Bento & Restructured Layouts */
+/* Responsive Styles */
 @media (max-width: 1200px) {
   .about-split {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+  
+  .about-founder-container {
+    justify-content: center;
   }
   
   .service-row {
@@ -1157,6 +1183,12 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   .hero-card {
     height: 480px;
   }
+  
+  .about-features {
+    grid-template-columns: repeat(2, 1fr);
+    padding-top: 40px;
+    margin-top: 56px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1191,7 +1223,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
     justify-content: center;
   }
   
-  /* Mobile Bento grids layouts adapt cleanly to 1 col */
   .bento-grid-flights,
   .bento-grid-hotels {
     grid-template-columns: 1fr;
@@ -1229,6 +1260,8 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   
   .about-features {
     grid-template-columns: 1fr;
+    padding-top: 32px;
+    margin-top: 40px;
   }
   
   .contact-layout {
