@@ -877,29 +877,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   margin-bottom: 12px;
 }
 
-.about-experience-logos {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.exp-logo {
-  height: 28px;
-  width: auto;
-  object-fit: contain;
-  opacity: 0.65;
-  filter: grayscale(1);
-  transition: var(--transition-fast);
-}
-
-[data-theme="dark"] .exp-logo {
-  filter: grayscale(1) brightness(1.8);
-  opacity: 0.8;
-}
-
-
 /* Contact Footer Section & Blended Social Links styling */
 .contact-section {
   padding: 100px 0 40px 0;
