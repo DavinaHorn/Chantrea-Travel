@@ -11,10 +11,6 @@ import {
   ChevronRight, 
   Menu, 
   X, 
-  Award, 
-  Clock, 
-  UserCheck, 
-  ShieldCheck,
   Sun,
   Moon,
   Info,
@@ -482,8 +478,7 @@ function App() {
           </section>
 
           {/* About Section */}
-          <section id="about" className="section section-bg" style={{ borderRadius: 'var(--radius-xl)', padding: '80px 48px' }}>
-            {/* Row 1: Split Portrait & Biography */}
+          <section id="about" className="section">
             <div className="about-split">
               {/* Left Column: Portrait Frame */}
               <div className="about-founder-container">
@@ -509,30 +504,6 @@ function App() {
                     Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including K.U. Travel, Amary Travel (Representative of Carlson Wagonlit Travel), Korean Air, and EXO Travel. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at Chantrea Travel.
                   </p>
                 </div>
-              </div>
-            </div>
-
-            {/* Row 2: Spanned Core Values Grid */}
-            <div className="about-features">
-              <div className="about-feature-card">
-                <Award className="about-feature-icon" size={32} />
-                <h4 className="about-feature-title">Honest Advice</h4>
-                <p className="about-feature-desc">We deliver transparent guidance, explaining exact rules, fees, and requirements without hidden surprises.</p>
-              </div>
-              <div className="about-feature-card">
-                <Clock className="about-feature-icon" size={32} />
-                <h4 className="about-feature-title">Efficient Service</h4>
-                <p className="about-feature-desc">Time is critical in travel. We process bookings and applications rapidly, maintaining schedules on time.</p>
-              </div>
-              <div className="about-feature-card">
-                <UserCheck className="about-feature-icon" size={32} />
-                <h4 className="about-feature-title">Personalized Care</h4>
-                <p className="about-feature-desc">Every journey is unique. We tailor visa solutions and itineraries to meet your specific individual or family needs.</p>
-              </div>
-              <div className="about-feature-card">
-                <ShieldCheck className="about-feature-icon" size={32} />
-                <h4 className="about-feature-title">Professional Integrity</h4>
-                <p className="about-feature-desc">Your personal files are handled with absolute confidentiality and care throughout the entire process.</p>
               </div>
             </div>
           </section>

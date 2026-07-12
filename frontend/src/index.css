@@ -878,35 +878,59 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 /* 
  * About Section Layout
- * 2-Row Layout:
- * Row 1 (.about-split): Left Column Portrait, Right Column narrative + Davina Horn Professional Experience biography.
- * Row 2 (.about-features): Horizontal value cards grid.
+ * Split Story: Left Column Portrait with offset decorative outline frame, Right Column narrative text.
  */
 .about-split {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
   gap: 64px;
-  align-items: start;
+  align-items: center;
 }
 
-/* Professional Frame for Portrait Image */
+/* Portrait Image Styles with cool Offset Frame Outline (removes box shape and border around image) */
 .about-founder-container {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.about-founder-container::before {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  right: -16px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--accent-purple);
+  border-radius: var(--radius-lg);
+  z-index: 1;
+  pointer-events: none;
+  transition: var(--transition-smooth);
 }
 
 .about-founder-img {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  max-width: 440px;
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: var(--radius-lg);
-  border: 6px solid var(--bg-card);
   box-shadow: var(--shadow-xl);
+  transition: var(--transition-smooth);
+}
+
+/* Interactivity: Slight shift on hover for 3D look */
+.about-founder-container:hover::before {
+  transform: translate(-8px, -8px);
+}
+
+.about-founder-container:hover .about-founder-img {
+  transform: translate(8px, 8px);
 }
 
 .about-text-content {
@@ -934,51 +958,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 12px;
-}
-
-/* Spans value cards horizontally below story */
-.about-features {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-top: 72px;
-  width: 100%;
-  border-top: 1px solid var(--border-light);
-  padding-top: 56px;
-}
-
-.about-feature-card {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 28px;
-  box-shadow: var(--shadow-sm);
-  text-align: left;
-}
-
-.about-feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent-purple);
-}
-
-.about-feature-icon {
-  color: var(--accent-purple);
-  margin-bottom: 16px;
-}
-
-.about-feature-title {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--text-primary);
-}
-
-.about-feature-desc {
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: var(--text-secondary);
 }
 
 /* Contact Footer Section */
@@ -1183,12 +1162,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   .hero-card {
     height: 480px;
   }
-  
-  .about-features {
-    grid-template-columns: repeat(2, 1fr);
-    padding-top: 40px;
-    margin-top: 56px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1256,12 +1229,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   
   .china-vietnam-stat-row {
     grid-template-columns: 1fr;
-  }
-  
-  .about-features {
-    grid-template-columns: 1fr;
-    padding-top: 32px;
-    margin-top: 40px;
   }
   
   .contact-layout {
