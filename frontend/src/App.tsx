@@ -462,9 +462,14 @@ function App() {
                 {/* Professional Experience Section */}
                 <div className="about-founder-bio">
                   <h3>Professional Experience</h3>
-                  <p className="about-paragraph">
+                  <p className="about-paragraph" style={{ marginBottom: '20px' }}>
                     Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
                   </p>
+                  <div className="about-experience-logos">
+                    <img src="/logo_amary.webp" alt="Amary Travel Logo" className="exp-logo" />
+                    <img src="/logo_korean_air.webp" alt="Korean Air Logo" className="exp-logo" />
+                    <img src="/logo_exo.webp" alt="EXO Travel Logo" className="exp-logo" />
+                  </div>
                 </div>
               </div>
             </div>
