@@ -16,7 +16,9 @@ import {
   UserCheck, 
   ShieldCheck,
   Calendar,
-  Search
+  Search,
+  Sun,
+  Moon
 } from 'lucide-react'
 
 interface Slide {
@@ -27,6 +29,11 @@ interface Slide {
 }
 
 function App() {
+  // Theme state: defaults to 'light', persists in localStorage
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'light'
+  })
+  
   const [activeSlide, setActiveSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -51,12 +58,22 @@ function App() {
     }
   ]
 
+  // Synchronize theme state with DOM and localStorage
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev + 1) % slides.length)
     }, 5000)
     return () => clearInterval(timer)
   }, [slides.length])
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }
 
   // Scroll handler for navigation
   const scrollToSection = (id: string) => {
@@ -67,56 +84,69 @@ function App() {
     }
   }
 
+  // Define active logo image path based on active theme
+  const logoSrc = theme === 'dark' ? '/CTT_LOGO-HB.webp' : '/CTT_LOGO-HW.webp'
+
   return (
     <>
       {/* Header & Navbar */}
       <header className="header">
         <div className="container">
           <nav className="navbar" role="navigation" aria-label="Main Navigation">
-            {/* Left: Brand Logo */}
-            <a href="/" className="logo-link" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-              <img src="/logo.webp" alt="Chantrea Travel Logo" className="logo-icon" />
-              <span className="logo-text">Chantrea <span>Travel</span></span>
+            {/* Left: Brand Logo (Image includes text, scaled correctly) */}
+            <a href="/" className="logo-link" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Chantrea Travel Home">
+              <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
             </a>
 
-            {/* Center: Subtitle Badge (Inspired by reference) */}
+            {/* Center: Subtitle Tagline Badge */}
             <div className="header-badge">
               <span className="badge-dot"></span>
               <span>Your Trusted Global Travel & Visa Partner</span>
             </div>
 
-            {/* Right: Desktop Menu */}
-            <ul className="nav-menu">
-              <li>
-                <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
-                  Our Services
-                </a>
-              </li>
-              <li>
-                <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Book Consultation
-                </a>
-              </li>
-            </ul>
+            {/* Right: Desktop Controls & Menu */}
+            <div className="nav-controls">
+              <ul className="nav-menu">
+                <li>
+                  <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
+                    Our Services
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                    Book Consultation
+                  </a>
+                </li>
+              </ul>
 
-            {/* Mobile Menu Icon */}
-            <button 
-              className="menu-toggle" 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-            >
-              {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+              {/* Theme Toggle Switch */}
+              <button 
+                className="theme-toggle-btn" 
+                onClick={toggleTheme}
+                aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
+              {/* Mobile Menu Icon */}
+              <button 
+                className="menu-toggle" 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+              >
+                {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
           </nav>
         </div>
       </header>
@@ -125,7 +155,7 @@ function App() {
       <main style={{ flexGrow: 1 }}>
         <div className="container">
           
-          {/* Hero Slideshow Section (Mimicking the premium card style of the reference image) */}
+          {/* Hero Slideshow Section */}
           <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
             <div className="hero-card">
               {/* Slideshow background images */}
@@ -152,7 +182,7 @@ function App() {
                 <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
                 <h1 className="hero-title">
                   {slides[activeSlide].title.split(' ').map((word, i) => {
-                    // Highlight the last word in gold
+                    // Highlight the last word in purple accent color
                     if (i === slides[activeSlide].title.split(' ').length - 1) {
                       return <span key={i}>{word}</span>;
                     }
@@ -162,7 +192,7 @@ function App() {
                 <p className="hero-desc">{slides[activeSlide].desc}</p>
               </div>
 
-              {/* Badges Row at Bottom of Card (Inspired by reference) */}
+              {/* Badges Row at Bottom of Card */}
               <div className="hero-badges-row">
                 <div className="hero-pill-badge" onClick={() => scrollToSection('services-flights')}>
                   <Plane size={18} />
@@ -359,9 +389,8 @@ function App() {
             <div className="contact-layout">
               {/* Brand Info */}
               <div className="contact-brand">
-                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                  <img src="/logo.webp" alt="" style={{ width: '32px', height: '32px' }} />
-                  <span>Chantrea <span>Travel</span></span>
+                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Chantrea Travel Home">
+                  <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
                 </a>
                 <p className="contact-brand-desc">
                   Connecting you to global destinations with confidence and care. Honest advice, reliable flight bookings, global hotel reservations, and visa processing services.
