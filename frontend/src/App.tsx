@@ -12,7 +12,8 @@ import {
   X, 
   Sun,
   Moon,
-  ChevronRightSquare
+  ChevronRightSquare,
+  ArrowRight
 } from 'lucide-react'
 
 interface Slide {
@@ -22,6 +23,67 @@ interface Slide {
   desc: string
 }
 
+interface BlogPost {
+  id: string
+  title: string
+  date: string
+  author: string
+  summary: string
+  image: string
+  content: string[]
+}
+
+const SAMPLE_BLOGS: BlogPost[] = [
+  {
+    id: 'cambodia',
+    title: 'Top 5 Places to Visit in Cambodia: The Kingdom of Wonder',
+    date: 'July 12, 2026',
+    author: 'Davina Horn',
+    summary: 'From the awe-inspiring temple complexes of Angkor Wat to the pristine white sands of Koh Rong and the historical heritage of Phnom Penh, discover the ultimate travel guide to Cambodia.',
+    image: '/hotel_cambodia.webp',
+    content: [
+      'Cambodia, known as the "Kingdom of Wonder," is a destination that captures the heart of every traveler. Rich in history, culture, and natural beauty, it offers a diverse range of experiences from ancient archaeological marvels to tropical island getaways.',
+      '1. Angkor Archaeological Park (Siem Reap): No trip to Cambodia is complete without exploring the UNESCO World Heritage site of Angkor. Spanning over 400 square kilometers, this ancient capital of the Khmer Empire features the magnificent Angkor Wat, the stone faces of Bayon Temple, and the jungle-entangled Ta Prohm.',
+      '2. Phnom Penh: The bustling capital city sits at the confluence of three rivers. Here, visitors can explore the ornate Royal Palace and Silver Pagoda, shop at the Art Deco Central Market, and pay respects at the historic Tuol Sleng Genocide Museum and Choeung Ek Killing Fields.',
+      '3. Koh Rong & Koh Rong Sanloem: For tropical paradise seekers, these islands off the coast of Sihanoukville offer crystal-clear turquoise waters, powdery white sand beaches, and a relaxed, laid-back atmosphere perfect for snorkeling, diving, or simply unwinding.',
+      '4. Kampot & Kep: Famous for its world-class black pepper, Kampot is a charming riverside town with French colonial architecture. Just a short drive away is Kep, a quiet coastal town renowned for its delicious fresh crab market and scenic national park.',
+      '5. Cardamom Mountains: One of Southeast Asia’s largest remaining rainforests, the Cardamom Mountains offer eco-tourism adventures, community-based homestays, kayaking on pristine rivers, and trekking through dense jungle to spot rare wildlife.'
+    ]
+  },
+  {
+    id: 'canada',
+    title: 'Discover Canada: Majestic Mountains, Vibrant Cities, and Coastal Beauty',
+    date: 'June 28, 2026',
+    author: 'Travel Specialist',
+    summary: 'Embark on an unforgettable Canadian journey. Explore the breathtaking Canadian Rockies in Banff, the French-infused streets of Old Montreal, and the spectacular coastal vistas of Vancouver.',
+    image: '/hotel_canada.webp',
+    content: [
+      'Canada is a vast and diverse country, boasting some of the world’s most spectacular natural wonders alongside clean, friendly, and culturally rich cities. Spanning six time zones, it offers endless opportunities for outdoor adventure and urban exploration.',
+      '1. Banff National Park (Alberta): Nestled in the heart of the Canadian Rockies, Banff is famous for its towering snow-capped peaks, dense pine forests, and glacier-fed lakes with unreal turquoise water—such as Lake Louise and Moraine Lake.',
+      '2. Vancouver & Whistler (British Columbia): Vancouver combines a vibrant urban scene with immediate access to nature. Stroll through Stanley Park, explore Granville Island, and then take the scenic Sea-to-Sky Highway up to Whistler, a world-famous ski and mountain resort.',
+      '3. Niagara Falls (Ontario): One of the world’s most famous natural attractions, these massive waterfalls straddle the US-Canada border. Take a boat tour to get close to the thundering spray or view them from the Skylon Tower.',
+      '4. Quebec City & Montreal (Quebec): Experience European charm in North America. Stroll the historic cobblestone streets of Old Quebec, a fortified colonial city, and visit Montreal to experience its legendary culinary scene, festivals, and bilingual culture.',
+      '5. The Maritimes (Atlantic Canada): Explore the rugged coastline, lighthouses, and fishing villages of Nova Scotia, New Brunswick, and Prince Edward Island. Highlights include driving the scenic Cabot Trail and tasting fresh Atlantic lobster.'
+    ]
+  },
+  {
+    id: 'us',
+    title: 'The Ultimate US Travel Guide: From Skyscrapers to National Parks',
+    date: 'June 15, 2026',
+    author: 'Travel Specialist',
+    summary: 'Plan your dream American road trip. Discover the dazzling lights of New York City, the geological marvels of the Grand Canyon, and the sunny beaches of California.',
+    image: '/blog_us.png',
+    content: [
+      'The United States is a land of incredible variety, offering travelers everything from iconic urban skylines and entertainment capitals to deep canyons, sandy coastlines, and active geothermal parks.',
+      '1. New York City: The "City That Never Sleeps" is a global hub of culture, art, fashion, and food. Highlights include walking through Central Park, seeing a Broadway show, exploring diverse neighborhoods like Soho and Brooklyn, and visiting the Statue of Liberty.',
+      '2. Grand Canyon National Park (Arizona): A true natural wonder, the Grand Canyon is a massive, colorful gorge carved by the Colorado River over millions of years. The South Rim offers stunning panoramic views, hiking trails, and gorgeous sunset vistas.',
+      '3. California Coastline: Drive the iconic Pacific Coast Highway (Highway 1) from San Francisco—with its Golden Gate Bridge and historic cable cars—down to sunny Los Angeles and San Diego, stopping at scenic spots like Big Sur and Santa Barbara.',
+      '4. Yellowstone National Park (Wyoming/Montana): The world’s first national park is a geological wonderland. It sits atop a volcanic hot spot and features thousands of geothermal features, including the Old Faithful geyser and the colorful Grand Prismatic Spring.',
+      '5. New Orleans (Louisiana): Known for its round-the-clock nightlife, vibrant live music scene, and unique culinary heritage, New Orleans is a melting pot of French, African, and American cultures. Don\'t miss visiting the historic French Quarter and tasting delicious local beignets.'
+    ]
+  }
+]
+
 function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light'
@@ -29,6 +91,7 @@ function App() {
   
   const [activeSlide, setActiveSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [hash, setHash] = useState(window.location.hash)
 
   const slides: Slide[] = [
     {
@@ -63,15 +126,42 @@ function App() {
     return () => clearInterval(timer)
   }, [slides.length])
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash)
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  useEffect(() => {
+    const currentHash = window.location.hash
+    if (currentHash && !currentHash.startsWith('#blogs') && !currentHash.startsWith('#blog/')) {
+      const id = currentHash.substring(1)
+      const timer = setTimeout(() => {
+        const element = document.getElementById(id)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 150)
+      return () => clearTimeout(timer)
+    }
+  }, [hash])
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  const scrollToSection = (id: string) => {
+  const navigateToSection = (id: string) => {
     setMobileMenuOpen(false)
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    if (window.location.hash.startsWith('#blogs') || window.location.hash.startsWith('#blog/')) {
+      window.location.hash = id
+    } else {
+      window.location.hash = id
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 
@@ -84,7 +174,19 @@ function App() {
         <div className="container">
           <nav className="navbar" role="navigation" aria-label="Main Navigation">
             {/* Left: Brand Logo */}
-            <a href="/" className="logo-link" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Chantrea Travel Home">
+            <a 
+              href="/" 
+              className="logo-link" 
+              onClick={(e) => { 
+                e.preventDefault(); 
+                if (window.location.hash.startsWith('#blogs') || window.location.hash.startsWith('#blog/')) {
+                  window.location.hash = '';
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' }); 
+                }
+              }} 
+              aria-label="Chantrea Travel Home"
+            >
               <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
             </a>
 
@@ -92,22 +194,27 @@ function App() {
             <div className="nav-controls">
               <ul className="nav-menu">
                 <li>
-                  <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
+                  <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('services'); }}>
                     Our Services
                   </a>
                 </li>
                 <li>
-                  <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
+                  <a href="#blogs" className="nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); window.location.hash = '#blogs'; }}>
+                    Blogs
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('about'); }}>
                     About Us
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
                     Book Consultation
                   </a>
                 </li>
@@ -138,344 +245,521 @@ function App() {
       {/* Main Content */}
       <main style={{ flexGrow: 1 }}>
         
-        {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
-        <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
-          <div className="hero-card">
-            {/* Slideshow background images */}
-            <div className="slideshow">
-              {slides.map((slide, index) => (
-                <div 
-                  key={index} 
-                  className={`slide ${index === activeSlide ? 'active' : ''}`}
-                  aria-hidden={index !== activeSlide}
-                >
-                  <img 
-                    src={slide.image} 
-                    alt={slide.subtitle} 
-                    className="slide-img" 
-                    loading={index === 0 ? 'eager' : 'lazy'} 
-                  />
+        {(!hash || (!hash.startsWith('#blogs') && !hash.startsWith('#blog/'))) ? (
+          <>
+            {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
+            <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
+              <div className="hero-card">
+                {/* Slideshow background images */}
+                <div className="slideshow">
+                  {slides.map((slide, index) => (
+                    <div 
+                      key={index} 
+                      className={`slide ${index === activeSlide ? 'active' : ''}`}
+                      aria-hidden={index !== activeSlide}
+                    >
+                      <img 
+                        src={slide.image} 
+                        alt={slide.subtitle} 
+                        className="slide-img" 
+                        loading={index === 0 ? 'eager' : 'lazy'} 
+                      />
+                    </div>
+                  ))}
+                  <div className="slideshow-overlay"></div>
                 </div>
-              ))}
-              <div className="slideshow-overlay"></div>
-            </div>
 
-            {/* Overlaid text aligned to standard container width */}
-            <div className="container hero-content-container">
-              <div className="hero-content">
-                <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
-                <h1 className="hero-title">
-                  {slides[activeSlide].title.split(' ').map((word, i) => {
-                    if (i === slides[activeSlide].title.split(' ').length - 1) {
-                      return <span key={i}>{word}</span>;
-                    }
-                    return word + ' ';
-                  })}
-                </h1>
-                <p className="hero-desc">{slides[activeSlide].desc}</p>
+                {/* Overlaid text aligned to standard container width */}
+                <div className="container hero-content-container">
+                  <div className="hero-content">
+                    <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
+                    <h1 className="hero-title">
+                      {slides[activeSlide].title.split(' ').map((word, i) => {
+                        if (i === slides[activeSlide].title.split(' ').length - 1) {
+                          return <span key={i}>{word}</span>;
+                        }
+                        return word + ' ';
+                      })}
+                    </h1>
+                    <p className="hero-desc">{slides[activeSlide].desc}</p>
+                  </div>
+
+                  {/* Badges Row at Bottom of Card */}
+                  <div className="hero-badges-row">
+                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-flights')}>
+                      <Plane size={18} />
+                      <span>Worldwide Flights</span>
+                    </div>
+                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-hotels')}>
+                      <Hotel size={18} />
+                      <span>Global Hotels</span>
+                    </div>
+                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-visas')}>
+                      <FileText size={18} />
+                      <span>Visa Services</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </section>
 
-              {/* Badges Row at Bottom of Card */}
-              <div className="hero-badges-row">
-                <div className="hero-pill-badge" onClick={() => scrollToSection('services-flights')}>
-                  <Plane size={18} />
-                  <span>Worldwide Flights</span>
+            {/* Outer Site Container for Page Content */}
+            <div className="container">
+              
+              {/* Our Services Section */}
+              <section id="services" className="section">
+                <div className="section-header">
+                  <span className="section-tag">What We Do</span>
+                  <h2 className="section-title">Our Professional Services</h2>
+                  <p className="section-desc">
+                    Chantrea Travel provides comprehensive, reliable travel documentation and booking services to connect you to global destinations with confidence.
+                  </p>
                 </div>
-                <div className="hero-pill-badge" onClick={() => scrollToSection('services-hotels')}>
-                  <Hotel size={18} />
-                  <span>Global Hotels</span>
+
+                {/* Service 1: Worldwide Flight Tickets */}
+                <div id="services-flights" className="service-block">
+                  <div className="service-row">
+                    {/* Left side: Information block */}
+                    <div className="service-col-info">
+                      <span className="service-block-tag">Flight Booking</span>
+                      <h3 className="service-block-title">Worldwide Flight Tickets</h3>
+                      <p className="service-block-text">
+                        Travel anywhere in the world with confidence. Chantrea Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares.
+                      </p>
+                      <ul className="service-block-list">
+                        <li className="service-block-item"><CheckCircle size={16} /> Travel Consultation & Planning</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
+                      </ul>
+                      <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
+                        Inquire Flights <ChevronRight size={16} />
+                      </a>
+                    </div>
+                    {/* Right side: Country Bento Grid */}
+                    <div className="service-col-visual">
+                      <div className="bento-grid bento-grid-flights">
+                        <div className="bento-card bento-card-flights-1">
+                          <img src="/country_china.webp" alt="China" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">China</span>
+                        </div>
+                        <div className="bento-card bento-card-flights-2">
+                          <img src="/country_vietnam.webp" alt="Vietnam" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Vietnam</span>
+                        </div>
+                        <div className="bento-card bento-card-flights-3">
+                          <img src="/country_canada.webp" alt="Canada" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Canada</span>
+                        </div>
+                        <div className="bento-card bento-card-flights-4">
+                          <img src="/country_australia.webp" alt="Australia" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Australia</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="hero-pill-badge" onClick={() => scrollToSection('services-visas')}>
-                  <FileText size={18} />
-                  <span>Visa Services</span>
+
+                {/* Service 2: Global Hotel Reservations */}
+                <div id="services-hotels" className="service-block">
+                  <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
+                    {/* Right side: Information block */}
+                    <div className="service-col-info">
+                      <span className="service-block-tag">Accommodations</span>
+                      <h3 className="service-block-title">Global Hotel Reservations</h3>
+                      <p className="service-block-text">
+                        Wherever your destination, we arrange accommodations that suit your preferences and budget. From affordable boutique hotels to luxury resorts and business suites, we secure the most comfortable stay.
+                      </p>
+                      <ul className="service-block-list">
+                        <li className="service-block-item"><CheckCircle size={16} /> Luxury Resorts & Private Villas</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> Budget-Friendly & Business Lodging</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> Fast Secure Booking Confirmations</li>
+                      </ul>
+                      <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
+                        Inquire Hotels <ChevronRight size={16} />
+                      </a>
+                    </div>
+                    {/* Left side: Hotels Bento Grid */}
+                    <div className="service-col-visual">
+                      <div className="bento-grid bento-grid-hotels">
+                        <div className="bento-card bento-card-hotels-1">
+                          <img src="/hotel_cambodia.webp" alt="Angkor Resort Cambodia" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Cambodia</span>
+                        </div>
+                        <div className="bento-card bento-card-hotels-2">
+                          <img src="/hotel_singapore.webp" alt="Rooftop Pool Singapore" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Singapore</span>
+                        </div>
+                        <div className="bento-card bento-card-hotels-3">
+                          <img src="/hotel_vietnam.webp" alt="Beach Resort Vietnam" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Vietnam</span>
+                        </div>
+                        <div className="bento-card bento-card-hotels-4">
+                          <img src="/hotel_canada.webp" alt="Castle Hotel Canada" className="bento-img" />
+                          <div className="bento-overlay"></div>
+                          <span className="bento-badge">Canada</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+
+                {/* Service 3: Visa & Immigration Services (Unified Block) */}
+                <div id="services-visas" className="service-block">
+                  {/* Header inside the box */}
+                  <div style={{ padding: '48px 48px 32px 48px', borderBottom: '1px solid var(--border-light)' }}>
+                    <span className="service-block-tag">Visa & Immigration</span>
+                    <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa & Immigration Support</h3>
+                    <p className="service-block-text" style={{ marginTop: '12px' }}>
+                      Chantrea Travel provides professional assistance and documentation guidance for all your global travel visa and immigration requirements.
+                    </p>
+                  </div>
+
+                  {/* Subsection A: Visa Consultation & Assistance */}
+                  <div style={{ padding: '48px', borderBottom: '1px solid var(--border-light)' }}>
+                    <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                      Visa Consultation & Assistance
+                    </h4>
+                    <p className="service-block-text" style={{ marginBottom: '24px' }}>
+                      Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
+                    </p>
+                    <div className="visas-grid-col">
+                      <div className="visa-country-card">
+                        <h5 className="visa-country-name">Canada Visas</h5>
+                        <p className="visa-country-desc">Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.</p>
+                      </div>
+                      <div className="visa-country-card">
+                        <h5 className="visa-country-name">Australia Visas</h5>
+                        <p className="visa-country-desc">Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.</p>
+                      </div>
+                      <div className="visa-country-card">
+                        <h5 className="visa-country-name">United States Visas</h5>
+                        <p className="visa-country-desc">Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection B: China & Vietnam Visa Services */}
+                  <div className="service-china-vietnam-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
+                    <div className="china-vietnam-left" style={{ padding: '48px' }}>
+                      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                        China & Vietnam Visa Services
+                      </h4>
+                      <p className="service-block-text" style={{ marginBottom: '20px' }}>
+                        Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
+                      </p>
+                      <ul className="service-block-list">
+                        <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
+                      </ul>
+                    </div>
+                    <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
+                      <h5 style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Key Processing Metrics</h5>
+                      <div className="china-vietnam-stat-row">
+                        <div className="china-vietnam-stat-card">
+                          <div className="china-vietnam-stat-num">98%</div>
+                          <div className="china-vietnam-stat-label">Approval Rate</div>
+                        </div>
+                        <div className="china-vietnam-stat-card">
+                          <div className="china-vietnam-stat-num">5-7</div>
+                          <div className="china-vietnam-stat-label">Working Days</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subsection C: Cambodian Visa Extensions */}
+                  <div className="service-cambodian-extensions-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
+                    <div className="extensions-left" style={{ padding: '48px' }}>
+                      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                        Cambodian Visa Extensions
+                      </h4>
+                      <p className="service-block-text" style={{ marginBottom: '20px' }}>
+                        For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+                      </p>
+                      <ul className="service-block-list">
+                        <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
+                        <li className="service-block-item"><CheckCircle size={16} /> Passport & Document Handling</li>
+                      </ul>
+                    </div>
+                    <div className="extensions-right" style={{ padding: '48px', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                      <h5 style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Standard Extensions Available</h5>
+                      <table className="extensions-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">1 Month</span></td>
+                            <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">3 Months</span></td>
+                            <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">6 Months</span></td>
+                            <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
+                          </tr>
+                          <tr>
+                            <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">12 Months</span></td>
+                            <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Subsection D: Chinese Immigration Assistance */}
+                  <div className="service-chinese-immigration-section">
+                    <div className="immigration-info" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                      <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        Chinese Immigration Assistance
+                      </h4>
+                      <p className="service-block-text">
+                        We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures, travel planning, and policy checkups.
+                      </p>
+                      <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
+                        Contact Representative
+                      </a>
+                    </div>
+                    <div className="immigration-services-grid" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                      <div className="immigration-service-row">
+                        <span className="immigration-row-title">Visa Invitation Checklists</span>
+                        <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                      </div>
+                      <div className="immigration-service-row">
+                        <span className="immigration-row-title">Residence Permit Guidance</span>
+                        <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                      </div>
+                      <div className="immigration-service-row">
+                        <span className="immigration-row-title">Legal Travel Clearance Advice</span>
+                        <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Latest Blog Summary Section (Between Visa Support and About Partner) */}
+              <section className="section" id="home-latest-blog" aria-label="Latest Travel Blog Post Summary" style={{ borderTop: '1px solid var(--border-light)', paddingTop: '80px', marginTop: '40px' }}>
+                <div className="section-header">
+                  <span className="section-tag">Travel Insights & Stories</span>
+                  <h2 className="section-title">Latest Travel Guide</h2>
+                  <p className="section-desc">
+                    Get the latest travel tips, highlights, and insights from our professional travel guides.
+                  </p>
+                </div>
+                
+                <div className="service-block" style={{ marginBottom: 0 }}>
+                  <div className="service-row" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                    <div style={{ flex: '1 1 45%', minWidth: '320px', position: 'relative', overflow: 'hidden' }}>
+                      <img 
+                        src={SAMPLE_BLOGS[0].image} 
+                        alt={SAMPLE_BLOGS[0].title} 
+                        style={{ width: '100%', height: '100%', minHeight: '350px', objectFit: 'cover', display: 'block' }}
+                      />
+                    </div>
+                    <div style={{ flex: '1 1 50%', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
+                      <span className="service-block-tag">Featured Post • {SAMPLE_BLOGS[0].date}</span>
+                      <h3 className="service-block-title" style={{ fontSize: '28px' }}>{SAMPLE_BLOGS[0].title}</h3>
+                      <p className="service-block-text">
+                        {SAMPLE_BLOGS[0].summary}
+                      </p>
+                      <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
+                        <a 
+                          href={`#blog/${SAMPLE_BLOGS[0].id}`} 
+                          className="nav-btn" 
+                          style={{ display: 'inline-block', fontSize: '14px', padding: '10px 20px' }}
+                        >
+                          Read This Post
+                        </a>
+                        <a 
+                          href="#blogs" 
+                          className="nav-btn" 
+                          style={{ 
+                            display: 'inline-block', 
+                            fontSize: '14px', 
+                            padding: '10px 20px', 
+                            backgroundColor: 'transparent', 
+                            color: 'var(--accent-purple)', 
+                            borderColor: 'var(--accent-purple)' 
+                          }}
+                        >
+                          Read More Blogs
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* About Section */}
+              <section id="about" className="section">
+                <div className="about-split">
+                  {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
+                  <div className="about-founder-container">
+                    <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
+                    <div className="about-founder-info">
+                      <h4 className="about-founder-name">Davina Horn</h4>
+                      <p className="about-founder-title">Owner & Managing Director</p>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Narrative & Biography */}
+                  <div className="about-text-content">
+                    <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
+                    
+                    <p className="about-paragraph">
+                      At Chantrea Travel, we are committed to making international travel simple, convenient, and stress-free. Whether you are traveling for business, leisure, education, or family visits, our experienced team provides professional travel solutions tailored to your needs.
+                    </p>
+                    <p className="about-paragraph">
+                      From planning your flight itinerary to booking accommodations and assisting with complex travel documentation, we are dedicated to delivering reliable service and exceptional customer support every step of the way. Your journey begins with us—connecting you to destinations around the world with confidence and care.
+                    </p>
+
+                    {/* Professional Experience Section */}
+                    <div className="about-founder-bio">
+                      <h3>Professional Experience</h3>
+                      <p className="about-paragraph">
+                        Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
-          </div>
-        </section>
-
-        {/* Outer Site Container for Page Content */}
-        <div className="container">
-          
-          {/* Our Services Section */}
-          <section id="services" className="section">
-            <div className="section-header">
-              <span className="section-tag">What We Do</span>
-              <h2 className="section-title">Our Professional Services</h2>
+          </>
+        ) : hash === '#blogs' ? (
+          <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+            <div className="section-header" style={{ marginBottom: '48px' }}>
+              <span className="section-tag">Travel Guides & Advice</span>
+              <h1 className="section-title">Chantrea Travel Blog</h1>
               <p className="section-desc">
-                Chantrea Travel provides comprehensive, reliable travel documentation and booking services to connect you to global destinations with confidence.
+                Explore our collections of expert guides, top destinations, and practical tips for your next international journey.
               </p>
             </div>
-
-            {/* Service 1: Worldwide Flight Tickets */}
-            <div id="services-flights" className="service-block">
-              <div className="service-row">
-                {/* Left side: Information block */}
-                <div className="service-col-info">
-                  <span className="service-block-tag">Flight Booking</span>
-                  <h3 className="service-block-title">Worldwide Flight Tickets</h3>
-                  <p className="service-block-text">
-                    Travel anywhere in the world with confidence. Chantrea Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares.
-                  </p>
-                  <ul className="service-block-list">
-                    <li className="service-block-item"><CheckCircle size={16} /> Travel Consultation & Planning</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
-                  </ul>
-                  <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                    Inquire Flights <ChevronRight size={16} />
-                  </a>
-                </div>
-                {/* Right side: Country Bento Grid */}
-                <div className="service-col-visual">
-                  <div className="bento-grid bento-grid-flights">
-                    <div className="bento-card bento-card-flights-1">
-                      <img src="/country_china.webp" alt="China" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">China</span>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '32px', marginBottom: '64px' }}>
+              {SAMPLE_BLOGS.map((blog) => (
+                <div 
+                  key={blog.id} 
+                  className="service-block" 
+                  style={{ height: '100%', marginBottom: 0, display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
+                    <img 
+                      src={blog.image} 
+                      alt={blog.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
+                  </div>
+                  <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'space-between', flexGrow: 1 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-light)', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                        {blog.date} • By {blog.author}
+                      </span>
+                      <h3 className="visa-country-name" style={{ fontSize: '20px', lineHeight: '1.4' }}>
+                        {blog.title}
+                      </h3>
+                      <p className="service-block-text" style={{ fontSize: '14px' }}>
+                        {blog.summary}
+                      </p>
                     </div>
-                    <div className="bento-card bento-card-flights-2">
-                      <img src="/country_vietnam.webp" alt="Vietnam" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Vietnam</span>
-                    </div>
-                    <div className="bento-card bento-card-flights-3">
-                      <img src="/country_canada.webp" alt="Canada" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Canada</span>
-                    </div>
-                    <div className="bento-card bento-card-flights-4">
-                      <img src="/country_australia.webp" alt="Australia" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Australia</span>
-                    </div>
+                    <a 
+                      href={`#blog/${blog.id}`} 
+                      className="service-block-link" 
+                      style={{ alignSelf: 'flex-start', marginTop: '8px' }}
+                    >
+                      Read Story <ArrowRight size={16} />
+                    </a>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
 
-            {/* Service 2: Global Hotel Reservations */}
-            <div id="services-hotels" className="service-block">
-              <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
-                {/* Right side: Information block */}
-                <div className="service-col-info">
-                  <span className="service-block-tag">Accommodations</span>
-                  <h3 className="service-block-title">Global Hotel Reservations</h3>
-                  <p className="service-block-text">
-                    Wherever your destination, we arrange accommodations that suit your preferences and budget. From affordable boutique hotels to luxury resorts and business suites, we secure the most comfortable stay.
-                  </p>
-                  <ul className="service-block-list">
-                    <li className="service-block-item"><CheckCircle size={16} /> Luxury Resorts & Private Villas</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> Budget-Friendly & Business Lodging</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> Fast Secure Booking Confirmations</li>
-                  </ul>
-                  <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                    Inquire Hotels <ChevronRight size={16} />
-                  </a>
-                </div>
-                {/* Left side: Hotels Bento Grid */}
-                <div className="service-col-visual">
-                  <div className="bento-grid bento-grid-hotels">
-                    <div className="bento-card bento-card-hotels-1">
-                      <img src="/hotel_cambodia.webp" alt="Angkor Resort Cambodia" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Cambodia</span>
-                    </div>
-                    <div className="bento-card bento-card-hotels-2">
-                      <img src="/hotel_singapore.webp" alt="Rooftop Pool Singapore" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Singapore</span>
-                    </div>
-                    <div className="bento-card bento-card-hotels-3">
-                      <img src="/hotel_vietnam.webp" alt="Beach Resort Vietnam" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Vietnam</span>
-                    </div>
-                    <div className="bento-card bento-card-hotels-4">
-                      <img src="/hotel_canada.webp" alt="Castle Hotel Canada" className="bento-img" />
-                      <div className="bento-overlay"></div>
-                      <span className="bento-badge">Canada</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div style={{ textAlign: 'center' }}>
+              <a 
+                href="#" 
+                className="nav-btn" 
+                onClick={(e) => { e.preventDefault(); window.location.hash = ''; }}
+              >
+                Back to Home
+              </a>
             </div>
-
-            {/* Service 3: Visa & Immigration Services (Unified Block) */}
-            <div id="services-visas" className="service-block">
-              {/* Header inside the box */}
-              <div style={{ padding: '48px 48px 32px 48px', borderBottom: '1px solid var(--border-light)' }}>
-                <span className="service-block-tag">Visa & Immigration</span>
-                <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa & Immigration Support</h3>
-                <p className="service-block-text" style={{ marginTop: '12px' }}>
-                  Chantrea Travel provides professional assistance and documentation guidance for all your global travel visa and immigration requirements.
-                </p>
-              </div>
-
-              {/* Subsection A: Visa Consultation & Assistance */}
-              <div style={{ padding: '48px', borderBottom: '1px solid var(--border-light)' }}>
-                <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
-                  Visa Consultation & Assistance
-                </h4>
-                <p className="service-block-text" style={{ marginBottom: '24px' }}>
-                  Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
-                </p>
-                <div className="visas-grid-col">
-                  <div className="visa-country-card">
-                    <h5 className="visa-country-name">Canada Visas</h5>
-                    <p className="visa-country-desc">Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.</p>
+          </div>
+        ) : (
+          <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+            {(() => {
+              const activeBlogPostId = hash.replace('#blog/', '');
+              const blog = SAMPLE_BLOGS.find(b => b.id === activeBlogPostId);
+              if (!blog) {
+                return (
+                  <div style={{ textAlign: 'center', padding: '80px 0' }}>
+                    <h2 className="section-title">Blog Post Not Found</h2>
+                    <p className="section-desc" style={{ marginBottom: '32px' }}>The blog post you are looking for does not exist.</p>
+                    <a href="#blogs" className="nav-btn">Back to Blogs</a>
                   </div>
-                  <div className="visa-country-card">
-                    <h5 className="visa-country-name">Australia Visas</h5>
-                    <p className="visa-country-desc">Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.</p>
+                );
+              }
+              return (
+                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+                  <div style={{ marginBottom: '32px' }}>
+                    <span className="section-tag" style={{ marginBottom: '16px' }}>{blog.date} • By {blog.author}</span>
+                    <h1 className="section-title" style={{ textAlign: 'left', fontSize: 'clamp(28px, 5vw, 48px)', lineHeight: '1.15', marginBottom: '24px' }}>
+                      {blog.title}
+                    </h1>
                   </div>
-                  <div className="visa-country-card">
-                    <h5 className="visa-country-name">United States Visas</h5>
-                    <p className="visa-country-desc">Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.</p>
+                  
+                  <div style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', height: 'clamp(280px, 45vh, 480px)', marginBottom: '40px', boxShadow: 'var(--shadow-md)' }}>
+                    <img 
+                      src={blog.image} 
+                      alt={blog.title} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
                   </div>
-                </div>
-              </div>
-
-              {/* Subsection B: China & Vietnam Visa Services */}
-              <div className="service-china-vietnam-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
-                <div className="china-vietnam-left" style={{ padding: '48px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
-                    China & Vietnam Visa Services
-                  </h4>
-                  <p className="service-block-text" style={{ marginBottom: '20px' }}>
-                    Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
-                  </p>
-                  <ul className="service-block-list">
-                    <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
-                  </ul>
-                </div>
-                <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
-                  <h5 style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Key Processing Metrics</h5>
-                  <div className="china-vietnam-stat-row">
-                    <div className="china-vietnam-stat-card">
-                      <div className="china-vietnam-stat-num">98%</div>
-                      <div className="china-vietnam-stat-label">Approval Rate</div>
-                    </div>
-                    <div className="china-vietnam-stat-card">
-                      <div className="china-vietnam-stat-num">5-7</div>
-                      <div className="china-vietnam-stat-label">Working Days</div>
-                    </div>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '64px' }}>
+                    {blog.content.map((paragraph, index) => (
+                      <p 
+                        key={index} 
+                        className="about-paragraph" 
+                        style={{ 
+                          fontSize: '17px', 
+                          lineHeight: '1.8', 
+                          color: 'var(--text-primary)',
+                          fontWeight: paragraph.startsWith('1.') || paragraph.startsWith('2.') || paragraph.startsWith('3.') || paragraph.startsWith('4.') || paragraph.startsWith('5.') ? 600 : 400,
+                          marginTop: paragraph.startsWith('1.') || paragraph.startsWith('2.') || paragraph.startsWith('3.') || paragraph.startsWith('4.') || paragraph.startsWith('5.') ? '16px' : '0'
+                        }}
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', borderTop: '1px solid var(--border-light)', paddingTop: '40px' }}>
+                    <a href="#blogs" className="nav-btn" style={{ backgroundColor: 'transparent', color: 'var(--accent-purple)', borderColor: 'var(--accent-purple)' }}>
+                      Back to Blogs
+                    </a>
+                    <a href="#" className="nav-btn" onClick={(e) => { e.preventDefault(); window.location.hash = ''; }}>
+                      Back to Home
+                    </a>
                   </div>
                 </div>
-              </div>
+              );
+            })()}
+          </div>
+        )}
 
-              {/* Subsection C: Cambodian Visa Extensions */}
-              <div className="service-cambodian-extensions-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
-                <div className="extensions-left" style={{ padding: '48px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
-                    Cambodian Visa Extensions
-                  </h4>
-                  <p className="service-block-text" style={{ marginBottom: '20px' }}>
-                    For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
-                  </p>
-                  <ul className="service-block-list">
-                    <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
-                    <li className="service-block-item"><CheckCircle size={16} /> Passport & Document Handling</li>
-                  </ul>
-                </div>
-                <div className="extensions-right" style={{ padding: '48px', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <h5 style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Standard Extensions Available</h5>
-                  <table className="extensions-table">
-                    <tbody>
-                      <tr>
-                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">1 Month</span></td>
-                        <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">3 Months</span></td>
-                        <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">6 Months</span></td>
-                        <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
-                      </tr>
-                      <tr>
-                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">12 Months</span></td>
-                        <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Subsection D: Chinese Immigration Assistance */}
-              <div className="service-chinese-immigration-section">
-                <div className="immigration-info" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                    Chinese Immigration Assistance
-                  </h4>
-                  <p className="service-block-text">
-                    We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures, travel planning, and policy checkups.
-                  </p>
-                  <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                    Contact Representative
-                  </a>
-                </div>
-                <div className="immigration-services-grid" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
-                  <div className="immigration-service-row">
-                    <span className="immigration-row-title">Visa Invitation Checklists</span>
-                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                  </div>
-                  <div className="immigration-service-row">
-                    <span className="immigration-row-title">Residence Permit Guidance</span>
-                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                  </div>
-                  <div className="immigration-service-row">
-                    <span className="immigration-row-title">Legal Travel Clearance Advice</span>
-                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </section>
-
-          {/* About Section */}
-          <section id="about" className="section">
-            <div className="about-split">
-              {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
-              <div className="about-founder-container">
-                <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
-                <div className="about-founder-info">
-                  <h4 className="about-founder-name">Davina Horn</h4>
-                  <p className="about-founder-title">Owner & Managing Director</p>
-                </div>
-              </div>
-
-              {/* Right Column: Narrative & Biography */}
-              <div className="about-text-content">
-                <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
-                
-                <p className="about-paragraph">
-                  At Chantrea Travel, we are committed to making international travel simple, convenient, and stress-free. Whether you are traveling for business, leisure, education, or family visits, our experienced team provides professional travel solutions tailored to your needs.
-                </p>
-                <p className="about-paragraph">
-                  From planning your flight itinerary to booking accommodations and assisting with complex travel documentation, we are dedicated to delivering reliable service and exceptional customer support every step of the way. Your journey begins with us—connecting you to destinations around the world with confidence and care.
-                </p>
-
-                {/* Professional Experience Section */}
-                <div className="about-founder-bio">
-                  <h3>Professional Experience</h3>
-                  <p className="about-paragraph">
-                    Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
+        <div className="container">
           {/* Contact Section */}
           <section id="contact" className="section contact-section">
             <div className="contact-layout">
               {/* Brand Info */}
               <div className="contact-brand">
-                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Chantrea Travel Home">
+                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); if (window.location.hash.startsWith('#blogs') || window.location.hash.startsWith('#blog/')) { window.location.hash = ''; } else { window.scrollTo({ top: 0, behavior: 'smooth' }); } }} aria-label="Chantrea Travel Home">
                   <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
                 </a>
                 <p className="contact-brand-desc">
@@ -522,17 +806,17 @@ function App() {
                 <h4 className="service-title" style={{ marginBottom: '24px', fontSize: '18px' }}>Quick Navigation</h4>
                 <ul className="contact-links-list">
                   <li>
-                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); scrollToSection('services-flights'); }}>
+                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); navigateToSection('services-flights'); }}>
                       Worldwide Flights
                     </a>
                   </li>
                   <li>
-                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); scrollToSection('services-hotels'); }}>
+                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); navigateToSection('services-hotels'); }}>
                       Hotel Bookings
                     </a>
                   </li>
                   <li>
-                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); scrollToSection('services-visas'); }}>
+                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); navigateToSection('services-visas'); }}>
                       Visa Services
                     </a>
                   </li>
@@ -558,16 +842,19 @@ function App() {
             className="mobile-menu-card"
             onClick={(e) => e.stopPropagation()}
           >
-            <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('services'); }}>
+            <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('services'); }}>
               Our Services
             </a>
-            <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('about'); }}>
+            <a href="#blogs" className="nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); window.location.hash = '#blogs'; }}>
+              Blogs
+            </a>
+            <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('about'); }}>
               About Us
             </a>
-            <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+            <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
               Contact
             </a>
-            <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+            <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); navigateToSection('contact'); }}>
               Book Consultation
             </a>
           </div>
