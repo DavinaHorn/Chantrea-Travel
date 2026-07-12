@@ -241,23 +241,23 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   background-color: var(--bg-secondary);
 }
 
-/* Hero Section */
+/* Hero Section (Stretches all the way edge-to-edge) */
 .hero-wrapper {
-  margin-top: 24px;
+  margin-top: 0;
   margin-bottom: 80px;
+  width: 100%;
 }
 
 .hero-card {
   position: relative;
-  height: clamp(460px, 48vh, 680px);
-  border-radius: var(--radius-xl);
+  height: clamp(550px, 60vh, 760px);
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: clamp(24px, 5vw, 64px);
-  border: 1px solid var(--border-light);
+  padding: 0;
+  border: none;
+  width: 100%;
 }
 
 /* Slideshow Container */
@@ -304,10 +304,18 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   z-index: 3;
 }
 
-/* Hero Content */
-.hero-content {
+/* Hero Content aligned container */
+.hero-content-container {
   position: relative;
   z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-top: 80px;
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+
+.hero-content {
   max-width: 900px;
   color: var(--text-on-dark);
   text-align: left;
@@ -330,7 +338,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 5.2vw, 4.5rem);
+  font-size: clamp(2.2rem, 5.2vw, 4.5rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -1.5px;
@@ -350,9 +358,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 /* Pills Bar at Bottom of Hero */
 .hero-badges-row {
-  position: relative;
-  z-index: 4;
-  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
@@ -535,11 +540,11 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   transition: var(--transition-fast);
 }
 
-.service-block-link:hover {
+.service-link:hover {
   color: var(--accent-purple-dark);
 }
 
-.service-block-link:hover svg {
+.service-link:hover svg {
   transform: translateX(6px);
 }
 
@@ -850,7 +855,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 /* 
  * About Section Layout
- * Split Story: Left Column Portrait with simple line at bottom, Right Column narrative text.
+ * Split Story: Left Column Portrait without outline boxes and lines.
  */
 .about-split {
   display: grid;
@@ -859,32 +864,51 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   align-items: center;
 }
 
-/* Portrait Image Styles (removes pseudo-element outlines and background shapes completely) */
+/* Portrait Image Styles (removes pseudo-element outline frame entirely) */
 .about-founder-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
-  border-bottom: 3px solid var(--accent-purple); /* Line at bottom of picture */
-  padding-bottom: 12px; /* space between picture and the line */
 }
 
 .about-founder-img {
-  position: relative;
-  z-index: 2;
   width: 100%;
   height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
   transition: var(--transition-smooth);
 }
 
 .about-founder-container:hover .about-founder-img {
   transform: translateY(-4px);
+}
+
+/* Portrait Subtitle Label Text styling */
+.about-founder-info {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.about-founder-name {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.about-founder-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--accent-purple);
 }
 
 .about-text-content {
@@ -914,7 +938,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   margin-bottom: 12px;
 }
 
-/* Contact Footer Section & Social Buttons Styling */
+/* Contact Footer Section & Blended Social Links styling */
 .contact-section {
   padding: 100px 0 40px 0;
   border-top: 1px solid var(--border-light);
@@ -968,39 +992,31 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   margin-top: 2px;
 }
 
-/* Theme-fit Contact Social Row */
+/* Blended Inline Social Row Styles */
 .contact-social-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 8px;
+  margin-top: 20px;
 }
 
-.contact-social-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  border: 1px solid var(--border-light);
-  background-color: var(--bg-secondary);
+.contact-social-link {
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 600;
   transition: var(--transition-fast);
 }
 
-.contact-social-btn svg {
-  flex-shrink: 0;
-  transition: var(--transition-fast);
-}
-
-.contact-social-btn:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent-purple);
-  background-color: var(--accent-purple-light);
+.contact-social-link:hover {
   color: var(--accent-purple);
+  text-decoration: underline;
+}
+
+.contact-social-divider {
+  color: var(--text-light);
+  font-size: 12px;
 }
 
 .contact-links-list {
@@ -1144,12 +1160,8 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
     height: 80px;
   }
   
-  .header-badge {
-    display: none;
-  }
-  
   .hero-card {
-    height: 480px;
+    height: 520px;
   }
 }
 
@@ -1164,17 +1176,18 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   
   .hero-card {
     height: auto;
-    min-height: 420px;
-    padding: 24px;
+    min-height: 460px;
+    padding: 0;
     justify-content: center;
   }
   
-  .hero-content {
-    margin-top: auto;
+  .hero-content-container {
+    padding: 32px 16px;
+    gap: 20px;
   }
   
   .hero-badges-row {
-    margin-top: 24px;
+    margin-top: 12px;
     gap: 10px;
   }
   

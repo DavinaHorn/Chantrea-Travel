@@ -25,7 +25,6 @@ interface Slide {
 }
 
 function App() {
-  // Theme state: defaults to 'light', persists in localStorage
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light'
   })
@@ -54,7 +53,6 @@ function App() {
     }
   ]
 
-  // Synchronize theme state with DOM and localStorage
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
     localStorage.setItem('theme', theme)
@@ -71,7 +69,6 @@ function App() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
 
-  // Scroll handler for navigation
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false)
     const element = document.getElementById(id)
@@ -80,7 +77,6 @@ function App() {
     }
   }
 
-  // Define active logo image path based on active theme
   const logoSrc = theme === 'dark' ? '/CTT_LOGO-HB.webp' : '/CTT_LOGO-HP.webp'
 
   return (
@@ -143,36 +139,35 @@ function App() {
 
       {/* Main Content */}
       <main style={{ flexGrow: 1 }}>
-        <div className="container">
-          
-          {/* Hero Slideshow Section */}
-          <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
-            <div className="hero-card">
-              {/* Slideshow background images */}
-              <div className="slideshow">
-                {slides.map((slide, index) => (
-                  <div 
-                    key={index} 
-                    className={`slide ${index === activeSlide ? 'active' : ''}`}
-                    aria-hidden={index !== activeSlide}
-                  >
-                    <img 
-                      src={slide.image} 
-                      alt={slide.subtitle} 
-                      className="slide-img" 
-                      loading={index === 0 ? 'eager' : 'lazy'} 
-                    />
-                  </div>
-                ))}
-                <div className="slideshow-overlay"></div>
-              </div>
+        
+        {/* Hero Slideshow Section - Now Full Screen Edge-to-Edge outside container */}
+        <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
+          <div className="hero-card">
+            {/* Slideshow background images */}
+            <div className="slideshow">
+              {slides.map((slide, index) => (
+                <div 
+                  key={index} 
+                  className={`slide ${index === activeSlide ? 'active' : ''}`}
+                  aria-hidden={index !== activeSlide}
+                >
+                  <img 
+                    src={slide.image} 
+                    alt={slide.subtitle} 
+                    className="slide-img" 
+                    loading={index === 0 ? 'eager' : 'lazy'} 
+                  />
+                </div>
+              ))}
+              <div className="slideshow-overlay"></div>
+            </div>
 
-              {/* Slide Overlaid Text Content */}
+            {/* Overlaid text aligned to standard container width */}
+            <div className="container hero-content-container">
               <div className="hero-content">
                 <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
                 <h1 className="hero-title">
                   {slides[activeSlide].title.split(' ').map((word, i) => {
-                    // Highlight the last word in white
                     if (i === slides[activeSlide].title.split(' ').length - 1) {
                       return <span key={i}>{word}</span>;
                     }
@@ -202,8 +197,12 @@ function App() {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
+        </section>
 
+        {/* Outer Site Container for Page Content */}
+        <div className="container">
+          
           {/* Our Services Section */}
           <section id="services" className="section">
             <div className="section-header">
@@ -214,7 +213,7 @@ function App() {
               </p>
             </div>
 
-            {/* Service 1: Worldwide Flight Tickets (Split info & Bento Grid layout) */}
+            {/* Service 1: Worldwide Flight Tickets */}
             <div id="services-flights" className="service-block">
               <div className="service-row">
                 {/* Left side: Information block */}
@@ -236,25 +235,21 @@ function App() {
                 {/* Right side: Country Bento Grid */}
                 <div className="service-col-visual">
                   <div className="bento-grid bento-grid-flights">
-                    {/* Box 1: China (Landscape) */}
                     <div className="bento-card bento-card-flights-1">
                       <img src="/country_china.webp" alt="China" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">China</span>
                     </div>
-                    {/* Box 2: Vietnam (Portrait Tall) */}
                     <div className="bento-card bento-card-flights-2">
                       <img src="/country_vietnam.webp" alt="Vietnam" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">Vietnam</span>
                     </div>
-                    {/* Box 3: Canada (Square) */}
                     <div className="bento-card bento-card-flights-3">
                       <img src="/country_canada.webp" alt="Canada" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">Canada</span>
                     </div>
-                    {/* Box 4: Australia (Square) */}
                     <div className="bento-card bento-card-flights-4">
                       <img src="/country_australia.webp" alt="Australia" className="bento-img" />
                       <div className="bento-overlay"></div>
@@ -265,7 +260,7 @@ function App() {
               </div>
             </div>
 
-            {/* Service 2: Global Hotel Reservations (Bento Grid on Left, Info on Right) */}
+            {/* Service 2: Global Hotel Reservations */}
             <div id="services-hotels" className="service-block">
               <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
                 {/* Right side: Information block */}
@@ -284,28 +279,24 @@ function App() {
                     Inquire Hotels <ChevronRight size={16} />
                   </a>
                 </div>
-                {/* Left side: Hotels Bento Grid (Offset / Masonry layout) */}
+                {/* Left side: Hotels Bento Grid */}
                 <div className="service-col-visual">
                   <div className="bento-grid bento-grid-hotels">
-                    {/* Box 1: Cambodia (Tall Portrait) */}
                     <div className="bento-card bento-card-hotels-1">
                       <img src="/hotel_cambodia.webp" alt="Angkor Resort Cambodia" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">Cambodia</span>
                     </div>
-                    {/* Box 2: Singapore (Square) */}
                     <div className="bento-card bento-card-hotels-2">
                       <img src="/hotel_singapore.webp" alt="Rooftop Pool Singapore" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">Singapore</span>
                     </div>
-                    {/* Box 3: Vietnam (Square) */}
                     <div className="bento-card bento-card-hotels-3">
                       <img src="/hotel_vietnam.webp" alt="Beach Resort Vietnam" className="bento-img" />
                       <div className="bento-overlay"></div>
                       <span className="bento-badge">Vietnam</span>
                     </div>
-                    {/* Box 4: Canada (Wide Landscape) */}
                     <div className="bento-card bento-card-hotels-4">
                       <img src="/hotel_canada.webp" alt="Castle Hotel Canada" className="bento-img" />
                       <div className="bento-overlay"></div>
@@ -316,52 +307,38 @@ function App() {
               </div>
             </div>
 
-            {/* Service 3: Visa Consultation & Assistance (Full-width directory checklist layout) */}
-            <div id="services-visas" className="service-block service-visas-section">
-              <div className="service-visas-header">
-                <div>
+            {/* Service 3: Visa Consultation & Assistance */}
+            <div id="services-visas" className="service-block">
+              <div className="service-row">
+                <div className="service-col-info" style={{ flex: '1 1 60%', padding: '48px' }}>
                   <span className="service-block-tag">Travel Documents</span>
-                  <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa Consultation & Assistance</h3>
-                </div>
-                <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Get Professional Visa Advice <ChevronRight size={16} />
-                </a>
-              </div>
-              <p className="service-block-text" style={{ maxWidth: '800px' }}>
-                Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
-              </p>
-              <div className="visas-grid-col">
-                {/* Canada Visa card */}
-                <div className="visa-country-card">
-                  <h4 className="visa-country-name">
-                    <span></span> Canada Visas
-                  </h4>
-                  <p className="visa-country-desc">
-                    Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.
+                  <h3 className="service-block-title" style={{ marginTop: '8px', marginBottom: '16px' }}>Visa Consultation & Assistance</h3>
+                  <p className="service-block-text" style={{ marginBottom: '24px' }}>
+                    Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
                   </p>
+                  <div className="visas-grid-col" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                    <div className="visa-country-card" style={{ padding: '20px' }}>
+                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>Canada Visas</h4>
+                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>Documentation checks and application tracking.</p>
+                    </div>
+                    <div className="visa-country-card" style={{ padding: '20px' }}>
+                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>Australia Visas</h4>
+                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>Subclass selection and document compilation.</p>
+                    </div>
+                    <div className="visa-country-card" style={{ padding: '20px' }}>
+                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>United States Visas</h4>
+                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>DS-160 support and mock interviews.</p>
+                    </div>
+                  </div>
                 </div>
-                {/* Australia Visa card */}
-                <div className="visa-country-card">
-                  <h4 className="visa-country-name">
-                    <span></span> Australia Visas
-                  </h4>
-                  <p className="visa-country-desc">
-                    Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.
-                  </p>
-                </div>
-                {/* USA Visa card */}
-                <div className="visa-country-card">
-                  <h4 className="visa-country-name">
-                    <span></span> United States Visas
-                  </h4>
-                  <p className="visa-country-desc">
-                    Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.
-                  </p>
+                <div className="service-col-visual" style={{ flex: '1 1 40%', padding: '0', overflow: 'hidden' }}>
+                  <img src="/service_visa_consultation.webp" alt="Visa Travel Documents" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <div className="bento-overlay"></div>
                 </div>
               </div>
             </div>
 
-            {/* Service 4: China & Vietnam Visa Services (Horizontal split layout with a nice subtle colored background) */}
+            {/* Service 4: China & Vietnam Visa Services */}
             <div id="services-china-vietnam" className="service-block service-china-vietnam-section">
               <div className="china-vietnam-left">
                 <span className="service-block-tag">Specialized Regional Services</span>
@@ -375,96 +352,114 @@ function App() {
                   <li className="service-block-item"><CheckCircle size={16} /> Fast Processing and Handling Coordination</li>
                 </ul>
               </div>
-              <div className="china-vietnam-right">
-                <h4 className="service-title" style={{ fontSize: '18px', color: 'var(--text-primary)' }}>Key Processing Metrics</h4>
-                <div className="china-vietnam-stat-row">
-                  <div className="china-vietnam-stat-card">
-                    <div className="china-vietnam-stat-num">98%</div>
-                    <div className="china-vietnam-stat-label">Approval Rate</div>
+              <div className="china-vietnam-right" style={{ backgroundImage: 'url("/service_china_vietnam.webp")', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+                <div className="bento-overlay" style={{ background: 'linear-gradient(to bottom, rgba(10, 25, 47, 0.5) 0%, rgba(10, 25, 47, 0.8) 100%)' }}></div>
+                <div style={{ position: 'relative', zIndex: 3, width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <h4 style={{ fontSize: '18px', color: '#FFFFFF', fontWeight: 600 }}>Key Processing Metrics</h4>
+                  <div className="china-vietnam-stat-row">
+                    <div className="china-vietnam-stat-card" style={{ background: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                      <div className="china-vietnam-stat-num" style={{ color: '#FFFFFF' }}>98%</div>
+                      <div className="china-vietnam-stat-label" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Approval Rate</div>
+                    </div>
+                    <div className="china-vietnam-stat-card" style={{ background: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                      <div className="china-vietnam-stat-num" style={{ color: '#FFFFFF' }}>5-7</div>
+                      <div className="china-vietnam-stat-label" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Working Days</div>
+                    </div>
                   </div>
-                  <div className="china-vietnam-stat-card">
-                    <div className="china-vietnam-stat-num">5-7</div>
-                    <div className="china-vietnam-stat-label">Working Days</div>
+                  <div className="service-block-item" style={{ fontSize: '14px', fontStyle: 'italic', color: '#FFFFFF' }}>
+                    <Info size={16} style={{ color: '#FFFFFF' }} /> Special fast track options are available upon request.
                   </div>
-                </div>
-                <div className="service-block-item" style={{ fontSize: '14px', fontStyle: 'italic' }}>
-                  <Info size={16} style={{ color: 'var(--accent-purple)' }} /> Special fast track options are available upon request.
                 </div>
               </div>
             </div>
 
-            {/* Service 5: Cambodian Visa Extensions (pricing/duration table grid layout) */}
-            <div id="services-extensions" className="service-block service-cambodian-extensions-section">
-              <div className="extensions-left">
-                <span className="service-block-tag">In-Country Compliance</span>
-                <h3 className="service-block-title">Cambodian Visa Extensions</h3>
-                <p className="service-block-text">
-                  For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
-                </p>
-                <ul className="service-block-list">
-                  <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
-                  <li className="service-block-item"><CheckCircle size={16} /> Document Compilation & Passport Handling</li>
-                  <li className="service-block-item"><CheckCircle size={16} /> Immigration Department Coordination</li>
-                </ul>
-                <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Request Extension Quote <ChevronRight size={16} />
-                </a>
-              </div>
-              <div className="extensions-right">
-                <h4 className="service-title" style={{ fontSize: '18px', marginBottom: '20px', color: 'var(--text-primary)' }}>Standard Extensions Available</h4>
-                <table className="extensions-table">
-                  <thead>
-                    <tr>
-                      <th>Extension Type</th>
-                      <th>Entry Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><span className="extensions-badge-duration">1 Month</span></td>
-                      <td>Single Entry Extension</td>
-                    </tr>
-                    <tr>
-                      <td><span className="extensions-badge-duration">3 Months</span></td>
-                      <td>Single Entry Extension</td>
-                    </tr>
-                    <tr>
-                      <td><span className="extensions-badge-duration">6 Months</span></td>
-                      <td>Multiple Entry Extension</td>
-                    </tr>
-                    <tr>
-                      <td><span className="extensions-badge-duration">12 Months</span></td>
-                      <td>Multiple Entry Extension</td>
-                    </tr>
-                  </tbody>
-                </table>
+            {/* Service 5: Cambodian Visa Extensions */}
+            <div id="services-extensions" className="service-block">
+              <div className="service-row">
+                {/* Column 1: Info */}
+                <div className="extensions-left" style={{ flex: '1 1 40%', padding: '40px' }}>
+                  <span className="service-block-tag">In-Country Compliance</span>
+                  <h3 className="service-block-title" style={{ fontSize: '26px' }}>Cambodian Visa Extensions</h3>
+                  <p className="service-block-text" style={{ fontSize: '14.5px', marginBottom: '16px' }}>
+                    For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+                  </p>
+                  <ul className="service-block-list" style={{ gap: '8px' }}>
+                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Extension Option Strategy</li>
+                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Passport & Document Handling</li>
+                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Immigration Department Coordination</li>
+                  </ul>
+                </div>
+                {/* Column 2: Photo */}
+                <div style={{ flex: '1 1 25%', position: 'relative', minHeight: '260px' }}>
+                  <img src="/service_cambodian_extensions.webp" alt="Cambodian Visa Scenery" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <div className="bento-overlay"></div>
+                </div>
+                {/* Column 3: Table */}
+                <div className="extensions-right" style={{ flex: '1 1 35%', padding: '40px' }}>
+                  <h4 className="service-title" style={{ fontSize: '17px', marginBottom: '16px', color: 'var(--text-primary)' }}>Standard Extensions</h4>
+                  <table className="extensions-table">
+                    <thead>
+                      <tr>
+                        <th style={{ padding: '8px 12px' }}>Type</th>
+                        <th style={{ padding: '8px 12px' }}>Entry</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">1 Month</span></td>
+                        <td style={{ padding: '8px 12px' }}>Single Entry</td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">3 Months</span></td>
+                        <td style={{ padding: '8px 12px' }}>Single Entry</td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">6 Months</span></td>
+                        <td style={{ padding: '8px 12px' }}>Multiple Entry</td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">12 Months</span></td>
+                        <td style={{ padding: '8px 12px' }}>Multiple Entry</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
-            {/* Service 6: Chinese Immigration Assistance (Corporate Card Layout) */}
-            <div className="service-block service-chinese-immigration-section">
-              <div className="immigration-info">
-                <span className="service-block-tag">Corporate & Personal Immigration</span>
-                <h3 className="service-block-title">Chinese Immigration Assistance</h3>
-                <p className="service-block-text">
-                  We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures. Whether you need guidance on documentation, visa processes, or other immigration matters, our knowledgeable team is committed to providing professional assistance.
-                </p>
-                <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Contact Representative
-                </a>
-              </div>
-              <div className="immigration-services-grid">
-                <div className="immigration-service-row">
-                  <span className="immigration-row-title">Corporate Visa Invitation Checklists</span>
-                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+            {/* Service 6: Chinese Immigration Assistance */}
+            <div className="service-block">
+              <div className="service-row">
+                {/* Column 1: Text */}
+                <div className="immigration-info" style={{ flex: '1 1 40%', padding: '40px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <span className="service-block-tag">Corporate & Personal</span>
+                  <h3 className="service-block-title" style={{ fontSize: '26px' }}>Chinese Immigration Assistance</h3>
+                  <p className="service-block-text" style={{ fontSize: '14.5px' }}>
+                    We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures. Our knowledgeable team is committed to providing professional assistance.
+                  </p>
+                  <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                    Contact Representative
+                  </a>
                 </div>
-                <div className="immigration-service-row">
-                  <span className="immigration-row-title">Residence Permit Policy Guidance</span>
-                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+                {/* Column 2: Photo */}
+                <div style={{ flex: '1 1 30%', position: 'relative', minHeight: '260px' }}>
+                  <img src="/service_chinese_immigration.webp" alt="Chinese Immigration Professional Meeting" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <div className="bento-overlay"></div>
                 </div>
-                <div className="immigration-service-row">
-                  <span className="immigration-row-title">Legal Travel Clearance Advice</span>
-                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+                {/* Column 3: Corporate Options */}
+                <div className="immigration-services-grid" style={{ flex: '1 1 30%', padding: '40px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
+                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Visa Invitation Checklists</span>
+                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                  </div>
+                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
+                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Residence Permit Guidance</span>
+                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                  </div>
+                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
+                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Legal Travel Clearance Advice</span>
+                    <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -474,9 +469,13 @@ function App() {
           {/* About Section */}
           <section id="about" className="section">
             <div className="about-split">
-              {/* Left Column: Portrait Frame */}
+              {/* Left Column: Portrait Frame without outline boxes */}
               <div className="about-founder-container">
                 <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
+                <div className="about-founder-info">
+                  <h4 className="about-founder-name">Davina Horn</h4>
+                  <p className="about-founder-title">Owner & Managing Director</p>
+                </div>
               </div>
 
               {/* Right Column: Narrative & Biography */}
@@ -533,25 +532,18 @@ function App() {
                   </li>
                 </ul>
 
-                {/* Theme-fit social buttons row */}
+                {/* Blended inline social link row */}
                 <div className="contact-social-row">
-                  <a href="#" className="contact-social-btn" aria-label="Facebook Link" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
-                    </svg>
-                    <span>Facebook</span>
+                  <a href="#" className="contact-social-link" aria-label="Facebook Link" target="_blank" rel="noopener noreferrer">
+                    Facebook
                   </a>
-                  <a href="#" className="contact-social-btn" aria-label="Telegram Link" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.51.16.13.11.17.26.19.37.02.1.02.21-.01.32z"/>
-                    </svg>
-                    <span>Telegram</span>
+                  <span className="contact-social-divider">•</span>
+                  <a href="#" className="contact-social-link" aria-label="Telegram Link" target="_blank" rel="noopener noreferrer">
+                    Telegram
                   </a>
-                  <a href="#" className="contact-social-btn" aria-label="WhatsApp Link" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.1 1.458 4.796 1.459 5.539 0 10.047-4.479 10.05-9.986.002-2.67-1.032-5.18-2.907-7.06C16.613 1.686 14.12 .65 11.66.65c-5.54 0-10.048 4.478-10.051 9.987-.001 2.078.543 4.103 1.571 5.881L2.12 20.612l4.527-1.458zm11.168-7.56c-.305-.153-1.805-.89-2.083-.99-.279-.101-.482-.153-.684.153-.202.304-.785.99-.962 1.19-.177.203-.355.228-.66.076-.304-.152-1.285-.474-2.448-1.512-.904-.808-1.513-1.807-1.69-2.112-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.532.152-.177.202-.304.304-.507.102-.203.051-.38-.025-.532-.076-.153-.684-1.65-.938-2.26-.247-.594-.5-.513-.684-.523-.177-.01-.38-.01-.582-.01-.203 0-.532.076-.811.38-.279.305-1.065 1.042-1.065 2.541 0 1.498 1.09 2.946 1.242 3.149.152.203 2.146 3.28 5.197 4.598.726.313 1.293.5 1.734.64.73.232 1.396.199 1.922.12.586-.088 1.805-.738 2.059-1.45.253-.711.253-1.32.177-1.448-.076-.126-.279-.203-.583-.355z"/>
-                    </svg>
-                    <span>WhatsApp</span>
+                  <span className="contact-social-divider">•</span>
+                  <a href="#" className="contact-social-link" aria-label="WhatsApp Link" target="_blank" rel="noopener noreferrer">
+                    WhatsApp
                   </a>
                 </div>
               </div>
