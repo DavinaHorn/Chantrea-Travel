@@ -15,10 +15,10 @@ import {
   Clock, 
   UserCheck, 
   ShieldCheck,
-  Calendar,
-  Search,
   Sun,
-  Moon
+  Moon,
+  Info,
+  ChevronRightSquare
 } from 'lucide-react'
 
 interface Slide {
@@ -93,7 +93,7 @@ function App() {
       <header className="header">
         <div className="container">
           <nav className="navbar" role="navigation" aria-label="Main Navigation">
-            {/* Left: Brand Logo (Image includes text, scaled correctly) */}
+            {/* Left: Brand Logo */}
             <a href="/" className="logo-link" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Chantrea Travel Home">
               <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
             </a>
@@ -182,7 +182,7 @@ function App() {
                 <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
                 <h1 className="hero-title">
                   {slides[activeSlide].title.split(' ').map((word, i) => {
-                    // Highlight the last word in purple accent color
+                    // Highlight the last word in white
                     if (i === slides[activeSlide].title.split(' ').length - 1) {
                       return <span key={i}>{word}</span>;
                     }
@@ -224,123 +224,261 @@ function App() {
               </p>
             </div>
 
-            <div className="services-grid">
-              
-              {/* Flights Card */}
-              <div id="services-flights" className="service-card">
-                <div className="service-icon-wrapper">
-                  <Plane size={28} />
+            {/* Service 1: Worldwide Flight Tickets (Split info & Bento Grid layout) */}
+            <div id="services-flights" className="service-block">
+              <div className="service-row">
+                {/* Left side: Information block */}
+                <div className="service-col-info">
+                  <span className="service-block-tag">Flight Booking</span>
+                  <h3 className="service-block-title">Worldwide Flight Tickets</h3>
+                  <p className="service-block-text">
+                    Travel anywhere in the world with confidence. Chantrea Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares.
+                  </p>
+                  <ul className="service-block-list">
+                    <li className="service-block-item"><CheckCircle size={16} /> Travel Consultation & Planning</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
+                  </ul>
+                  <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                    Inquire Flights <ChevronRight size={16} />
+                  </a>
                 </div>
-                <h3 className="service-title">Worldwide Flight Tickets</h3>
-                <p className="service-text">
-                  Book international flight tickets through major global carriers. We find the most convenient routes and competitive fares to suit your schedule.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Travel Consultation & Planning</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Ticket Issuance & Flight Changes</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Ongoing Traveler Support</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Inquire Flights <ChevronRight size={16} />
-                </a>
-              </div>
-
-              {/* Hotels Card */}
-              <div id="services-hotels" className="service-card">
-                <div className="service-icon-wrapper">
-                  <Hotel size={28} />
+                {/* Right side: Country Bento Grid */}
+                <div className="service-col-visual">
+                  <div className="bento-grid bento-grid-flights">
+                    {/* Box 1: China (Landscape) */}
+                    <div className="bento-card bento-card-flights-1">
+                      <img src="/country_china.webp" alt="China" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">China</span>
+                    </div>
+                    {/* Box 2: Vietnam (Portrait Tall) */}
+                    <div className="bento-card bento-card-flights-2">
+                      <img src="/country_vietnam.webp" alt="Vietnam" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Vietnam</span>
+                    </div>
+                    {/* Box 3: Canada (Square) */}
+                    <div className="bento-card bento-card-flights-3">
+                      <img src="/country_canada.webp" alt="Canada" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Canada</span>
+                    </div>
+                    {/* Box 4: Australia (Square) */}
+                    <div className="bento-card bento-card-flights-4">
+                      <img src="/country_australia.webp" alt="Australia" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Australia</span>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="service-title">Global Hotel Reservations</h3>
-                <p className="service-text">
-                  Arrange secure, comfortable hotel bookings at your destination. We coordinate lodging to match your preferences and budget.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Luxury Resorts & Suites</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Affordable Business Lodging</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Secure Booking & Confirmation</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Inquire Hotels <ChevronRight size={16} />
-                </a>
               </div>
-
-              {/* Visa Consultation Card */}
-              <div id="services-visas" className="service-card">
-                <div className="service-icon-wrapper">
-                  <FileText size={28} />
-                </div>
-                <h3 className="service-title">Visa Consultation & Assistance</h3>
-                <p className="service-text">
-                  Professional guidance and documentation support to confidently navigate the visa application processes for major international destinations.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Canada Visa Assistance</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Australia Visa Assistance</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> United States (USA) Visas</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Get Visa Advice <ChevronRight size={16} />
-                </a>
-              </div>
-
-              {/* China & Vietnam Visa Card */}
-              <div className="service-card">
-                <div className="service-icon-wrapper">
-                  <Globe size={28} />
-                </div>
-                <h3 className="service-title">China & Vietnam Visas</h3>
-                <p className="service-text">
-                  Dedicated visa filing and processing support for travelers visiting China or Vietnam for tourism, business, or family visits.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Document Requirements Checklist</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Form Filling & Submission Prep</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Smooth Processing Support</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Learn More <ChevronRight size={16} />
-                </a>
-              </div>
-
-              {/* Cambodian Extensions Card */}
-              <div id="services-extensions" className="service-card">
-                <div className="service-icon-wrapper">
-                  <Calendar size={28} />
-                </div>
-                <h3 className="service-title">Cambodian Visa Extensions</h3>
-                <p className="service-text">
-                  Reliable visa extension assistance for foreign travelers currently residing or visiting inside Cambodia to maintain legal immigration status.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Extension Strategy Options</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Documentation Compilation</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Cambodian Authority Coordination</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Extend Visa <ChevronRight size={16} />
-                </a>
-              </div>
-
-              {/* Chinese Immigration Card */}
-              <div className="service-card">
-                <div className="service-icon-wrapper">
-                  <Search size={28} />
-                </div>
-                <h3 className="service-title">Chinese Immigration Assistance</h3>
-                <p className="service-text">
-                  Detailed professional guidance for individuals and businesses navigating Chinese immigration regulations, travel permissions, and procedures.
-                </p>
-                <ul className="service-list">
-                  <li className="service-list-item"><CheckCircle size={14} /> Business & Personal Checklists</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Immigration Policy Compliance</li>
-                  <li className="service-list-item"><CheckCircle size={14} /> Reliable Authority Advisory</li>
-                </ul>
-                <a href="#contact" className="service-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
-                  Request Support <ChevronRight size={16} />
-                </a>
-              </div>
-
             </div>
+
+            {/* Service 2: Global Hotel Reservations (Bento Grid on Left, Info on Right) */}
+            <div id="services-hotels" className="service-block">
+              <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
+                {/* Right side: Information block */}
+                <div className="service-col-info">
+                  <span className="service-block-tag">Accommodations</span>
+                  <h3 className="service-block-title">Global Hotel Reservations</h3>
+                  <p className="service-block-text">
+                    Wherever your destination, we arrange accommodations that suit your preferences and budget. From affordable boutique hotels to luxury resorts and business suites, we secure the most comfortable stay.
+                  </p>
+                  <ul className="service-block-list">
+                    <li className="service-block-item"><CheckCircle size={16} /> Luxury Resorts & Private Villas</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> Budget-Friendly & Business Lodging</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> Fast Secure Booking Confirmations</li>
+                  </ul>
+                  <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                    Inquire Hotels <ChevronRight size={16} />
+                  </a>
+                </div>
+                {/* Left side: Hotels Bento Grid (Offset / Masonry layout) */}
+                <div className="service-col-visual">
+                  <div className="bento-grid bento-grid-hotels">
+                    {/* Box 1: Cambodia (Tall Portrait) */}
+                    <div className="bento-card bento-card-hotels-1">
+                      <img src="/hotel_cambodia.webp" alt="Angkor Resort Cambodia" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Cambodia</span>
+                    </div>
+                    {/* Box 2: Singapore (Square) */}
+                    <div className="bento-card bento-card-hotels-2">
+                      <img src="/hotel_singapore.webp" alt="Rooftop Pool Singapore" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Singapore</span>
+                    </div>
+                    {/* Box 3: Vietnam (Square) */}
+                    <div className="bento-card bento-card-hotels-3">
+                      <img src="/hotel_vietnam.webp" alt="Beach Resort Vietnam" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Vietnam</span>
+                    </div>
+                    {/* Box 4: Canada (Wide Landscape) */}
+                    <div className="bento-card bento-card-hotels-4">
+                      <img src="/hotel_canada.webp" alt="Castle Hotel Canada" className="bento-img" />
+                      <div className="bento-overlay"></div>
+                      <span className="bento-badge">Canada</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Service 3: Visa Consultation & Assistance (Full-width directory checklist layout) */}
+            <div id="services-visas" className="service-block service-visas-section">
+              <div className="service-visas-header">
+                <div>
+                  <span className="service-block-tag">Travel Documents</span>
+                  <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa Consultation & Assistance</h3>
+                </div>
+                <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  Get Professional Visa Advice <ChevronRight size={16} />
+                </a>
+              </div>
+              <p className="service-block-text" style={{ maxWidth: '800px' }}>
+                Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
+              </p>
+              <div className="visas-grid-col">
+                {/* Canada Visa card */}
+                <div className="visa-country-card">
+                  <h4 className="visa-country-name">
+                    <span></span> Canada Visas
+                  </h4>
+                  <p className="visa-country-desc">
+                    Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.
+                  </p>
+                </div>
+                {/* Australia Visa card */}
+                <div className="visa-country-card">
+                  <h4 className="visa-country-name">
+                    <span></span> Australia Visas
+                  </h4>
+                  <p className="visa-country-desc">
+                    Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.
+                  </p>
+                </div>
+                {/* USA Visa card */}
+                <div className="visa-country-card">
+                  <h4 className="visa-country-name">
+                    <span></span> United States Visas
+                  </h4>
+                  <p className="visa-country-desc">
+                    Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Service 4: China & Vietnam Visa Services (Horizontal split layout with a nice subtle colored background) */}
+            <div id="services-china-vietnam" className="service-block service-china-vietnam-section">
+              <div className="china-vietnam-left">
+                <span className="service-block-tag">Specialized Regional Services</span>
+                <h3 className="service-block-title">China & Vietnam Visa Services</h3>
+                <p className="service-block-text">
+                  Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
+                </p>
+                <ul className="service-block-list">
+                  <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
+                  <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
+                  <li className="service-block-item"><CheckCircle size={16} /> Fast Processing and Handling Coordination</li>
+                </ul>
+              </div>
+              <div className="china-vietnam-right">
+                <h4 className="service-title" style={{ fontSize: '18px', color: 'var(--text-primary)' }}>Key Processing Metrics</h4>
+                <div className="china-vietnam-stat-row">
+                  <div className="china-vietnam-stat-card">
+                    <div className="china-vietnam-stat-num">98%</div>
+                    <div className="china-vietnam-stat-label">Approval Rate</div>
+                  </div>
+                  <div className="china-vietnam-stat-card">
+                    <div className="china-vietnam-stat-num">5-7</div>
+                    <div className="china-vietnam-stat-label">Working Days</div>
+                  </div>
+                </div>
+                <div className="service-block-item" style={{ fontSize: '14px', fontStyle: 'italic' }}>
+                  <Info size={16} style={{ color: 'var(--accent-purple)' }} /> Special fast track options are available upon request.
+                </div>
+              </div>
+            </div>
+
+            {/* Service 5: Cambodian Visa Extensions (pricing/duration table grid layout) */}
+            <div id="services-extensions" className="service-block service-cambodian-extensions-section">
+              <div className="extensions-left">
+                <span className="service-block-tag">In-Country Compliance</span>
+                <h3 className="service-block-title">Cambodian Visa Extensions</h3>
+                <p className="service-block-text">
+                  For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+                </p>
+                <ul className="service-block-list">
+                  <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
+                  <li className="service-block-item"><CheckCircle size={16} /> Document Compilation & Passport Handling</li>
+                  <li className="service-block-item"><CheckCircle size={16} /> Immigration Department Coordination</li>
+                </ul>
+                <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  Request Extension Quote <ChevronRight size={16} />
+                </a>
+              </div>
+              <div className="extensions-right">
+                <h4 className="service-title" style={{ fontSize: '18px', marginBottom: '20px', color: 'var(--text-primary)' }}>Standard Extensions Available</h4>
+                <table className="extensions-table">
+                  <thead>
+                    <tr>
+                      <th>Extension Type</th>
+                      <th>Entry Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span className="extensions-badge-duration">1 Month</span></td>
+                      <td>Single Entry Extension</td>
+                    </tr>
+                    <tr>
+                      <td><span className="extensions-badge-duration">3 Months</span></td>
+                      <td>Single Entry Extension</td>
+                    </tr>
+                    <tr>
+                      <td><span className="extensions-badge-duration">6 Months</span></td>
+                      <td>Multiple Entry Extension</td>
+                    </tr>
+                    <tr>
+                      <td><span className="extensions-badge-duration">12 Months</span></td>
+                      <td>Multiple Entry Extension</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Service 6: Chinese Immigration Assistance (Corporate Card Layout) */}
+            <div className="service-block service-chinese-immigration-section">
+              <div className="immigration-info">
+                <span className="service-block-tag">Corporate & Personal Immigration</span>
+                <h3 className="service-block-title">Chinese Immigration Assistance</h3>
+                <p className="service-block-text">
+                  We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures. Whether you need guidance on documentation, visa processes, or other immigration matters, our knowledgeable team is committed to providing professional assistance.
+                </p>
+                <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  Contact Representative
+                </a>
+              </div>
+              <div className="immigration-services-grid">
+                <div className="immigration-service-row">
+                  <span className="immigration-row-title">Corporate Visa Invitation Checklists</span>
+                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+                </div>
+                <div className="immigration-service-row">
+                  <span className="immigration-row-title">Residence Permit Policy Guidance</span>
+                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+                </div>
+                <div className="immigration-service-row">
+                  <span className="immigration-row-title">Legal Travel Clearance Advice</span>
+                  <ChevronRightSquare size={20} style={{ color: 'var(--accent-purple)' }} />
+                </div>
+              </div>
+            </div>
+
           </section>
 
           {/* About Section */}
