@@ -141,34 +141,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   transform: scale(1.04);
 }
 
-/* Middle Tagline Badge */
-.header-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  padding: 8px 18px;
-  border-radius: 9999px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.header-badge:hover {
-  transform: translateY(-1px);
-  border-color: var(--accent-purple);
-  background-color: var(--accent-purple-light);
-}
-
-.badge-dot {
-  width: 6px;
-  height: 6px;
-  background-color: var(--accent-teal);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent-teal);
-}
-
 /* Nav Links & Controls */
 .nav-controls {
   display: flex;
@@ -878,7 +850,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 
 /* 
  * About Section Layout
- * Split Story: Left Column Portrait with offset decorative outline frame, Right Column narrative text.
+ * Split Story: Left Column Portrait with simple line at bottom, Right Column narrative text.
  */
 .about-split {
   display: grid;
@@ -887,7 +859,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   align-items: center;
 }
 
-/* Portrait Image Styles with cool Offset Frame Outline (removes box shape and border around image) */
+/* Portrait Image Styles (removes pseudo-element outlines and background shapes completely) */
 .about-founder-container {
   display: flex;
   justify-content: center;
@@ -896,20 +868,8 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
-}
-
-.about-founder-container::before {
-  content: '';
-  position: absolute;
-  bottom: -16px;
-  right: -16px;
-  width: 100%;
-  height: 100%;
-  border: 2px solid var(--accent-purple);
-  border-radius: var(--radius-lg);
-  z-index: 1;
-  pointer-events: none;
-  transition: var(--transition-smooth);
+  border-bottom: 3px solid var(--accent-purple); /* Line at bottom of picture */
+  padding-bottom: 12px; /* space between picture and the line */
 }
 
 .about-founder-img {
@@ -920,17 +880,11 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
   transition: var(--transition-smooth);
 }
 
-/* Interactivity: Slight shift on hover for 3D look */
-.about-founder-container:hover::before {
-  transform: translate(-8px, -8px);
-}
-
 .about-founder-container:hover .about-founder-img {
-  transform: translate(8px, 8px);
+  transform: translateY(-4px);
 }
 
 .about-text-content {
@@ -960,7 +914,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   margin-bottom: 12px;
 }
 
-/* Contact Footer Section */
+/* Contact Footer Section & Social Buttons Styling */
 .contact-section {
   padding: 100px 0 40px 0;
   border-top: 1px solid var(--border-light);
@@ -1012,6 +966,41 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   color: var(--accent-purple);
   flex-shrink: 0;
   margin-top: 2px;
+}
+
+/* Theme-fit Contact Social Row */
+.contact-social-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.contact-social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: var(--transition-fast);
+}
+
+.contact-social-btn svg {
+  flex-shrink: 0;
+  transition: var(--transition-fast);
+}
+
+.contact-social-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-purple);
+  background-color: var(--accent-purple-light);
+  color: var(--accent-purple);
 }
 
 .contact-links-list {

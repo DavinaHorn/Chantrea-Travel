@@ -94,12 +94,6 @@ function App() {
               <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
             </a>
 
-            {/* Center: Subtitle Tagline Badge */}
-            <div className="header-badge">
-              <span className="badge-dot"></span>
-              <span>Your Trusted Global Travel & Visa Partner</span>
-            </div>
-
             {/* Right: Desktop Controls & Menu */}
             <div className="nav-controls">
               <ul className="nav-menu">
@@ -531,13 +525,35 @@ function App() {
                   </li>
                   <li className="contact-info-item">
                     <Phone size={18} />
-                    <span>+855 (0) 23 456 789<br />+855 (0) 99 999 999</span>
+                    <span>+855 (0) 86 910 008<br />+855 (0) 17 910 007</span>
                   </li>
                   <li className="contact-info-item">
                     <Mail size={18} />
-                    <span>info@chantreatravel.com<br />support@chantreatravel.com</span>
+                    <span>davina@chantreatravel.com</span>
                   </li>
                 </ul>
+
+                {/* Theme-fit social buttons row */}
+                <div className="contact-social-row">
+                  <a href="#" className="contact-social-btn" aria-label="Facebook Link" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+                    </svg>
+                    <span>Facebook</span>
+                  </a>
+                  <a href="#" className="contact-social-btn" aria-label="Telegram Link" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.51.16.13.11.17.26.19.37.02.1.02.21-.01.32z"/>
+                    </svg>
+                    <span>Telegram</span>
+                  </a>
+                  <a href="#" className="contact-social-btn" aria-label="WhatsApp Link" target="_blank" rel="noopener noreferrer">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.1 1.458 4.796 1.459 5.539 0 10.047-4.479 10.05-9.986.002-2.67-1.032-5.18-2.907-7.06C16.613 1.686 14.12 .65 11.66.65c-5.54 0-10.048 4.478-10.051 9.987-.001 2.078.543 4.103 1.571 5.881L2.12 20.612l4.527-1.458zm11.168-7.56c-.305-.153-1.805-.89-2.083-.99-.279-.101-.482-.153-.684.153-.202.304-.785.99-.962 1.19-.177.203-.355.228-.66.076-.304-.152-1.285-.474-2.448-1.512-.904-.808-1.513-1.807-1.69-2.112-.177-.305-.019-.47.133-.621.137-.136.305-.355.457-.532.152-.177.202-.304.304-.507.102-.203.051-.38-.025-.532-.076-.153-.684-1.65-.938-2.26-.247-.594-.5-.513-.684-.523-.177-.01-.38-.01-.582-.01-.203 0-.532.076-.811.38-.279.305-1.065 1.042-1.065 2.541 0 1.498 1.09 2.946 1.242 3.149.152.203 2.146 3.28 5.197 4.598.726.313 1.293.5 1.734.64.73.232 1.396.199 1.922.12.586-.088 1.805-.738 2.059-1.45.253-.711.253-1.32.177-1.448-.076-.126-.279-.203-.583-.355z"/>
+                    </svg>
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
               </div>
 
               {/* Quick Links */}
