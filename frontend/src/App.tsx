@@ -3,7 +3,6 @@ import {
   Plane, 
   Hotel, 
   FileText, 
-  Globe, 
   MapPin, 
   Phone, 
   Mail, 
@@ -13,7 +12,6 @@ import {
   X, 
   Sun,
   Moon,
-  Info,
   ChevronRightSquare
 } from 'lucide-react'
 
@@ -140,7 +138,7 @@ function App() {
       {/* Main Content */}
       <main style={{ flexGrow: 1 }}>
         
-        {/* Hero Slideshow Section - Now Full Screen Edge-to-Edge outside container */}
+        {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
         <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
           <div className="hero-card">
             {/* Slideshow background images */}
@@ -189,11 +187,7 @@ function App() {
                 </div>
                 <div className="hero-pill-badge" onClick={() => scrollToSection('services-visas')}>
                   <FileText size={18} />
-                  <span>Visa Consultation</span>
-                </div>
-                <div className="hero-pill-badge" onClick={() => scrollToSection('services-extensions')}>
-                  <Globe size={18} />
-                  <span>Cambodian Extensions</span>
+                  <span>Visa Services</span>
                 </div>
               </div>
             </div>
@@ -307,157 +301,133 @@ function App() {
               </div>
             </div>
 
-            {/* Service 3: Visa Consultation & Assistance */}
+            {/* Service 3: Visa & Immigration Services (Unified Block) */}
             <div id="services-visas" className="service-block">
-              <div className="service-row">
-                <div className="service-col-info" style={{ flex: '1 1 60%', padding: '48px' }}>
-                  <span className="service-block-tag">Travel Documents</span>
-                  <h3 className="service-block-title" style={{ marginTop: '8px', marginBottom: '16px' }}>Visa Consultation & Assistance</h3>
-                  <p className="service-block-text" style={{ marginBottom: '24px' }}>
-                    Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
-                  </p>
-                  <div className="visas-grid-col" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
-                    <div className="visa-country-card" style={{ padding: '20px' }}>
-                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>Canada Visas</h4>
-                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>Documentation checks and application tracking.</p>
-                    </div>
-                    <div className="visa-country-card" style={{ padding: '20px' }}>
-                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>Australia Visas</h4>
-                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>Subclass selection and document compilation.</p>
-                    </div>
-                    <div className="visa-country-card" style={{ padding: '20px' }}>
-                      <h4 className="visa-country-name" style={{ fontSize: '16px' }}>United States Visas</h4>
-                      <p className="visa-country-desc" style={{ fontSize: '13px' }}>DS-160 support and mock interviews.</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="service-col-visual" style={{ flex: '1 1 40%', padding: '0', overflow: 'hidden' }}>
-                  <img src="/service_visa_consultation.webp" alt="Visa Travel Documents" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  <div className="bento-overlay"></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Service 4: China & Vietnam Visa Services */}
-            <div id="services-china-vietnam" className="service-block service-china-vietnam-section">
-              <div className="china-vietnam-left">
-                <span className="service-block-tag">Specialized Regional Services</span>
-                <h3 className="service-block-title">China & Vietnam Visa Services</h3>
-                <p className="service-block-text">
-                  Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
+              {/* Header inside the box */}
+              <div style={{ padding: '48px 48px 32px 48px', borderBottom: '1px solid var(--border-light)' }}>
+                <span className="service-block-tag">Visa & Immigration</span>
+                <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa & Immigration Support</h3>
+                <p className="service-block-text" style={{ marginTop: '12px' }}>
+                  Chantrea Travel provides professional assistance and documentation guidance for all your global travel visa and immigration requirements.
                 </p>
-                <ul className="service-block-list">
-                  <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
-                  <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
-                  <li className="service-block-item"><CheckCircle size={16} /> Fast Processing and Handling Coordination</li>
-                </ul>
               </div>
-              <div className="china-vietnam-right" style={{ backgroundImage: 'url("/service_china_vietnam.webp")', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
-                <div className="bento-overlay" style={{ background: 'linear-gradient(to bottom, rgba(10, 25, 47, 0.5) 0%, rgba(10, 25, 47, 0.8) 100%)' }}></div>
-                <div style={{ position: 'relative', zIndex: 3, width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <h4 style={{ fontSize: '18px', color: '#FFFFFF', fontWeight: 600 }}>Key Processing Metrics</h4>
-                  <div className="china-vietnam-stat-row">
-                    <div className="china-vietnam-stat-card" style={{ background: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
-                      <div className="china-vietnam-stat-num" style={{ color: '#FFFFFF' }}>98%</div>
-                      <div className="china-vietnam-stat-label" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Approval Rate</div>
-                    </div>
-                    <div className="china-vietnam-stat-card" style={{ background: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
-                      <div className="china-vietnam-stat-num" style={{ color: '#FFFFFF' }}>5-7</div>
-                      <div className="china-vietnam-stat-label" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>Working Days</div>
-                    </div>
+
+              {/* Subsection A: Visa Consultation & Assistance */}
+              <div style={{ padding: '48px', borderBottom: '1px solid var(--border-light)' }}>
+                <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                  Visa Consultation & Assistance
+                </h4>
+                <p className="service-block-text" style={{ marginBottom: '24px' }}>
+                  Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
+                </p>
+                <div className="visas-grid-col">
+                  <div className="visa-country-card">
+                    <h5 className="visa-country-name">Canada Visas</h5>
+                    <p className="visa-country-desc">Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.</p>
                   </div>
-                  <div className="service-block-item" style={{ fontSize: '14px', fontStyle: 'italic', color: '#FFFFFF' }}>
-                    <Info size={16} style={{ color: '#FFFFFF' }} /> Special fast track options are available upon request.
+                  <div className="visa-country-card">
+                    <h5 className="visa-country-name">Australia Visas</h5>
+                    <p className="visa-country-desc">Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.</p>
+                  </div>
+                  <div className="visa-country-card">
+                    <h5 className="visa-country-name">United States Visas</h5>
+                    <p className="visa-country-desc">Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.</p>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Service 5: Cambodian Visa Extensions */}
-            <div id="services-extensions" className="service-block">
-              <div className="service-row">
-                {/* Column 1: Info */}
-                <div className="extensions-left" style={{ flex: '1 1 40%', padding: '40px' }}>
-                  <span className="service-block-tag">In-Country Compliance</span>
-                  <h3 className="service-block-title" style={{ fontSize: '26px' }}>Cambodian Visa Extensions</h3>
-                  <p className="service-block-text" style={{ fontSize: '14.5px', marginBottom: '16px' }}>
-                    For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+              {/* Subsection B: China & Vietnam Visa Services */}
+              <div className="service-china-vietnam-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
+                <div className="china-vietnam-left" style={{ padding: '48px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                    China & Vietnam Visa Services
+                  </h4>
+                  <p className="service-block-text" style={{ marginBottom: '20px' }}>
+                    Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
                   </p>
-                  <ul className="service-block-list" style={{ gap: '8px' }}>
-                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Extension Option Strategy</li>
-                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Passport & Document Handling</li>
-                    <li className="service-block-item" style={{ fontSize: '13.5px' }}><CheckCircle size={15} /> Immigration Department Coordination</li>
+                  <ul className="service-block-list">
+                    <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
                   </ul>
                 </div>
-                {/* Column 2: Photo */}
-                <div style={{ flex: '1 1 25%', position: 'relative', minHeight: '260px' }}>
-                  <img src="/service_cambodian_extensions.webp" alt="Cambodian Visa Scenery" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  <div className="bento-overlay"></div>
+                <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
+                  <h5 style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Key Processing Metrics</h5>
+                  <div className="china-vietnam-stat-row">
+                    <div className="china-vietnam-stat-card">
+                      <div className="china-vietnam-stat-num">98%</div>
+                      <div className="china-vietnam-stat-label">Approval Rate</div>
+                    </div>
+                    <div className="china-vietnam-stat-card">
+                      <div className="china-vietnam-stat-num">5-7</div>
+                      <div className="china-vietnam-stat-label">Working Days</div>
+                    </div>
+                  </div>
                 </div>
-                {/* Column 3: Table */}
-                <div className="extensions-right" style={{ flex: '1 1 35%', padding: '40px' }}>
-                  <h4 className="service-title" style={{ fontSize: '17px', marginBottom: '16px', color: 'var(--text-primary)' }}>Standard Extensions</h4>
+              </div>
+
+              {/* Subsection C: Cambodian Visa Extensions */}
+              <div className="service-cambodian-extensions-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
+                <div className="extensions-left" style={{ padding: '48px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                    Cambodian Visa Extensions
+                  </h4>
+                  <p className="service-block-text" style={{ marginBottom: '20px' }}>
+                    For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+                  </p>
+                  <ul className="service-block-list">
+                    <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
+                    <li className="service-block-item"><CheckCircle size={16} /> Passport & Document Handling</li>
+                  </ul>
+                </div>
+                <div className="extensions-right" style={{ padding: '48px', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <h5 style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Standard Extensions Available</h5>
                   <table className="extensions-table">
-                    <thead>
-                      <tr>
-                        <th style={{ padding: '8px 12px' }}>Type</th>
-                        <th style={{ padding: '8px 12px' }}>Entry</th>
-                      </tr>
-                    </thead>
                     <tbody>
                       <tr>
-                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">1 Month</span></td>
-                        <td style={{ padding: '8px 12px' }}>Single Entry</td>
+                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">1 Month</span></td>
+                        <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
                       </tr>
                       <tr>
-                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">3 Months</span></td>
-                        <td style={{ padding: '8px 12px' }}>Single Entry</td>
+                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">3 Months</span></td>
+                        <td style={{ padding: '6px 12px' }}>Single Entry Extension</td>
                       </tr>
                       <tr>
-                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">6 Months</span></td>
-                        <td style={{ padding: '8px 12px' }}>Multiple Entry</td>
+                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">6 Months</span></td>
+                        <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
                       </tr>
                       <tr>
-                        <td style={{ padding: '8px 12px' }}><span className="extensions-badge-duration">12 Months</span></td>
-                        <td style={{ padding: '8px 12px' }}>Multiple Entry</td>
+                        <td style={{ padding: '6px 12px' }}><span className="extensions-badge-duration">12 Months</span></td>
+                        <td style={{ padding: '6px 12px' }}>Multiple Entry Extension</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div>
 
-            {/* Service 6: Chinese Immigration Assistance */}
-            <div className="service-block">
-              <div className="service-row">
-                {/* Column 1: Text */}
-                <div className="immigration-info" style={{ flex: '1 1 40%', padding: '40px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  <span className="service-block-tag">Corporate & Personal</span>
-                  <h3 className="service-block-title" style={{ fontSize: '26px' }}>Chinese Immigration Assistance</h3>
-                  <p className="service-block-text" style={{ fontSize: '14.5px' }}>
-                    We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures. Our knowledgeable team is committed to providing professional assistance.
+              {/* Subsection D: Chinese Immigration Assistance */}
+              <div className="service-chinese-immigration-section">
+                <div className="immigration-info" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    Chinese Immigration Assistance
+                  </h4>
+                  <p className="service-block-text">
+                    We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures, travel planning, and policy checkups.
                   </p>
-                  <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
+                  <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
                     Contact Representative
                   </a>
                 </div>
-                {/* Column 2: Photo */}
-                <div style={{ flex: '1 1 30%', position: 'relative', minHeight: '260px' }}>
-                  <img src="/service_chinese_immigration.webp" alt="Chinese Immigration Professional Meeting" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  <div className="bento-overlay"></div>
-                </div>
-                {/* Column 3: Corporate Options */}
-                <div className="immigration-services-grid" style={{ flex: '1 1 30%', padding: '40px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
-                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
-                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Visa Invitation Checklists</span>
+                <div className="immigration-services-grid" style={{ padding: '48px', display: 'flex', flexDirection: 'column', gap: '12px', justifyContent: 'center' }}>
+                  <div className="immigration-service-row">
+                    <span className="immigration-row-title">Visa Invitation Checklists</span>
                     <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
                   </div>
-                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
-                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Residence Permit Guidance</span>
+                  <div className="immigration-service-row">
+                    <span className="immigration-row-title">Residence Permit Guidance</span>
                     <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
                   </div>
-                  <div className="immigration-service-row" style={{ padding: '12px 16px' }}>
-                    <span className="immigration-row-title" style={{ fontSize: '13.5px' }}>Legal Travel Clearance Advice</span>
+                  <div className="immigration-service-row">
+                    <span className="immigration-row-title">Legal Travel Clearance Advice</span>
                     <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
                   </div>
                 </div>
@@ -469,7 +439,7 @@ function App() {
           {/* About Section */}
           <section id="about" className="section">
             <div className="about-split">
-              {/* Left Column: Portrait Frame without outline boxes */}
+              {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
               <div className="about-founder-container">
                 <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
                 <div className="about-founder-info">
@@ -480,7 +450,6 @@ function App() {
 
               {/* Right Column: Narrative & Biography */}
               <div className="about-text-content">
-                <span className="section-tag">About Chantrea Travel</span>
                 <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
                 
                 <p className="about-paragraph">
@@ -564,12 +533,7 @@ function App() {
                   </li>
                   <li>
                     <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); scrollToSection('services-visas'); }}>
-                      Visa Assistance
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#services" className="contact-link" onClick={(e) => { e.preventDefault(); scrollToSection('services-extensions'); }}>
-                      Cambodian Extensions
+                      Visa Services
                     </a>
                   </li>
                 </ul>
