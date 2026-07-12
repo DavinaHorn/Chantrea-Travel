@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Dynamic Palette variables for light mode (default) */
@@ -27,7 +27,7 @@
   --accent-teal: #14B8A6;
   
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Playfair Display', Georgia, Cambria, "Times New Roman", Times, serif;
   
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -701,7 +701,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 }
 
 .china-vietnam-stat-num {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: 32px;
   font-weight: 700;
   color: var(--accent-purple);
@@ -791,7 +791,7 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 }
 
 .immigration-row-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-weight: 600;
   font-size: 14px;
   color: var(--text-primary);
