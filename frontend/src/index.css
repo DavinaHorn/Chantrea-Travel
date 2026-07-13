@@ -241,6 +241,8 @@ body {
   align-items: center;
   padding: 0;
   border: none;
+  transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: height;
 }
 
 /* Background Video & Overlay */
