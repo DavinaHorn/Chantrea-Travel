@@ -100,7 +100,7 @@ function App() {
   const [hash, setHash] = useState(window.location.hash)
   const [currentView, setCurrentView] = useState(() => getPageView(window.location.hash))
   const [loading, setLoading] = useState(true)
-  const [fadeClass, setFadeClass] = useState('')
+  const [fadeClass, setFadeClass] = useState('active')
 
   const slides: Slide[] = [
     {
@@ -146,7 +146,7 @@ function App() {
   // Initial load transition
   useEffect(() => {
     const timer = setTimeout(() => {
-      setFadeClass('fade-out')
+      setFadeClass('')
       const removeTimer = setTimeout(() => setLoading(false), 400)
       return () => clearTimeout(removeTimer)
     }, 1200)
@@ -158,20 +158,25 @@ function App() {
     const newView = getPageView(hash)
     if (newView !== currentView) {
       setLoading(true)
-      setFadeClass('')
+      const mountTimer = setTimeout(() => {
+        setFadeClass('active')
+      }, 50)
       
       const changeViewTimer = setTimeout(() => {
         setCurrentView(newView)
         
         const fadeTimer = setTimeout(() => {
-          setFadeClass('fade-out')
+          setFadeClass('')
           const removeTimer = setTimeout(() => setLoading(false), 400)
           return () => clearTimeout(removeTimer)
         }, 500)
         return () => clearTimeout(fadeTimer)
-      }, 200)
+      }, 600)
       
-      return () => clearTimeout(changeViewTimer)
+      return () => {
+        clearTimeout(mountTimer)
+        clearTimeout(changeViewTimer)
+      }
     }
   }, [hash, currentView])
 
@@ -214,7 +219,6 @@ function App() {
         <div className={`loading-overlay ${fadeClass}`}>
           <div className="loading-logo-container">
             <img src={logoSrc} alt="Chantrea Travel Logo" className="loading-logo" />
-            <div className="loading-spinner"></div>
           </div>
         </div>
       )}

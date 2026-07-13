@@ -1214,14 +1214,14 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  opacity: 1;
-  visibility: visible;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.loading-overlay.fade-out {
-  opacity: 0;
-  visibility: hidden;
+.loading-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 .loading-logo-container {
@@ -1238,15 +1238,6 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   animation: logoPulse 1.8s infinite ease-in-out;
 }
 
-.loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border-light);
-  border-top-color: var(--accent-purple);
-  border-radius: 50%;
-  animation: spin 1s infinite linear;
-}
-
 @keyframes logoPulse {
   0%, 100% {
     transform: scale(0.95);
@@ -1255,11 +1246,5 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
   50% {
     transform: scale(1.05);
     opacity: 1;
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }
