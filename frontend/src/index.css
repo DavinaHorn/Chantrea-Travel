@@ -1608,6 +1608,7 @@ body {
 .flights-stack-container {
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center-aligns all child cards so the scaling silhouette is perfect */
   position: relative;
   gap: 0;
 }
@@ -1630,13 +1631,13 @@ body {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Offsets for vertical stack card pile on Desktop (top edges remain visible) */
-.flight-stack-card:nth-child(1) { top: 130px; z-index: 1; }
-.flight-stack-card:nth-child(2) { top: 180px; z-index: 2; }
-.flight-stack-card:nth-child(3) { top: 230px; z-index: 3; }
-.flight-stack-card:nth-child(4) { top: 280px; z-index: 4; }
-.flight-stack-card:nth-child(5) { top: 330px; z-index: 5; }
-.flight-stack-card:nth-child(6) { top: 380px; z-index: 6; margin-bottom: 0; }
+/* Offsets and scale widths for vertical stack card pile on Desktop (stepped silhouette width) */
+.flight-stack-card:nth-child(1) { top: 130px; z-index: 1; width: 90%; }
+.flight-stack-card:nth-child(2) { top: 180px; z-index: 2; width: 92%; }
+.flight-stack-card:nth-child(3) { top: 230px; z-index: 3; width: 94%; }
+.flight-stack-card:nth-child(4) { top: 280px; z-index: 4; width: 96%; }
+.flight-stack-card:nth-child(5) { top: 330px; z-index: 5; width: 98%; }
+.flight-stack-card:nth-child(6) { top: 380px; z-index: 6; width: 100%; margin-bottom: 0; }
 
 /* Custom Reveal behavior integrating with scroll reveal observer */
 .flight-stack-card.reveal-element {
@@ -1857,12 +1858,12 @@ body {
     align-items: flex-start;
   }
   
-  .flight-stack-card:nth-child(1) { top: 100px; }
-  .flight-stack-card:nth-child(2) { top: 135px; }
-  .flight-stack-card:nth-child(3) { top: 170px; }
-  .flight-stack-card:nth-child(4) { top: 205px; }
-  .flight-stack-card:nth-child(5) { top: 240px; }
-  .flight-stack-card:nth-child(6) { top: 275px; }
+  .flight-stack-card:nth-child(1) { top: 100px; width: 90%; }
+  .flight-stack-card:nth-child(2) { top: 135px; width: 92%; }
+  .flight-stack-card:nth-child(3) { top: 170px; width: 94%; }
+  .flight-stack-card:nth-child(4) { top: 205px; width: 96%; }
+  .flight-stack-card:nth-child(5) { top: 240px; width: 98%; }
+  .flight-stack-card:nth-child(6) { top: 275px; width: 100%; }
   
   .card-content {
     padding: 16px 24px;
