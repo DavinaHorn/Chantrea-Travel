@@ -839,6 +839,34 @@ body {
   color: var(--text-secondary);
 }
 
+/* Homepage Split About Section styles */
+.homepage-about-split {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 64px;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.homepage-founder-container {
+  transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.homepage-about-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+.more-info-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
 .about-founder-bio {
   border-top: 1px dashed var(--border-light);
   padding-top: 24px;
@@ -1106,6 +1134,11 @@ body {
 
   .page-container-padding {
     padding-top: 80px;
+  }
+
+  .homepage-about-split {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
   .hero-card {

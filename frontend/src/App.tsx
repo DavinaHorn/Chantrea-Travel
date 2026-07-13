@@ -199,6 +199,8 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [logoTransitionProgress, setLogoTransitionProgress] = useState(0)
   const logoRef = useRef<HTMLDivElement | null>(null)
+  const [aboutScrollProgress, setAboutScrollProgress] = useState(0)
+  const homepageAboutRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -213,6 +215,23 @@ function App() {
         
         const progress = Math.min(Math.max((window.scrollY - startScroll) / (endScroll - startScroll), 0), 1)
         setLogoTransitionProgress(progress)
+      }
+      
+      if (homepageAboutRef.current) {
+        const rect = homepageAboutRef.current.getBoundingClientRect()
+        const viewportHeight = window.innerHeight
+        const isDesktop = window.innerWidth > 768
+        
+        if (isDesktop) {
+          const startTrigger = viewportHeight * 0.95
+          const endTrigger = viewportHeight * 0.25
+          const distance = startTrigger - endTrigger
+          const currentPos = rect.top
+          const progress = Math.min(Math.max((startTrigger - currentPos) / distance, 0), 1)
+          setAboutScrollProgress(progress)
+        } else {
+          setAboutScrollProgress(1)
+        }
       }
     }
     
@@ -742,6 +761,59 @@ function App() {
                       <span className="immigration-row-title">Legal Travel Clearance Advice</span>
                       <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
                     </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Biography & Split About Section */}
+            <section 
+              ref={homepageAboutRef} 
+              className="section homepage-about-section reveal-element" 
+              style={{ borderTop: '1px solid var(--border-light)', paddingTop: '80px', marginTop: '40px', marginBottom: '40px' }}
+            >
+              <div className="homepage-about-split">
+                {/* Left Column: Portrait */}
+                <div 
+                  className="about-founder-container homepage-founder-container"
+                  style={{
+                    transform: `translateX(${(1 - aboutScrollProgress) * 28}%) scale(${1 + (1 - aboutScrollProgress) * 0.15})`,
+                    transformOrigin: 'center center',
+                    willChange: 'transform'
+                  }}
+                >
+                  <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
+                  <div className="about-founder-info">
+                    <h4 className="about-founder-name">Davina Horn</h4>
+                    <p className="about-founder-title">Owner & Managing Director</p>
+                  </div>
+                </div>
+
+                {/* Right Column: Narrative Info */}
+                <div 
+                  className="homepage-about-text-content"
+                  style={{
+                    opacity: aboutScrollProgress,
+                    transform: `translateX(${(1 - aboutScrollProgress) * 40}px)`,
+                    willChange: 'opacity, transform'
+                  }}
+                >
+                  <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
+                  <p className="about-paragraph">
+                    Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>CHANTREA Travel</strong>.
+                  </p>
+                  
+                  <div className="more-info-btn-wrapper">
+                    <a 
+                      href="/about" 
+                      className="nav-btn homepage-more-info-btn"
+                      onClick={(e) => { 
+                        e.preventDefault(); 
+                        navigate('/about'); 
+                      }}
+                    >
+                      More Info
+                    </a>
                   </div>
                 </div>
               </div>
