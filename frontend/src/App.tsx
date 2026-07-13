@@ -803,7 +803,9 @@ function App() {
                   className="homepage-about-text-content"
                   style={{
                     opacity: aboutScrollProgress,
-                    transform: `translateX(${(1 - aboutScrollProgress) * 40}px)`,
+                    transform: isMobile 
+                      ? `translateY(${(1 - aboutScrollProgress) * 20}px)` 
+                      : `translateX(${(1 - aboutScrollProgress) * 40}px)`,
                     willChange: 'opacity, transform'
                   }}
                 >
