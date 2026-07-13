@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react'
 import { 
-  Plane, 
-  Hotel, 
-  FileText, 
   MapPin, 
   Phone, 
   Mail, 
@@ -108,7 +105,6 @@ function App() {
   const [fadeClass, setFadeClass] = useState('active')
 
   // Redesign state variables
-  const [bookingTab, setBookingTab] = useState<'flights' | 'hotels'>('flights')
   const [bookingFrom, setBookingFrom] = useState('')
   const [bookingTo, setBookingTo] = useState('')
   const [bookingDate, setBookingDate] = useState('')
@@ -494,62 +490,26 @@ function App() {
                     <p className="hero-desc">{slides[activeSlide].desc}</p>
                   </div>
 
-                  {/* Badges Row at Bottom of Card */}
-                  <div className="hero-badges-row">
-                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-flights')}>
-                      <Plane size={18} />
-                      <span>Worldwide Flights</span>
-                    </div>
-                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-hotels')}>
-                      <Hotel size={18} />
-                      <span>Global Hotels</span>
-                    </div>
-                    <div className="hero-pill-badge" onClick={() => navigateToSection('services-visas')}>
-                      <FileText size={18} />
-                      <span>Visa Services</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
               {/* Glassmorphic Travel Booking Widget */}
               <div className="booking-widget-container">
-                <div className="booking-tabs">
-                  <button 
-                    className={`booking-tab-btn ${bookingTab === 'flights' ? 'active' : ''}`}
-                    onClick={() => setBookingTab('flights')}
-                  >
-                    <Plane size={16} />
-                    <span>Find Flights</span>
-                  </button>
-                  <button 
-                    className={`booking-tab-btn ${bookingTab === 'hotels' ? 'active' : ''}`}
-                    onClick={() => setBookingTab('hotels')}
-                  >
-                    <Hotel size={16} />
-                    <span>Find Hotels</span>
-                  </button>
-                </div>
-                
                 <form 
                   onSubmit={(e) => {
                     e.preventDefault()
-                    if (bookingTab === 'flights') {
-                      triggerToast(`Searching flights from ${bookingFrom || 'Phnom Penh'} to ${bookingTo || 'anywhere'}...`)
-                    } else {
-                      triggerToast(`Finding hotels in ${bookingTo || 'Cambodia'} for ${bookingGuests}...`)
-                    }
+                    triggerToast(`Searching flights from ${bookingFrom || 'Phnom Penh'} to ${bookingTo || 'anywhere'} for ${bookingGuests}...`)
                   }}
                   className="booking-form-grid"
                 >
                   <div className="booking-input-group">
                     <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <MapPin size={14} />
-                      <span>{bookingTab === 'flights' ? 'From' : 'Destination'}</span>
+                      <span>From</span>
                     </label>
                     <input 
                       type="text" 
-                      placeholder={bookingTab === 'flights' ? 'City or Airport (e.g. Phnom Penh)' : 'Destination city or hotel'} 
+                      placeholder="City or Airport (e.g. Phnom Penh)" 
                       value={bookingFrom}
                       onChange={(e) => setBookingFrom(e.target.value)}
                       className="booking-input-field"
@@ -558,30 +518,34 @@ function App() {
                   
                   <div className="booking-input-group">
                     <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Users size={14} />
-                      <span>{bookingTab === 'flights' ? 'To' : 'Guests / Rooms'}</span>
+                      <MapPin size={14} />
+                      <span>To</span>
                     </label>
-                    {bookingTab === 'flights' ? (
-                      <input 
-                        type="text" 
-                        placeholder="City or Airport (e.g. Toronto)" 
-                        value={bookingTo}
-                        onChange={(e) => setBookingTo(e.target.value)}
-                        className="booking-input-field"
-                      />
-                    ) : (
-                      <select 
-                        value={bookingGuests}
-                        onChange={(e) => setBookingGuests(e.target.value)}
-                        className="booking-input-field"
-                        style={{ appearance: 'none', WebkitAppearance: 'none' }}
-                      >
-                        <option value="1 Guest">1 Guest, 1 Room</option>
-                        <option value="2 Guests">2 Guests, 1 Room</option>
-                        <option value="2 Guests, 2 Rooms">2 Guests, 2 Rooms</option>
-                        <option value="Family (3+ Guests)">Family (3+ Guests)</option>
-                      </select>
-                    )}
+                    <input 
+                      type="text" 
+                      placeholder="City or Airport (e.g. Toronto)" 
+                      value={bookingTo}
+                      onChange={(e) => setBookingTo(e.target.value)}
+                      className="booking-input-field"
+                    />
+                  </div>
+                  
+                  <div className="booking-input-group">
+                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Users size={14} />
+                      <span>Travelers</span>
+                    </label>
+                    <select 
+                      value={bookingGuests}
+                      onChange={(e) => setBookingGuests(e.target.value)}
+                      className="booking-input-field"
+                      style={{ appearance: 'none', WebkitAppearance: 'none' }}
+                    >
+                      <option value="1 Traveler">1 Traveler</option>
+                      <option value="2 Travelers">2 Travelers</option>
+                      <option value="3 Travelers">3 Travelers</option>
+                      <option value="4+ Travelers">4+ Travelers</option>
+                    </select>
                   </div>
                   
                   <div className="booking-input-group">
@@ -600,7 +564,7 @@ function App() {
                   <div>
                     <button type="submit" className="booking-submit-btn">
                       <Search size={16} />
-                      <span>{bookingTab === 'flights' ? 'Search Flights' : 'Search Hotels'}</span>
+                      <span>Search Flights</span>
                     </button>
                   </div>
                 </form>
