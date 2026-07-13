@@ -10,8 +10,7 @@ import {
   Sun,
   Moon,
   ChevronRightSquare,
-  ArrowRight,
-  Star
+  ArrowRight
 } from 'lucide-react'
 
 interface Slide {
@@ -102,33 +101,11 @@ function App() {
   const [fadeClass, setFadeClass] = useState('active')
 
   // Redesign state variables
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [statCustomers, setStatCustomers] = useState(0)
   const [statExpertise, setStatExpertise] = useState(0)
   const [statApproval, setStatApproval] = useState(0)
   const [statPartners, setStatPartners] = useState(0)
   const [statsAnimated, setStatsAnimated] = useState(false)
-
-  const testimonials = [
-    {
-      quote: "Chantrea Travel made our family trip to Canada absolutely seamless. From finding the best business-class flight options to handling our complex visa checks, Davina's expertise was obvious. Highly recommended!",
-      name: "Sopheap Kem",
-      route: "Phnom Penh to Toronto",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
-    },
-    {
-      quote: "Excellent communication and extremely fast hotel bookings. We booked our resort in Angkor and the rates were much better than standard booking sites. The personalized care is top notch.",
-      name: "Marc Peterson",
-      route: "Singapore to Siem Reap",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
-    },
-    {
-      quote: "I needed a Chinese travel clearance checkup and visa filing on short notice. Chantrea Travel guided me through the DS-160 and invitation checking perfectly. I got my visa approved in 5 days!",
-      name: "Chen Wei",
-      route: "Phnom Penh to Shanghai",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop"
-    }
-  ]
 
   const slides: Slide[] = [
     {
@@ -305,15 +282,7 @@ function App() {
     }
   }, [statsAnimated])
 
-  // Testimonials Auto-rotate
-  useEffect(() => {
-    if (currentView === 'home') {
-      const interval = setInterval(() => {
-        setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
-      }, 6000)
-      return () => clearInterval(interval)
-    }
-  }, [currentView, testimonials.length])
+
 
 
 
@@ -783,51 +752,7 @@ function App() {
                 </div>
               </section>
 
-              {/* Testimonials Carousel Section */}
-              <section className="section testimonials-section reveal-element" id="testimonials">
-                <div className="section-header">
-                  <span className="section-tag">Client Reviews</span>
-                  <h2 className="section-title">What Our Travelers Say</h2>
-                  <p className="section-desc">
-                    Read the verified reviews and stories from individuals and families who traveled worldwide with Chantrea Travel support.
-                  </p>
-                </div>
-                
-                <div className="testimonial-slider-container">
-                  {testimonials.map((t, idx) => (
-                    <div 
-                      key={idx} 
-                      className={`testimonial-card-slide ${idx === activeTestimonial ? 'active' : ''}`}
-                    >
-                      <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={16} fill="var(--accent-purple)" color="var(--accent-purple)" />
-                        ))}
-                      </div>
-                      <p className="testimonial-quote">{t.quote}</p>
-                      <div className="testimonial-author-info">
-                        <img src={t.avatar} alt={t.name} className="testimonial-author-avatar" />
-                        <span className="testimonial-author-name">{t.name}</span>
-                        <span className="testimonial-author-route">
-                          <MapPin size={12} />
-                          {t.route}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                  
-                  <div className="testimonial-dots">
-                    {testimonials.map((_, idx) => (
-                      <button 
-                        key={idx}
-                        className={`testimonial-dot-btn ${idx === activeTestimonial ? 'active' : ''}`}
-                        onClick={() => setActiveTestimonial(idx)}
-                        aria-label={`Go to slide ${idx + 1}`}
-                      ></button>
-                    ))}
-                  </div>
-                </div>
-              </section>
+
             </div>
           </>
         ) : currentView === 'blogs' ? (
