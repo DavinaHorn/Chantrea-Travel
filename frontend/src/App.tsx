@@ -182,6 +182,8 @@ const LastFlightCard = ({ navigate }: LastFlightCardProps) => {
   )
 }
 
+let hasPlayedLoading = false
+
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [path, setPath] = useState(() => window.location.pathname)
@@ -199,6 +201,30 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [logoTransitionProgress, setLogoTransitionProgress] = useState(0)
   const logoRef = useRef<HTMLDivElement | null>(null)
+
+  const [showLoading, setShowLoading] = useState(() => {
+    const initialView = getPageView(window.location.pathname)
+    return initialView === 'home' && !hasPlayedLoading
+  })
+  const [isFadeOut, setIsFadeOut] = useState(false)
+
+  useEffect(() => {
+    if (showLoading) {
+      hasPlayedLoading = true
+      const fadeTimeout = setTimeout(() => {
+        setIsFadeOut(true)
+      }, 1500)
+      
+      const unmountTimeout = setTimeout(() => {
+        setShowLoading(false)
+      }, 2000)
+      
+      return () => {
+        clearTimeout(fadeTimeout)
+        clearTimeout(unmountTimeout)
+      }
+    }
+  }, [showLoading])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -480,6 +506,7 @@ function App() {
                 <img src="/CTT_LOGO-HW.webp" alt="Chantrea Travel Logo" className="hero-video-logo" />
               </div>
 
+              <div className="hero-top-vignette"></div>
               <div className="hero-bottom-fade"></div>
             </div>
           </section>
@@ -1010,6 +1037,15 @@ function App() {
 
   return (
     <>
+      {/* Fake Loading Screen */}
+      {showLoading && (
+        <div className={`loading-screen ${isFadeOut ? 'fade-out' : ''}`}>
+          <div className="hero-video-overlay-content">
+            <span className="hero-video-tagline">EXPLORE THE WORLD WITH</span>
+            <img src="/CTT_LOGO-HW.webp" alt="Chantrea Travel Logo" className="hero-video-logo" />
+          </div>
+        </div>
+      )}
 
 
 

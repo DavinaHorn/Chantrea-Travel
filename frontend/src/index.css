@@ -99,19 +99,7 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
-  padding: 6px 10px 6px 28px;
-  gap: 28px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.header.header-transparent .nav-link {
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-.header.header-transparent .nav-link:hover {
-  color: #FFFFFF;
 }
 
 [data-theme="dark"] .header.header-transparent {
@@ -159,8 +147,12 @@ body {
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 28px;
   list-style: none;
+  padding: 6px 0px 6px 24px;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
 }
 
 .nav-link {
@@ -264,35 +256,34 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  /* transform: translate(-50%, -50%) is applied inline in React */
   z-index: 3;
-  width: 90%;
-  max-width: 800px;
   pointer-events: none;
 }
 
-.hero-video-tagline {
-  font-family: var(--font-sans);
-  font-size: clamp(12px, 1.4vw, 15px);
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #FFFFFF;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  opacity: 0.95;
-  margin-bottom: 16px;
-}
-
 .hero-video-logo {
-  height: clamp(64px, 10vw, 110px);
+  height: clamp(80px, 12vw, 150px);
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.45));
+  display: block;
+}
+
+.hero-video-tagline {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: clamp(14px, 1.8vw, 18px);
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
+  opacity: 0.95;
 }
 
 .hero-bottom-fade {
@@ -303,6 +294,35 @@ body {
   height: 5%;
   background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
   z-index: 2;
+  pointer-events: none;
+}
+
+.hero-top-vignette {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 7%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Fake Loading Screen styling */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  background-color: #0b0f19;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.5s ease;
+  pointer-events: all;
+}
+
+.loading-screen.fade-out {
+  background-color: transparent;
   pointer-events: none;
 }
 
