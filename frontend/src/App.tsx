@@ -201,11 +201,17 @@ function App() {
     window.addEventListener('popstate', handlePopState)
     return () => {
       window.removeEventListener('popstate', handlePopState)
+    }
+  }, [path])
+
+  // Clear transition timer on unmount
+  useEffect(() => {
+    return () => {
       if (transitionTimerRef.current) {
         clearTimeout(transitionTimerRef.current)
       }
     }
-  }, [path])
+  }, [])
 
   // Scroll helper for initial load if URL contains hash (e.g. #services)
   useEffect(() => {
@@ -314,10 +320,6 @@ function App() {
   }
 
   const navigate = (targetPath: string, anchorId?: string) => {
-    if (viewState.isTransitioning) {
-      return // Prevent double click navigation during active transition
-    }
-
     const currentPath = window.location.pathname
     
     if (currentPath === targetPath) {
