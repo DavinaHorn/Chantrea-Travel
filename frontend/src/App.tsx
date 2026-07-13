@@ -188,7 +188,7 @@ function App() {
           prevView: null,
           isTransitioning: false
         }))
-      }, 700)
+      }, 650)
       
       return () => clearTimeout(timer)
     }
@@ -351,7 +351,7 @@ function App() {
           }
         }, 50)
       }
-    }, 700)
+    }, 650)
   }
 
   const renderView = (view: string) => {
