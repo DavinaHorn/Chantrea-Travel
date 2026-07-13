@@ -13,7 +13,11 @@ import {
   Sun,
   Moon,
   ChevronRightSquare,
-  ArrowRight
+  ArrowRight,
+  Search,
+  Calendar,
+  Users,
+  Star
 } from 'lucide-react'
 
 interface Slide {
@@ -102,6 +106,42 @@ function App() {
   const [currentView, setCurrentView] = useState(() => getPageView(window.location.hash))
   const [loading, setLoading] = useState(true)
   const [fadeClass, setFadeClass] = useState('active')
+
+  // Redesign state variables
+  const [bookingTab, setBookingTab] = useState<'flights' | 'hotels'>('flights')
+  const [bookingFrom, setBookingFrom] = useState('')
+  const [bookingTo, setBookingTo] = useState('')
+  const [bookingDate, setBookingDate] = useState('')
+  const [bookingGuests, setBookingGuests] = useState('1 Traveler')
+  const [toastMessage, setToastMessage] = useState('')
+  const [showToast, setShowToast] = useState(false)
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [statCustomers, setStatCustomers] = useState(0)
+  const [statExpertise, setStatExpertise] = useState(0)
+  const [statApproval, setStatApproval] = useState(0)
+  const [statPartners, setStatPartners] = useState(0)
+  const [statsAnimated, setStatsAnimated] = useState(false)
+
+  const testimonials = [
+    {
+      quote: "Chantrea Travel made our family trip to Canada absolutely seamless. From finding the best business-class flight options to handling our complex visa checks, Davina's expertise was obvious. Highly recommended!",
+      name: "Sopheap Kem",
+      route: "Phnom Penh to Toronto",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop"
+    },
+    {
+      quote: "Excellent communication and extremely fast hotel bookings. We booked our resort in Angkor and the rates were much better than standard booking sites. The personalized care is top notch.",
+      name: "Marc Peterson",
+      route: "Singapore to Siem Reap",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
+    },
+    {
+      quote: "I needed a Chinese travel clearance checkup and visa filing on short notice. Chantrea Travel guided me through the DS-160 and invitation checking perfectly. I got my visa approved in 5 days!",
+      name: "Chen Wei",
+      route: "Phnom Penh to Shanghai",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop"
+    }
+  ]
 
   const slides: Slide[] = [
     {
@@ -195,6 +235,114 @@ function App() {
     }
   }, [hash])
 
+  // Scroll Reveal Observer Setup
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            if (entry.target.classList.contains('stats-reveal-row') && !statsAnimated) {
+              setStatsAnimated(true)
+            }
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    )
+
+    const timer = setTimeout(() => {
+      const elements = document.querySelectorAll('.reveal-element')
+      elements.forEach((el) => observer.observe(el))
+    }, 150)
+
+    return () => {
+      clearTimeout(timer)
+      observer.disconnect()
+    }
+  }, [currentView, statsAnimated])
+
+  // Stats Counters Animation Effect
+  useEffect(() => {
+    if (statsAnimated) {
+      let c = 0
+      const cTimer = setInterval(() => {
+        c += 400
+        if (c >= 10000) {
+          setStatCustomers(10000)
+          clearInterval(cTimer)
+        } else {
+          setStatCustomers(c)
+        }
+      }, 30)
+
+      let e = 0
+      const eTimer = setInterval(() => {
+        e += 1
+        if (e >= 22) {
+          setStatExpertise(22)
+          clearInterval(eTimer)
+        } else {
+          setStatExpertise(e)
+        }
+      }, 40)
+
+      let a = 0
+      const aTimer = setInterval(() => {
+        a += 4
+        if (a >= 98) {
+          setStatApproval(98)
+          clearInterval(aTimer)
+        } else {
+          setStatApproval(a)
+        }
+      }, 30)
+
+      let p = 0
+      const pTimer = setInterval(() => {
+        p += 2
+        if (p >= 50) {
+          setStatPartners(50)
+          clearInterval(pTimer)
+        } else {
+          setStatPartners(p)
+        }
+      }, 35)
+
+      return () => {
+        clearInterval(cTimer)
+        clearInterval(eTimer)
+        clearInterval(aTimer)
+        clearInterval(pTimer)
+      }
+    }
+  }, [statsAnimated])
+
+  // Testimonials Auto-rotate
+  useEffect(() => {
+    if (currentView === 'home') {
+      const interval = setInterval(() => {
+        setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+      }, 6000)
+      return () => clearInterval(interval)
+    }
+  }, [currentView, testimonials.length])
+
+  // Toast notifications trigger helper
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg)
+    setShowToast(true)
+  }
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false)
+      }, 3500)
+      return () => clearTimeout(timer)
+    }
+  }, [showToast])
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
@@ -221,6 +369,13 @@ function App() {
           <div className="loading-logo-container">
             <img src={logoSrc} alt="Chantrea Travel Logo" className="loading-logo" />
           </div>
+        </div>
+      )}
+
+      {showToast && (
+        <div className={`floating-toast ${showToast ? 'active' : ''}`}>
+          <CheckCircle size={20} style={{ color: 'var(--accent-purple)' }} />
+          <span className="floating-toast-text">{toastMessage}</span>
         </div>
       )}
 
@@ -303,7 +458,7 @@ function App() {
         {currentView === 'home' ? (
           <>
             {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
-            <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
+            <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow" style={{ position: 'relative' }}>
               <div className="hero-card">
                 {/* Slideshow background images */}
                 <div className="slideshow">
@@ -356,6 +511,100 @@ function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Glassmorphic Travel Booking Widget */}
+              <div className="booking-widget-container">
+                <div className="booking-tabs">
+                  <button 
+                    className={`booking-tab-btn ${bookingTab === 'flights' ? 'active' : ''}`}
+                    onClick={() => setBookingTab('flights')}
+                  >
+                    <Plane size={16} />
+                    <span>Find Flights</span>
+                  </button>
+                  <button 
+                    className={`booking-tab-btn ${bookingTab === 'hotels' ? 'active' : ''}`}
+                    onClick={() => setBookingTab('hotels')}
+                  >
+                    <Hotel size={16} />
+                    <span>Find Hotels</span>
+                  </button>
+                </div>
+                
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (bookingTab === 'flights') {
+                      triggerToast(`Searching flights from ${bookingFrom || 'Phnom Penh'} to ${bookingTo || 'anywhere'}...`)
+                    } else {
+                      triggerToast(`Finding hotels in ${bookingTo || 'Cambodia'} for ${bookingGuests}...`)
+                    }
+                  }}
+                  className="booking-form-grid"
+                >
+                  <div className="booking-input-group">
+                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <MapPin size={14} />
+                      <span>{bookingTab === 'flights' ? 'From' : 'Destination'}</span>
+                    </label>
+                    <input 
+                      type="text" 
+                      placeholder={bookingTab === 'flights' ? 'City or Airport (e.g. Phnom Penh)' : 'Destination city or hotel'} 
+                      value={bookingFrom}
+                      onChange={(e) => setBookingFrom(e.target.value)}
+                      className="booking-input-field"
+                    />
+                  </div>
+                  
+                  <div className="booking-input-group">
+                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Users size={14} />
+                      <span>{bookingTab === 'flights' ? 'To' : 'Guests / Rooms'}</span>
+                    </label>
+                    {bookingTab === 'flights' ? (
+                      <input 
+                        type="text" 
+                        placeholder="City or Airport (e.g. Toronto)" 
+                        value={bookingTo}
+                        onChange={(e) => setBookingTo(e.target.value)}
+                        className="booking-input-field"
+                      />
+                    ) : (
+                      <select 
+                        value={bookingGuests}
+                        onChange={(e) => setBookingGuests(e.target.value)}
+                        className="booking-input-field"
+                        style={{ appearance: 'none', WebkitAppearance: 'none' }}
+                      >
+                        <option value="1 Guest">1 Guest, 1 Room</option>
+                        <option value="2 Guests">2 Guests, 1 Room</option>
+                        <option value="2 Guests, 2 Rooms">2 Guests, 2 Rooms</option>
+                        <option value="Family (3+ Guests)">Family (3+ Guests)</option>
+                      </select>
+                    )}
+                  </div>
+                  
+                  <div className="booking-input-group">
+                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Calendar size={14} />
+                      <span>Date</span>
+                    </label>
+                    <input 
+                      type="date" 
+                      value={bookingDate}
+                      onChange={(e) => setBookingDate(e.target.value)}
+                      className="booking-input-field"
+                    />
+                  </div>
+                  
+                  <div>
+                    <button type="submit" className="booking-submit-btn">
+                      <Search size={16} />
+                      <span>{bookingTab === 'flights' ? 'Search Flights' : 'Search Hotels'}</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
             </section>
 
             {/* Outer Site Container for Page Content */}
@@ -372,7 +621,7 @@ function App() {
                 </div>
 
                 {/* Service 1: Worldwide Flight Tickets */}
-                <div id="services-flights" className="service-block">
+                <div id="services-flights" className="service-block reveal-element">
                   <div className="service-row">
                     {/* Left side: Information block */}
                     <div className="service-col-info">
@@ -419,7 +668,7 @@ function App() {
                 </div>
 
                 {/* Service 2: Global Hotel Reservations */}
-                <div id="services-hotels" className="service-block">
+                <div id="services-hotels" className="service-block reveal-element">
                   <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
                     {/* Right side: Information block */}
                     <div className="service-col-info">
@@ -466,7 +715,7 @@ function App() {
                 </div>
 
                 {/* Service 3: Visa & Immigration Services (Unified Block) */}
-                <div id="services-visas" className="service-block">
+                <div id="services-visas" className="service-block reveal-element">
                   {/* Header inside the box */}
                   <div style={{ padding: '48px 48px 32px 48px', borderBottom: '1px solid var(--border-light)' }}>
                     <span className="service-block-tag">Visa & Immigration</span>
@@ -600,7 +849,7 @@ function App() {
               </section>
 
               {/* Latest Blog Summary Section (Between Visa Support and About Partner) */}
-              <section className="section" id="home-latest-blog" aria-label="Latest Travel Blog Post Summary" style={{ borderTop: '1px solid var(--border-light)', paddingTop: '80px', marginTop: '40px' }}>
+              <section className="section reveal-element" id="home-latest-blog" aria-label="Latest Travel Blog Post Summary" style={{ borderTop: '1px solid var(--border-light)', paddingTop: '80px', marginTop: '40px' }}>
                 <div className="section-header">
                   <span className="section-tag">Travel Insights & Stories</span>
                   <h2 className="section-title">Latest Travel Guide</h2>
@@ -648,6 +897,74 @@ function App() {
                         </a>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Stats Counters Section */}
+              <section className="section reveal-element" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+                <div className="stats-reveal-row reveal-element">
+                  <div className="stat-reveal-card">
+                    <div className="stat-reveal-num">{statCustomers >= 10000 ? '10K+' : statCustomers.toLocaleString()}</div>
+                    <div className="stat-reveal-label">Happy Travelers</div>
+                  </div>
+                  <div className="stat-reveal-card">
+                    <div className="stat-reveal-num">{statExpertise}+</div>
+                    <div className="stat-reveal-label">Years Experience</div>
+                  </div>
+                  <div className="stat-reveal-card">
+                    <div className="stat-reveal-num">{statApproval}%</div>
+                    <div className="stat-reveal-label">Visa Approval</div>
+                  </div>
+                  <div className="stat-reveal-card">
+                    <div className="stat-reveal-num">{statPartners}+</div>
+                    <div className="stat-reveal-label">Global Partners</div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Testimonials Carousel Section */}
+              <section className="section testimonials-section reveal-element" id="testimonials">
+                <div className="section-header">
+                  <span className="section-tag">Client Reviews</span>
+                  <h2 className="section-title">What Our Travelers Say</h2>
+                  <p className="section-desc">
+                    Read the verified reviews and stories from individuals and families who traveled worldwide with Chantrea Travel support.
+                  </p>
+                </div>
+                
+                <div className="testimonial-slider-container">
+                  {testimonials.map((t, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`testimonial-card-slide ${idx === activeTestimonial ? 'active' : ''}`}
+                    >
+                      <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star key={i} size={16} fill="var(--accent-purple)" color="var(--accent-purple)" />
+                        ))}
+                      </div>
+                      <p className="testimonial-quote">{t.quote}</p>
+                      <div className="testimonial-author-info">
+                        <img src={t.avatar} alt={t.name} className="testimonial-author-avatar" />
+                        <span className="testimonial-author-name">{t.name}</span>
+                        <span className="testimonial-author-route">
+                          <MapPin size={12} />
+                          {t.route}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <div className="testimonial-dots">
+                    {testimonials.map((_, idx) => (
+                      <button 
+                        key={idx}
+                        className={`testimonial-dot-btn ${idx === activeTestimonial ? 'active' : ''}`}
+                        onClick={() => setActiveTestimonial(idx)}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      ></button>
+                    ))}
                   </div>
                 </div>
               </section>
