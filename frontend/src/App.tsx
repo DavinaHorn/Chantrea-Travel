@@ -831,7 +831,7 @@ function App() {
 
     if (view === 'blogs') {
       return (
-        <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+        <div className="container page-container-padding">
           <div className="section-header" style={{ marginBottom: '48px' }}>
             <span className="section-tag">Travel Guides & Advice</span>
             <h1 className="section-title">Chantrea Travel Blog</h1>
@@ -894,7 +894,7 @@ function App() {
 
     if (view === 'about') {
       return (
-        <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+        <div className="container page-container-padding">
           <section id="about" className="section" style={{ marginBottom: 0 }}>
             <div className="about-split">
               {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
@@ -911,19 +911,8 @@ function App() {
                 <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
                 
                 <p className="about-paragraph">
-                  At Chantrea Travel, we are committed to making international travel simple, convenient, and stress-free. Whether you are traveling for business, leisure, education, or family visits, our experienced team provides professional travel solutions tailored to your needs.
+                  Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
                 </p>
-                <p className="about-paragraph">
-                  From planning your flight itinerary to booking accommodations and assisting with complex travel documentation, we are dedicated to delivering reliable service and exceptional customer support every step of the way. Your journey begins with us—connecting you to destinations around the world with confidence and care.
-                </p>
-
-                {/* Professional Experience Section */}
-                <div className="about-founder-bio">
-                  <h3>Professional Experience</h3>
-                  <p className="about-paragraph">
-                    Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
-                  </p>
-                </div>
               </div>
             </div>
           </section>
@@ -946,7 +935,7 @@ function App() {
       const blog = SAMPLE_BLOGS.find(b => b.id === activeBlogPostId);
       if (!blog) {
         return (
-          <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+          <div className="container page-container-padding">
             <div style={{ textAlign: 'center', padding: '80px 0' }}>
               <h2 className="section-title">Blog Post Not Found</h2>
               <p className="section-desc" style={{ marginBottom: '32px' }}>The blog post you are looking for does not exist.</p>
@@ -956,7 +945,7 @@ function App() {
         );
       }
       return (
-        <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+        <div className="container page-container-padding">
           <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <div style={{ marginBottom: '32px' }}>
               <span className="section-tag" style={{ marginBottom: '16px' }}>{blog.date} • By {blog.author}</span>

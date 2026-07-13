@@ -767,6 +767,12 @@ body {
   color: var(--text-primary);
 }
 
+/* Page container padding for interior pages to clear fixed header */
+.page-container-padding {
+  padding-top: 140px;
+  padding-bottom: 60px;
+}
+
 /* 
  * About Section Layout
  * Split Story: Left Column Portrait, Right Column narrative text.
@@ -1096,6 +1102,10 @@ body {
   
   .logo-img {
     height: 36px;
+  }
+
+  .page-container-padding {
+    padding-top: 80px;
   }
 
   .hero-card {
