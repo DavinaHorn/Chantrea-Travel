@@ -11,13 +11,6 @@ import {
   ArrowRight
 } from 'lucide-react'
 
-interface Slide {
-  image: string
-  subtitle: string
-  title: string
-  desc: string
-}
-
 interface BlogPost {
   id: string
   title: string
@@ -190,7 +183,6 @@ const LastFlightCard = ({ navigate }: LastFlightCardProps) => {
 }
 
 function App() {
-  const [activeSlide, setActiveSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [path, setPath] = useState(() => window.location.pathname)
   const [viewState, setViewState] = useState(() => {
@@ -210,35 +202,6 @@ function App() {
   const [statApproval, setStatApproval] = useState(0)
   const [statPartners, setStatPartners] = useState(0)
   const [statsAnimated, setStatsAnimated] = useState(false)
-
-  const slides: Slide[] = [
-    {
-      image: '/hero_flight.webp',
-      subtitle: 'Worldwide Flight Booking',
-      title: 'Travel the World with Confidence',
-      desc: 'Chantrea Travel offers flight ticket booking through major international airlines, finding the most suitable routes and competitive fares for your journey.'
-    },
-    {
-      image: '/hero_hotel.webp',
-      subtitle: 'Global Hotel Reservations',
-      title: 'Comfortable Stays Anywhere',
-      desc: 'From affordable boutique hotels to luxury resorts and business suites, we arrange accommodations that suit your preferences, budget, and travel style.'
-    },
-    {
-      image: '/hero_visa.webp',
-      subtitle: 'Visa & Immigration Assistance',
-      title: 'Expert Visa Consultation',
-      desc: 'Navigating visa applications can be complex. Our experienced team provides professional assistance to prepare your documents and guide you at every step.'
-    }
-  ]
-
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [slides.length])
 
   // Handle browser popstate (back/forward buttons)
   useEffect(() => {
@@ -460,43 +423,28 @@ function App() {
     if (view === 'home') {
       return (
         <>
-          {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
-          <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
+          {/* Hero Video Section - Full Screen Edge-to-Edge */}
+          <section className="hero-wrapper" aria-label="Featured Travel Services Video">
             <div className="hero-card">
-              {/* Slideshow background images */}
-              <div className="slideshow">
-                {slides.map((slide, index) => (
-                  <div 
-                    key={index} 
-                    className={`slide ${index === activeSlide ? 'active' : ''}`}
-                    aria-hidden={index !== activeSlide}
-                  >
-                    <img 
-                      src={slide.image} 
-                      alt={slide.subtitle} 
-                      className="slide-img" 
-                      loading={index === 0 ? 'eager' : 'lazy'} 
-                    />
-                  </div>
-                ))}
-                <div className="slideshow-overlay"></div>
-              </div>
+              {/* Background Video */}
+              <video
+                src="/CTT_HOMEPAGE-VID.mp4"
+                className="hero-video"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+              <div className="hero-overlay"></div>
 
               {/* Overlaid text aligned to standard container width */}
               <div className="container hero-content-container">
                 <div className="hero-content">
-                  <span className="hero-subtitle">{slides[activeSlide].subtitle}</span>
                   <h1 className="hero-title">
-                    {slides[activeSlide].title.split(' ').map((word, i) => {
-                      if (i === slides[activeSlide].title.split(' ').length - 1) {
-                        return <span key={i}>{word}</span>;
-                      }
-                      return word + ' ';
-                    })}
+                    Explore the World with<br />
+                    <span>CHANTREA Travel</span>
                   </h1>
-                  <p className="hero-desc">{slides[activeSlide].desc}</p>
                 </div>
-
               </div>
             </div>
           </section>
