@@ -477,7 +477,7 @@ function App() {
                 }}
               >
                 <span className="hero-video-tagline">EXPLORE THE WORLD WITH</span>
-                <img src="/CTT_LOGO-HW.webp" alt="Chantrea Travel Logo" className="hero-video-logo" />
+                <img src="/CTT_LOGO-HW.webp" alt="CHANTREA Travel Logo" className="hero-video-logo" />
               </div>
 
               <div className="hero-top-vignette"></div>
@@ -494,7 +494,7 @@ function App() {
                 <span className="section-tag">What We Do</span>
                 <h2 className="section-title">Our Professional Services</h2>
                 <p className="section-desc">
-                  Chantrea Travel provides comprehensive, reliable travel documentation and booking services to connect you to global destinations with confidence.
+                  CHANTREA Travel provides comprehensive, reliable travel documentation and booking services to connect you to global destinations with confidence.
                 </p>
               </div>
 
@@ -620,7 +620,7 @@ function App() {
                   <span className="service-block-tag">Visa & Immigration</span>
                   <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa & Immigration Support</h3>
                   <p className="service-block-text" style={{ marginTop: '12px' }}>
-                    Chantrea Travel provides professional assistance and documentation guidance for all your global travel visa and immigration requirements.
+                    CHANTREA Travel provides professional assistance and documentation guidance for all your global travel visa and immigration requirements.
                   </p>
                 </div>
 
@@ -655,7 +655,7 @@ function App() {
                       China & Vietnam Visa Services
                     </h4>
                     <p className="service-block-text" style={{ marginBottom: '20px' }}>
-                      Chantrea Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
+                      CHANTREA Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
                     </p>
                     <ul className="service-block-list">
                       <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
@@ -834,7 +834,7 @@ function App() {
         <div className="container page-container-padding">
           <div className="section-header" style={{ marginBottom: '48px' }}>
             <span className="section-tag">Travel Guides & Advice</span>
-            <h1 className="section-title">Chantrea Travel Blog</h1>
+            <h1 className="section-title">CHANTREA Travel Blog</h1>
             <p className="section-desc">
               Explore our collections of expert guides, top destinations, and practical tips for your next international journey.
             </p>
@@ -899,7 +899,7 @@ function App() {
             <div className="about-split">
               {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
               <div className="about-founder-container">
-                <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
+                <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
                 <div className="about-founder-info">
                   <h4 className="about-founder-name">Davina Horn</h4>
                   <p className="about-founder-title">Owner & Managing Director</p>
@@ -911,7 +911,7 @@ function App() {
                 <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
                 
                 <p className="about-paragraph">
-                  Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
+                  Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>CHANTREA Travel</strong>.
                 </p>
               </div>
             </div>
@@ -1012,11 +1012,11 @@ function App() {
                 e.preventDefault(); 
                 navigate('/');
               }} 
-              aria-label="Chantrea Travel Home"
+              aria-label="CHANTREA Travel Home"
             >
               <img 
                 src={logoSrc} 
-                alt="Chantrea Travel Logo" 
+                alt="CHANTREA Travel Logo" 
                 className="logo-img" 
                 style={{
                   opacity: viewState.currentView === 'home' ? Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) : 1,
@@ -1099,8 +1099,8 @@ function App() {
             <div className="contact-layout">
               {/* Brand Info */}
               <div className="contact-brand">
-                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); navigate('/'); }} aria-label="Chantrea Travel Home">
-                  <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
+                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); navigate('/'); }} aria-label="CHANTREA Travel Home">
+                  <img src={logoSrc} alt="CHANTREA Travel Logo" className="logo-img" />
                 </a>
                 <p className="contact-brand-desc">
                   Connecting you to global destinations with confidence and care. Honest advice, reliable flight bookings, global hotel reservations, and visa processing services.
@@ -1165,7 +1165,7 @@ function App() {
             </div>
 
             <div className="footer-bottom">
-              <p>&copy; {new Date().getFullYear()} Chantrea Travel. All rights reserved. Professional Travel & Visa Services.</p>
+              <p>&copy; {new Date().getFullYear()} CHANTREA Travel. All rights reserved. Professional Travel & Visa Services.</p>
             </div>
           </section>
 
