@@ -1205,48 +1205,66 @@ header, main, section, footer, div, p, h1, h2, h3, h4, a, li, button, span, svg,
 }
 
 /* Premium Page Transition Loading Overlay */
-.loading-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-primary);
+/* Premium Page Transition Container */
+.page-transition-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.loading-overlay.active {
-  opacity: 1;
-  visibility: visible;
+/* Base class for page views */
+.page-view-wrapper {
+  width: 100%;
+  will-change: transform;
 }
 
-.loading-logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+/* Old view that is sliding out */
+.page-view-exit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.loading-logo {
-  height: 80px;
-  width: auto;
-  object-fit: contain;
-  animation: logoPulse 1.8s infinite ease-in-out;
+/* Forward transition: New page enters from right, old page exits to left */
+.slide-forward-enter {
+  animation: slideInFromRight 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 2;
+}
+.slide-forward-exit {
+  animation: slideOutToLeft 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes logoPulse {
-  0%, 100% {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
+/* Backward transition: New page enters from left, old page exits to right */
+.slide-backward-enter {
+  animation: slideInFromLeft 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 2;
+}
+.slide-backward-exit {
+  animation: slideOutToRight 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOutToLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-30%); }
+}
+
+@keyframes slideInFromLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideOutToRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(30%); }
 }
 
 /* Cinematic Slide Zoom */
