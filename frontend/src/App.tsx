@@ -200,33 +200,6 @@ function App() {
   const [logoTransitionProgress, setLogoTransitionProgress] = useState(0)
   const logoRef = useRef<HTMLDivElement | null>(null)
 
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const [showVideoLoader, setShowVideoLoader] = useState(false)
-  const [videoLoaderFadeOut, setVideoLoaderFadeOut] = useState(false)
-
-  useEffect(() => {
-    const isHome = viewState.currentView === 'home'
-    if (isHome && !isVideoPlaying) {
-      setShowVideoLoader(true)
-      setVideoLoaderFadeOut(false)
-
-      const safetyTimer = setTimeout(() => {
-        setIsVideoPlaying(true)
-      }, 6000)
-      return () => clearTimeout(safetyTimer)
-    }
-  }, [viewState.currentView, isVideoPlaying])
-
-  useEffect(() => {
-    if (isVideoPlaying && showVideoLoader) {
-      setVideoLoaderFadeOut(true)
-      const timer = setTimeout(() => {
-        setShowVideoLoader(false)
-      }, 500)
-      return () => clearTimeout(timer)
-    }
-  }, [isVideoPlaying, showVideoLoader])
-
   useEffect(() => {
     const handleNavbarScroll = () => {
       setIsScrolled(window.scrollY > 20)
@@ -490,7 +463,6 @@ function App() {
                 loop
                 muted
                 playsInline
-                onPlaying={() => setIsVideoPlaying(true)}
               />
 
               {/* Centered Tagline & Logo Overlaid on Video */}
@@ -1039,15 +1011,6 @@ function App() {
 
   return (
     <>
-      {/* Video Buffer Loading Screen */}
-      {showVideoLoader && (
-        <div className={`video-loader-screen ${videoLoaderFadeOut ? 'fade-out' : ''}`}>
-          <div className="loader-spinner-container">
-            <div className="loader-spinner"></div>
-            <span className="loader-text">Loading Chantrea Travel...</span>
-          </div>
-        </div>
-      )}
       {/* Header & Navbar */}
       <header className={`header ${viewState.currentView === 'home' && !isScrolled ? 'header-transparent' : ''}`}>
         <div className="container">
