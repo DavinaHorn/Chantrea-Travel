@@ -7,8 +7,6 @@ import {
   ChevronRight, 
   Menu, 
   X, 
-  Sun,
-  Moon,
   ChevronRightSquare,
   ArrowRight
 } from 'lucide-react'
@@ -99,10 +97,6 @@ const getRouteIndex = (view: string) => {
 }
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'light'
-  })
-  
   const [activeSlide, setActiveSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [path, setPath] = useState(() => window.location.pathname)
@@ -145,10 +139,6 @@ function App() {
     }
   ]
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
-  }, [theme])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -315,9 +305,6 @@ function App() {
 
 
 
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
-  }
 
   const navigate = (targetPath: string, anchorId?: string) => {
     const currentPath = window.location.pathname
@@ -922,7 +909,7 @@ function App() {
     return null;
   }
 
-  const logoSrc = theme === 'dark' ? '/CTT_LOGO-HB.webp' : '/CTT_LOGO-HP.webp'
+  const logoSrc = '/CTT_LOGO-HP.webp'
 
   return (
     <>
@@ -975,15 +962,6 @@ function App() {
                   </a>
                 </li>
               </ul>
-
-              {/* Theme Toggle Switch */}
-              <button 
-                className="theme-toggle-btn" 
-                onClick={toggleTheme}
-                aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              >
-                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
 
               {/* Mobile Menu Icon */}
               <button 
