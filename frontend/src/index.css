@@ -232,8 +232,7 @@ body {
 .hero-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  max-height: 90vh; /* Keeps it visually centered in non-fullscreen desktop ratios */
+  height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1090,7 +1089,6 @@ body {
   
   .hero-card {
     padding: 0;
-    aspect-ratio: auto;
     height: 100vh;
   }
   
