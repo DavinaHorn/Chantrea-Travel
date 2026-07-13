@@ -1594,3 +1594,246 @@ body {
   font-weight: 600;
   color: var(--text-primary);
 }
+
+/* Flights Sticky Stacking Cards Section */
+.flights-stack-section {
+  width: 100%;
+  margin-bottom: 96px;
+  position: relative;
+}
+
+.flights-stack-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 0;
+}
+
+.flight-stack-card {
+  position: sticky;
+  top: 130px; /* Header is 90px + 40px padding */
+  height: 500px;
+  width: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.04), 0 20px 50px rgba(10, 25, 47, 0.12);
+  background-color: var(--bg-card);
+  margin-bottom: 30vh; /* creates scroll track height */
+  transform-origin: center top;
+  display: flex;
+  align-items: flex-end;
+  border: 1px solid var(--border-light);
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Compensate card height on stack so they overlap slightly smaller or flat */
+.flight-stack-card:nth-child(1) { z-index: 1; }
+.flight-stack-card:nth-child(2) { z-index: 2; }
+.flight-stack-card:nth-child(3) { z-index: 3; }
+.flight-stack-card:nth-child(4) { z-index: 4; }
+.flight-stack-card:nth-child(5) { z-index: 5; }
+.flight-stack-card:nth-child(6) { z-index: 6; margin-bottom: 0; }
+
+/* Custom Reveal behavior integrating with scroll reveal observer */
+.flight-stack-card.reveal-element {
+  opacity: 0;
+  transform: translateY(100px);
+}
+
+.flight-stack-card.reveal-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card Image Background */
+.card-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  transition: transform 0.6s ease;
+}
+
+.flight-stack-card:hover .card-bg-img {
+  transform: scale(1.03);
+}
+
+/* Card Overlay */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 25, 47, 0.95) 0%,
+    rgba(10, 25, 47, 0.4) 60%,
+    rgba(10, 25, 47, 0.1) 100%
+  );
+  z-index: 2;
+}
+
+.card-overlay.dark-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(10, 25, 47, 0.95) 0%,
+    rgba(10, 25, 47, 0.8) 50%,
+    rgba(10, 25, 47, 0.4) 100%
+  );
+}
+
+/* Card Content Overlay */
+.card-content {
+  position: relative;
+  z-index: 3;
+  padding: 48px;
+  width: 100%;
+  color: var(--text-on-dark);
+}
+
+.card-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* Last Card Styles */
+.flight-stack-card.last-card {
+  align-items: center;
+  background-color: #0b0f19;
+}
+
+.last-card-slideshow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.last-card-slide-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1;
+}
+
+.last-card-slide-img.active {
+  opacity: 0.5; /* dimmed so text stands out */
+  z-index: 2;
+}
+
+.last-card-content {
+  max-width: 680px;
+  text-align: left;
+}
+
+.last-card-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.last-card-title {
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.last-card-text {
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.65;
+  color: rgba(248, 250, 252, 0.8);
+  margin-bottom: 24px;
+}
+
+.last-card-list {
+  list-style: none;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.last-card-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: rgba(248, 250, 252, 0.9);
+}
+
+.last-card-item svg {
+  color: var(--accent-teal);
+}
+
+.last-card-btn {
+  background-color: var(--accent-teal);
+  color: #0b0f19;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  border: 1px solid var(--accent-teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+}
+
+.last-card-btn:hover {
+  transform: translateY(-2px);
+  background-color: #0f9f8f;
+  border-color: #0f9f8f;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
+}
+
+/* Responsiveness adjustments */
+@media (max-width: 991px) {
+  .card-overlay.dark-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(10, 25, 47, 0.95) 0%,
+      rgba(10, 25, 47, 0.7) 100%
+    );
+  }
+}
+
+@media (max-width: 768px) {
+  .flight-stack-card {
+    height: 520px; /* Portrait card on mobile */
+    margin-bottom: 120px;
+  }
+  
+  .card-content {
+    padding: 32px;
+  }
+  
+  .last-card-list {
+    margin-bottom: 24px;
+  }
+}
