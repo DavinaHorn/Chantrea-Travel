@@ -11,9 +11,6 @@ import {
   Moon,
   ChevronRightSquare,
   ArrowRight,
-  Search,
-  Calendar,
-  Users,
   Star
 } from 'lucide-react'
 
@@ -105,12 +102,6 @@ function App() {
   const [fadeClass, setFadeClass] = useState('active')
 
   // Redesign state variables
-  const [bookingFrom, setBookingFrom] = useState('')
-  const [bookingTo, setBookingTo] = useState('')
-  const [bookingDate, setBookingDate] = useState('')
-  const [bookingGuests, setBookingGuests] = useState('1 Traveler')
-  const [toastMessage, setToastMessage] = useState('')
-  const [showToast, setShowToast] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [statCustomers, setStatCustomers] = useState(0)
   const [statExpertise, setStatExpertise] = useState(0)
@@ -324,20 +315,7 @@ function App() {
     }
   }, [currentView, testimonials.length])
 
-  // Toast notifications trigger helper
-  const triggerToast = (msg: string) => {
-    setToastMessage(msg)
-    setShowToast(true)
-  }
 
-  useEffect(() => {
-    if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(false)
-      }, 3500)
-      return () => clearTimeout(timer)
-    }
-  }, [showToast])
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
@@ -368,12 +346,7 @@ function App() {
         </div>
       )}
 
-      {showToast && (
-        <div className={`floating-toast ${showToast ? 'active' : ''}`}>
-          <CheckCircle size={20} style={{ color: 'var(--accent-purple)' }} />
-          <span className="floating-toast-text">{toastMessage}</span>
-        </div>
-      )}
+
 
       {/* Header & Navbar */}
       <header className="header">
@@ -454,7 +427,7 @@ function App() {
         {currentView === 'home' ? (
           <>
             {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
-            <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow" style={{ position: 'relative' }}>
+            <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
               <div className="hero-card">
                 {/* Slideshow background images */}
                 <div className="slideshow">
@@ -491,83 +464,6 @@ function App() {
                   </div>
 
                 </div>
-              </div>
-
-              {/* Glassmorphic Travel Booking Widget */}
-              <div className="booking-widget-container">
-                <form 
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    triggerToast(`Searching flights from ${bookingFrom || 'Phnom Penh'} to ${bookingTo || 'anywhere'} for ${bookingGuests}...`)
-                  }}
-                  className="booking-form-grid"
-                >
-                  <div className="booking-input-group">
-                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <MapPin size={14} />
-                      <span>From</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      placeholder="City or Airport (e.g. Phnom Penh)" 
-                      value={bookingFrom}
-                      onChange={(e) => setBookingFrom(e.target.value)}
-                      className="booking-input-field"
-                    />
-                  </div>
-                  
-                  <div className="booking-input-group">
-                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <MapPin size={14} />
-                      <span>To</span>
-                    </label>
-                    <input 
-                      type="text" 
-                      placeholder="City or Airport (e.g. Toronto)" 
-                      value={bookingTo}
-                      onChange={(e) => setBookingTo(e.target.value)}
-                      className="booking-input-field"
-                    />
-                  </div>
-                  
-                  <div className="booking-input-group">
-                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Users size={14} />
-                      <span>Travelers</span>
-                    </label>
-                    <select 
-                      value={bookingGuests}
-                      onChange={(e) => setBookingGuests(e.target.value)}
-                      className="booking-input-field"
-                      style={{ appearance: 'none', WebkitAppearance: 'none' }}
-                    >
-                      <option value="1 Traveler">1 Traveler</option>
-                      <option value="2 Travelers">2 Travelers</option>
-                      <option value="3 Travelers">3 Travelers</option>
-                      <option value="4+ Travelers">4+ Travelers</option>
-                    </select>
-                  </div>
-                  
-                  <div className="booking-input-group">
-                    <label className="booking-input-label" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Calendar size={14} />
-                      <span>Date</span>
-                    </label>
-                    <input 
-                      type="date" 
-                      value={bookingDate}
-                      onChange={(e) => setBookingDate(e.target.value)}
-                      className="booking-input-field"
-                    />
-                  </div>
-                  
-                  <div>
-                    <button type="submit" className="booking-submit-btn">
-                      <Search size={16} />
-                      <span>Search Flights</span>
-                    </button>
-                  </div>
-                </form>
               </div>
             </section>
 
