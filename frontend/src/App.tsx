@@ -464,25 +464,23 @@ function App() {
                 muted
                 playsInline
               />
-              <div className="hero-bottom-fade"></div>
-            </div>
 
-            {/* Tagline & Logo below the video */}
-            <div className="container hero-below-container">
-              <span className="hero-below-tagline">EXPLORE THE WORLD WITH</span>
+              {/* Centered Tagline & Logo Overlaid on Video */}
               <div 
                 ref={logoRef} 
-                className="hero-below-logo-wrapper"
+                className="hero-video-overlay-content"
                 style={{
                   opacity: Math.max(1 - logoTransitionProgress * 1.25, 0),
-                  transform: `scale(${1 - logoTransitionProgress * 0.15}) translateY(${-logoTransitionProgress * 20}px)`,
+                  transform: `translate(-50%, -50%) scale(${1 - logoTransitionProgress * 0.15}) translateY(${-logoTransitionProgress * 20}px)`,
                   transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
-                  willChange: 'opacity, transform',
-                  marginTop: '16px'
+                  willChange: 'opacity, transform'
                 }}
               >
-                <img src="/CTT_LOGO-HP.webp" alt="Chantrea Travel Logo" className="hero-below-logo" />
+                <span className="hero-video-tagline">EXPLORE THE WORLD WITH</span>
+                <img src="/CTT_LOGO-HW.webp" alt="Chantrea Travel Logo" className="hero-video-logo" />
               </div>
+
+              <div className="hero-bottom-fade"></div>
             </div>
           </section>
 

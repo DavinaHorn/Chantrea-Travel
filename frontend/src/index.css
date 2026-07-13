@@ -94,8 +94,33 @@ body {
   box-shadow: none;
 }
 
+.header.header-transparent .nav-menu {
+  background-color: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+  padding: 6px 10px 6px 28px;
+  gap: 28px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.header.header-transparent .nav-link {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.header.header-transparent .nav-link:hover {
+  color: #FFFFFF;
+}
+
 [data-theme="dark"] .header.header-transparent {
   background-color: transparent;
+}
+
+[data-theme="dark"] .header.header-transparent .nav-menu {
+  background-color: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .navbar {
@@ -234,39 +259,40 @@ body {
   z-index: 1;
 }
 
-/* Hero Below Video Styling */
-.hero-below-container {
+/* Hero Video Overlay Content */
+.hero-video-overlay-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding-top: 48px;
-  padding-bottom: 24px;
+  z-index: 3;
+  width: 90%;
+  max-width: 800px;
+  pointer-events: none;
 }
 
-.hero-below-tagline {
+.hero-video-tagline {
   font-family: var(--font-sans);
-  font-size: clamp(12px, 1.2vw, 14px);
+  font-size: clamp(12px, 1.4vw, 15px);
   font-weight: 700;
-  letter-spacing: 2.5px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--accent-purple);
-  opacity: 0.9;
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  opacity: 0.95;
+  margin-bottom: 16px;
 }
 
-.hero-below-logo-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 100%;
-  width: 100%;
-}
-
-.hero-below-logo {
-  height: clamp(56px, 7.5vw, 84px);
+.hero-video-logo {
+  height: clamp(64px, 10vw, 110px);
   width: auto;
   object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
 }
 
 .hero-bottom-fade {
@@ -1060,12 +1086,7 @@ body {
   .hero-card {
     padding: 0;
     aspect-ratio: auto;
-    height: 50vh;
-  }
-  
-  .hero-below-container {
-    padding-top: 32px;
-    padding-bottom: 16px;
+    height: 100vh;
   }
   
   .hero-badges-row {
