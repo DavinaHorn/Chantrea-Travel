@@ -84,6 +84,12 @@ const SAMPLE_BLOGS: BlogPost[] = [
   }
 ]
 
+const getPageView = (hashString: string) => {
+  if (hashString === '#blogs') return 'blogs'
+  if (hashString.startsWith('#blog/')) return 'blog-detail'
+  return 'home'
+}
+
 function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'light'
@@ -92,6 +98,9 @@ function App() {
   const [activeSlide, setActiveSlide] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [hash, setHash] = useState(window.location.hash)
+  const [currentView, setCurrentView] = useState(() => getPageView(window.location.hash))
+  const [loading, setLoading] = useState(true)
+  const [fadeClass, setFadeClass] = useState('')
 
   const slides: Slide[] = [
     {
@@ -134,6 +143,38 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
+  // Initial load transition
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFadeClass('fade-out')
+      const removeTimer = setTimeout(() => setLoading(false), 400)
+      return () => clearTimeout(removeTimer)
+    }, 1200)
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Route-change loading transition
+  useEffect(() => {
+    const newView = getPageView(hash)
+    if (newView !== currentView) {
+      setLoading(true)
+      setFadeClass('')
+      
+      const changeViewTimer = setTimeout(() => {
+        setCurrentView(newView)
+        
+        const fadeTimer = setTimeout(() => {
+          setFadeClass('fade-out')
+          const removeTimer = setTimeout(() => setLoading(false), 400)
+          return () => clearTimeout(removeTimer)
+        }, 500)
+        return () => clearTimeout(fadeTimer)
+      }, 200)
+      
+      return () => clearTimeout(changeViewTimer)
+    }
+  }, [hash, currentView])
+
   useEffect(() => {
     const currentHash = window.location.hash
     if (currentHash && !currentHash.startsWith('#blogs') && !currentHash.startsWith('#blog/')) {
@@ -169,6 +210,15 @@ function App() {
 
   return (
     <>
+      {loading && (
+        <div className={`loading-overlay ${fadeClass}`}>
+          <div className="loading-logo-container">
+            <img src={logoSrc} alt="Chantrea Travel Logo" className="loading-logo" />
+            <div className="loading-spinner"></div>
+          </div>
+        </div>
+      )}
+
       {/* Header & Navbar */}
       <header className="header">
         <div className="container">
@@ -245,7 +295,7 @@ function App() {
       {/* Main Content */}
       <main style={{ flexGrow: 1 }}>
         
-        {(!hash || (!hash.startsWith('#blogs') && !hash.startsWith('#blog/'))) ? (
+        {currentView === 'home' ? (
           <>
             {/* Hero Slideshow Section - Full Screen Edge-to-Edge */}
             <section className="hero-wrapper" aria-label="Featured Travel Services Slideshow">
@@ -632,7 +682,7 @@ function App() {
               </section>
             </div>
           </>
-        ) : hash === '#blogs' ? (
+        ) : currentView === 'blogs' ? (
           <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
             <div className="section-header" style={{ marginBottom: '48px' }}>
               <span className="section-tag">Travel Guides & Advice</span>
