@@ -196,6 +196,16 @@ function App() {
   })
   const transitionTimerRef = useRef<any>(null)
 
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleNavbarScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleNavbarScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleNavbarScroll)
+  }, [])
+
   // Redesign state variables
   const [statCustomers, setStatCustomers] = useState(0)
   const [statExpertise, setStatExpertise] = useState(0)
@@ -435,17 +445,12 @@ function App() {
                 muted
                 playsInline
               />
-              <div className="hero-overlay"></div>
+            </div>
 
-              {/* Overlaid text aligned to standard container width */}
-              <div className="container hero-content-container">
-                <div className="hero-content">
-                  <h1 className="hero-title">
-                    Explore the World with<br />
-                    <span>CHANTREA Travel</span>
-                  </h1>
-                </div>
-              </div>
+            {/* Tagline & Title below the video */}
+            <div className="container hero-below-container">
+              <span className="hero-below-tagline">EXPLORE THE WORLD WITH</span>
+              <h1 className="hero-below-title">CHANTREA Travel</h1>
             </div>
           </section>
 
@@ -979,7 +984,7 @@ function App() {
 
 
       {/* Header & Navbar */}
-      <header className="header">
+      <header className={`header ${viewState.currentView === 'home' && !isScrolled ? 'header-transparent' : ''}`}>
         <div className="container">
           <nav className="navbar" role="navigation" aria-label="Main Navigation">
             {/* Left: Brand Logo */}
