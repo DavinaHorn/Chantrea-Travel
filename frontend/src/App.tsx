@@ -201,6 +201,15 @@ function App() {
   const logoRef = useRef<HTMLDivElement | null>(null)
   const [aboutScrollProgress, setAboutScrollProgress] = useState(0)
   const homepageAboutRef = useRef<HTMLDivElement | null>(null)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -220,18 +229,14 @@ function App() {
       if (homepageAboutRef.current) {
         const rect = homepageAboutRef.current.getBoundingClientRect()
         const viewportHeight = window.innerHeight
-        const isDesktop = window.innerWidth > 768
+        const mobileView = window.innerWidth <= 768
         
-        if (isDesktop) {
-          const startTrigger = viewportHeight * 0.95
-          const endTrigger = viewportHeight * 0.25
-          const distance = startTrigger - endTrigger
-          const currentPos = rect.top
-          const progress = Math.min(Math.max((startTrigger - currentPos) / distance, 0), 1)
-          setAboutScrollProgress(progress)
-        } else {
-          setAboutScrollProgress(1)
-        }
+        const startTrigger = viewportHeight * 0.95
+        const endTrigger = mobileView ? viewportHeight * 0.45 : viewportHeight * 0.25
+        const distance = startTrigger - endTrigger
+        const currentPos = rect.top
+        const progress = Math.min(Math.max((startTrigger - currentPos) / distance, 0), 1)
+        setAboutScrollProgress(progress)
       }
     }
     
@@ -777,9 +782,13 @@ function App() {
                 <div 
                   className="about-founder-container homepage-founder-container"
                   style={{
-                    transform: `translateX(${(1 - aboutScrollProgress) * 28}%) scale(${1 + (1 - aboutScrollProgress) * 0.15})`,
+                    transform: isMobile 
+                      ? `translateY(${(1 - aboutScrollProgress) * 50}px)` 
+                      : `translateX(${(1 - aboutScrollProgress) * 28}%) scale(${1 + (1 - aboutScrollProgress) * 0.15})`,
+                    opacity: isMobile ? aboutScrollProgress : 1,
                     transformOrigin: 'center center',
-                    willChange: 'transform'
+                    willChange: 'transform, opacity',
+                    transition: 'transform 0.15s ease-out, opacity 0.15s ease-out'
                   }}
                 >
                   <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
@@ -800,7 +809,7 @@ function App() {
                 >
                   <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
                   <p className="about-paragraph">
-                    Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>CHANTREA Travel</strong>.
+                    Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <span style={{ whiteSpace: 'nowrap' }}><strong>K.U. Travel</strong></span>, <span style={{ whiteSpace: 'nowrap' }}><strong>Amary Travel</strong></span> (<span style={{ whiteSpace: 'nowrap' }}>Representative of <strong>Carlson Wagonlit Travel</strong></span>), <span style={{ whiteSpace: 'nowrap' }}><strong>Korean Air</strong></span>, and <span style={{ whiteSpace: 'nowrap' }}><strong>EXO Travel</strong></span>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <span style={{ whiteSpace: 'nowrap' }}><strong>CHANTREA Travel</strong></span>.
                   </p>
                   
                   <div className="more-info-btn-wrapper">
@@ -812,7 +821,7 @@ function App() {
                         navigate('/about'); 
                       }}
                     >
-                      More Info
+                      Read More About Us
                     </a>
                   </div>
                 </div>
@@ -983,7 +992,7 @@ function App() {
                 <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
                 
                 <p className="about-paragraph">
-                  Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>CHANTREA Travel</strong>.
+                  Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <span style={{ whiteSpace: 'nowrap' }}><strong>K.U. Travel</strong></span>, <span style={{ whiteSpace: 'nowrap' }}><strong>Amary Travel</strong></span> (<span style={{ whiteSpace: 'nowrap' }}>Representative of <strong>Carlson Wagonlit Travel</strong></span>), <span style={{ whiteSpace: 'nowrap' }}><strong>Korean Air</strong></span>, and <span style={{ whiteSpace: 'nowrap' }}><strong>EXO Travel</strong></span>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <span style={{ whiteSpace: 'nowrap' }}><strong>CHANTREA Travel</strong></span>.
                 </p>
               </div>
             </div>
