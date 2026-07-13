@@ -522,8 +522,10 @@ function App() {
                     <img src="/hotel_cambodia.webp" alt="Cambodia" className="card-bg-img" />
                     <div className="card-overlay"></div>
                     <div className="card-content">
-                      <span className="card-tag">Destinations</span>
-                      <h3 className="card-title">Cambodia</h3>
+                      <div className="card-header-tab">
+                        <span className="card-tab-number">01</span>
+                        <h3 className="card-tab-title">Cambodia</h3>
+                      </div>
                     </div>
                   </div>
 
@@ -532,8 +534,10 @@ function App() {
                     <img src="/country_vietnam.webp" alt="Vietnam" className="card-bg-img" />
                     <div className="card-overlay"></div>
                     <div className="card-content">
-                      <span className="card-tag">Destinations</span>
-                      <h3 className="card-title">Vietnam</h3>
+                      <div className="card-header-tab">
+                        <span className="card-tab-number">02</span>
+                        <h3 className="card-tab-title">Vietnam</h3>
+                      </div>
                     </div>
                   </div>
 
@@ -542,8 +546,10 @@ function App() {
                     <img src="/country_canada.webp" alt="Canada" className="card-bg-img" />
                     <div className="card-overlay"></div>
                     <div className="card-content">
-                      <span className="card-tag">Destinations</span>
-                      <h3 className="card-title">Canada</h3>
+                      <div className="card-header-tab">
+                        <span className="card-tab-number">03</span>
+                        <h3 className="card-tab-title">Canada</h3>
+                      </div>
                     </div>
                   </div>
 
@@ -552,8 +558,10 @@ function App() {
                     <img src="/country_australia.webp" alt="Australia" className="card-bg-img" />
                     <div className="card-overlay"></div>
                     <div className="card-content">
-                      <span className="card-tag">Destinations</span>
-                      <h3 className="card-title">Australia</h3>
+                      <div className="card-header-tab">
+                        <span className="card-tab-number">04</span>
+                        <h3 className="card-tab-title">Australia</h3>
+                      </div>
                     </div>
                   </div>
 
@@ -562,8 +570,10 @@ function App() {
                     <img src="/country_china.webp" alt="China" className="card-bg-img" />
                     <div className="card-overlay"></div>
                     <div className="card-content">
-                      <span className="card-tag">Destinations</span>
-                      <h3 className="card-title">China</h3>
+                      <div className="card-header-tab">
+                        <span className="card-tab-number">05</span>
+                        <h3 className="card-tab-title">China</h3>
+                      </div>
                     </div>
                   </div>
 
