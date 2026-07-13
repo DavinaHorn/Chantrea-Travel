@@ -266,8 +266,9 @@ body {
 }
 
 .hero-video-logo {
-  height: clamp(80px, 12vw, 150px);
+  height: clamp(55px, 12vw, 150px);
   width: auto;
+  max-width: 85vw;
   object-fit: contain;
   filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.45));
   display: block;
@@ -281,9 +282,9 @@ body {
   margin-bottom: 20px;
   white-space: nowrap;
   font-family: var(--font-sans);
-  font-size: clamp(14px, 1.8vw, 18px);
+  font-size: clamp(11px, 1.8vw, 18px);
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: clamp(2px, 0.5vw, 4px);
   text-transform: uppercase;
   color: #FFFFFF;
   text-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
