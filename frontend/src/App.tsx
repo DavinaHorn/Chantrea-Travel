@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { 
   MapPin, 
   Phone, 
@@ -115,6 +115,7 @@ function App() {
       isTransitioning: false
     }
   })
+  const transitionTimerRef = useRef<any>(null)
 
   // Redesign state variables
   const [statCustomers, setStatCustomers] = useState(0)
@@ -167,6 +168,11 @@ function App() {
         setPath(newPath)
         return
       }
+
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current)
+        transitionTimerRef.current = null
+      }
       
       const prevIndex = getRouteIndex(prevView)
       const targetIndex = getRouteIndex(targetView)
@@ -182,19 +188,23 @@ function App() {
       setPath(newPath)
       window.scrollTo(0, 0)
       
-      const timer = setTimeout(() => {
+      transitionTimerRef.current = window.setTimeout(() => {
         setViewState(prev => ({
           ...prev,
           prevView: null,
           isTransitioning: false
         }))
+        transitionTimerRef.current = null
       }, 650)
-      
-      return () => clearTimeout(timer)
     }
     
     window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current)
+      }
+    }
   }, [path])
 
   // Scroll helper for initial load if URL contains hash (e.g. #services)
@@ -304,6 +314,10 @@ function App() {
   }
 
   const navigate = (targetPath: string, anchorId?: string) => {
+    if (viewState.isTransitioning) {
+      return // Prevent double click navigation during active transition
+    }
+
     const currentPath = window.location.pathname
     
     if (currentPath === targetPath) {
@@ -325,6 +339,11 @@ function App() {
     const targetIndex = getRouteIndex(targetView)
     const direction = targetIndex >= prevIndex ? 'forward' : 'backward'
     
+    if (transitionTimerRef.current) {
+      clearTimeout(transitionTimerRef.current)
+      transitionTimerRef.current = null
+    }
+    
     setViewState({
       currentView: targetView,
       prevView: prevView,
@@ -336,12 +355,13 @@ function App() {
     setPath(targetPath)
     window.scrollTo(0, 0)
     
-    setTimeout(() => {
+    transitionTimerRef.current = window.setTimeout(() => {
       setViewState(prev => ({
         ...prev,
         prevView: null,
         isTransitioning: false
       }))
+      transitionTimerRef.current = null
       
       if (anchorId) {
         setTimeout(() => {
