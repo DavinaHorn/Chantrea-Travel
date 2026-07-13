@@ -229,14 +229,18 @@ function App() {
       if (homepageAboutRef.current) {
         const rect = homepageAboutRef.current.getBoundingClientRect()
         const viewportHeight = window.innerHeight
-        const mobileView = window.innerWidth <= 768
+        const isDesktop = window.innerWidth > 768
         
-        const startTrigger = viewportHeight * 0.95
-        const endTrigger = mobileView ? viewportHeight * 0.45 : viewportHeight * 0.25
-        const distance = startTrigger - endTrigger
-        const currentPos = rect.top
-        const progress = Math.min(Math.max((startTrigger - currentPos) / distance, 0), 1)
-        setAboutScrollProgress(progress)
+        if (isDesktop) {
+          const startTrigger = viewportHeight * 0.95
+          const endTrigger = viewportHeight * 0.25
+          const distance = startTrigger - endTrigger
+          const currentPos = rect.top
+          const progress = Math.min(Math.max((startTrigger - currentPos) / distance, 0), 1)
+          setAboutScrollProgress(progress)
+        } else {
+          setAboutScrollProgress(1)
+        }
       }
     }
     
@@ -783,12 +787,12 @@ function App() {
                   className="about-founder-container homepage-founder-container"
                   style={{
                     transform: isMobile 
-                      ? `translateY(${(1 - aboutScrollProgress) * 50}px)` 
+                      ? 'none' 
                       : `translateX(${(1 - aboutScrollProgress) * 28}%) scale(${1 + (1 - aboutScrollProgress) * 0.15})`,
-                    opacity: isMobile ? aboutScrollProgress : 1,
+                    opacity: 1,
                     transformOrigin: 'center center',
-                    willChange: 'transform, opacity',
-                    transition: 'transform 0.15s ease-out, opacity 0.15s ease-out'
+                    willChange: 'transform',
+                    transition: 'transform 0.15s ease-out'
                   }}
                 >
                   <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
