@@ -197,13 +197,32 @@ function App() {
   const transitionTimerRef = useRef<any>(null)
 
   const [isScrolled, setIsScrolled] = useState(false)
+  const [logoTransitionProgress, setLogoTransitionProgress] = useState(0)
+  const logoRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const handleNavbarScroll = () => {
       setIsScrolled(window.scrollY > 20)
+      
+      if (logoRef.current) {
+        const rect = logoRef.current.getBoundingClientRect()
+        const initialY = window.scrollY + rect.top
+        const headerHeight = 90
+        const startScroll = 0
+        const endScroll = Math.max(initialY - headerHeight, 100)
+        
+        const progress = Math.min(Math.max((window.scrollY - startScroll) / (endScroll - startScroll), 0), 1)
+        setLogoTransitionProgress(progress)
+      }
     }
+    
+    const timeoutId = setTimeout(handleNavbarScroll, 100)
+    
     window.addEventListener('scroll', handleNavbarScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleNavbarScroll)
+    return () => {
+      window.removeEventListener('scroll', handleNavbarScroll)
+      clearTimeout(timeoutId)
+    }
   }, [])
 
   // Redesign state variables
@@ -445,12 +464,25 @@ function App() {
                 muted
                 playsInline
               />
+              <div className="hero-bottom-fade"></div>
             </div>
 
-            {/* Tagline & Title below the video */}
+            {/* Tagline & Logo below the video */}
             <div className="container hero-below-container">
               <span className="hero-below-tagline">EXPLORE THE WORLD WITH</span>
-              <h1 className="hero-below-title">CHANTREA Travel</h1>
+              <div 
+                ref={logoRef} 
+                className="hero-below-logo-wrapper"
+                style={{
+                  opacity: Math.max(1 - logoTransitionProgress * 1.25, 0),
+                  transform: `scale(${1 - logoTransitionProgress * 0.15}) translateY(${-logoTransitionProgress * 20}px)`,
+                  transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
+                  willChange: 'opacity, transform',
+                  marginTop: '16px'
+                }}
+              >
+                <img src="/CTT_LOGO-HP.webp" alt="Chantrea Travel Logo" className="hero-below-logo" />
+              </div>
             </div>
           </section>
 
@@ -997,7 +1029,17 @@ function App() {
               }} 
               aria-label="Chantrea Travel Home"
             >
-              <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
+              <img 
+                src={logoSrc} 
+                alt="Chantrea Travel Logo" 
+                className="logo-img" 
+                style={{
+                  opacity: viewState.currentView === 'home' ? Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) : 1,
+                  transform: viewState.currentView === 'home' ? `scale(${0.85 + Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) * 0.15})` : 'scale(1)',
+                  transition: 'opacity 0.15s ease-out, transform 0.15s ease-out',
+                  willChange: 'opacity, transform'
+                }}
+              />
             </a>
 
             {/* Right: Desktop Controls & Menu */}

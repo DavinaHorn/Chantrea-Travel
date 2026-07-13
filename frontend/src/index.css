@@ -255,14 +255,29 @@ body {
   opacity: 0.9;
 }
 
-.hero-below-title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 4.8vw, 3.8rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--text-primary);
-  margin-top: 14px;
-  letter-spacing: -0.5px;
+.hero-below-logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  width: 100%;
+}
+
+.hero-below-logo {
+  height: clamp(56px, 7.5vw, 84px);
+  width: auto;
+  object-fit: contain;
+}
+
+.hero-bottom-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 5%;
+  background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* Pills Bar at Bottom of Hero */
@@ -1044,6 +1059,8 @@ body {
   
   .hero-card {
     padding: 0;
+    aspect-ratio: auto;
+    height: 50vh;
   }
   
   .hero-below-container {
