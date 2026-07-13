@@ -1156,7 +1156,6 @@ body {
 .page-transition-container {
   position: relative;
   width: 100%;
-  overflow: hidden;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -1165,7 +1164,6 @@ body {
 /* Base class for page views */
 .page-view-wrapper {
   width: 100%;
-  will-change: transform;
   background-color: var(--bg-primary);
   min-height: calc(100vh - 90px);
 }
@@ -1178,26 +1176,31 @@ body {
   width: 100%;
   pointer-events: none;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 /* Forward transition: New page enters from right, old page exits to left */
 .slide-forward-enter {
   animation: slideFadeInFromRight 0.65s cubic-bezier(0.34, 1.3, 0.64, 1.0) forwards;
   z-index: 2;
+  will-change: transform, opacity;
 }
 .slide-forward-exit {
   animation: slideFadeOutToLeft 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 /* Backward transition: New page enters from left, old page exits to right */
 .slide-backward-enter {
   animation: slideFadeInFromLeft 0.65s cubic-bezier(0.34, 1.3, 0.64, 1.0) forwards;
   z-index: 2;
+  will-change: transform, opacity;
 }
 .slide-backward-exit {
   animation: slideFadeOutToRight 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 @keyframes slideFadeInFromRight {
