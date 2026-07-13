@@ -87,6 +87,7 @@ const SAMPLE_BLOGS: BlogPost[] = [
 const getPageView = (hashString: string) => {
   if (hashString === '#blogs') return 'blogs'
   if (hashString.startsWith('#blog/')) return 'blog-detail'
+  if (hashString === '#about') return 'about'
   return 'home'
 }
 
@@ -182,7 +183,7 @@ function App() {
 
   useEffect(() => {
     const currentHash = window.location.hash
-    if (currentHash && !currentHash.startsWith('#blogs') && !currentHash.startsWith('#blog/')) {
+    if (currentHash && currentHash !== '#about' && !currentHash.startsWith('#blogs') && !currentHash.startsWith('#blog/')) {
       const id = currentHash.substring(1)
       const timer = setTimeout(() => {
         const element = document.getElementById(id)
@@ -650,40 +651,6 @@ function App() {
                   </div>
                 </div>
               </section>
-
-              {/* About Section */}
-              <section id="about" className="section">
-                <div className="about-split">
-                  {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
-                  <div className="about-founder-container">
-                    <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
-                    <div className="about-founder-info">
-                      <h4 className="about-founder-name">Davina Horn</h4>
-                      <p className="about-founder-title">Owner & Managing Director</p>
-                    </div>
-                  </div>
-
-                  {/* Right Column: Narrative & Biography */}
-                  <div className="about-text-content">
-                    <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
-                    
-                    <p className="about-paragraph">
-                      At Chantrea Travel, we are committed to making international travel simple, convenient, and stress-free. Whether you are traveling for business, leisure, education, or family visits, our experienced team provides professional travel solutions tailored to your needs.
-                    </p>
-                    <p className="about-paragraph">
-                      From planning your flight itinerary to booking accommodations and assisting with complex travel documentation, we are dedicated to delivering reliable service and exceptional customer support every step of the way. Your journey begins with us—connecting you to destinations around the world with confidence and care.
-                    </p>
-
-                    {/* Professional Experience Section */}
-                    <div className="about-founder-bio">
-                      <h3>Professional Experience</h3>
-                      <p className="about-paragraph">
-                        Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </section>
             </div>
           </>
         ) : currentView === 'blogs' ? (
@@ -735,6 +702,51 @@ function App() {
             </div>
 
             <div style={{ textAlign: 'center' }}>
+              <a 
+                href="#" 
+                className="nav-btn" 
+                onClick={(e) => { e.preventDefault(); window.location.hash = ''; }}
+              >
+                Back to Home
+              </a>
+            </div>
+          </div>
+        ) : currentView === 'about' ? (
+          <div className="container" style={{ paddingTop: '140px', paddingBottom: '60px' }}>
+            <section id="about" className="section" style={{ marginBottom: 0 }}>
+              <div className="about-split">
+                {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
+                <div className="about-founder-container">
+                  <img src="/davina_horn.webp" alt="Davina Horn - Founder of Chantrea Travel" className="about-founder-img" />
+                  <div className="about-founder-info">
+                    <h4 className="about-founder-name">Davina Horn</h4>
+                    <p className="about-founder-title">Owner & Managing Director</p>
+                  </div>
+                </div>
+
+                {/* Right Column: Narrative & Biography */}
+                <div className="about-text-content">
+                  <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
+                  
+                  <p className="about-paragraph">
+                    At Chantrea Travel, we are committed to making international travel simple, convenient, and stress-free. Whether you are traveling for business, leisure, education, or family visits, our experienced team provides professional travel solutions tailored to your needs.
+                  </p>
+                  <p className="about-paragraph">
+                    From planning your flight itinerary to booking accommodations and assisting with complex travel documentation, we are dedicated to delivering reliable service and exceptional customer support every step of the way. Your journey begins with us—connecting you to destinations around the world with confidence and care.
+                  </p>
+
+                  {/* Professional Experience Section */}
+                  <div className="about-founder-bio">
+                    <h3>Professional Experience</h3>
+                    <p className="about-paragraph">
+                      Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <strong>K.U. Travel</strong>, <strong>Amary Travel</strong> (Representative of <strong>Carlson Wagonlit Travel</strong>), <strong>Korean Air</strong>, and <strong>EXO Travel</strong>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <strong>Chantrea Travel</strong>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+            <div style={{ textAlign: 'center', marginTop: '64px' }}>
               <a 
                 href="#" 
                 className="nav-btn" 
@@ -813,7 +825,7 @@ function App() {
             <div className="contact-layout">
               {/* Brand Info */}
               <div className="contact-brand">
-                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); if (window.location.hash.startsWith('#blogs') || window.location.hash.startsWith('#blog/')) { window.location.hash = ''; } else { window.scrollTo({ top: 0, behavior: 'smooth' }); } }} aria-label="Chantrea Travel Home">
+                <a href="/" className="contact-logo" onClick={(e) => { e.preventDefault(); if (window.location.hash !== '') { window.location.hash = ''; } else { window.scrollTo({ top: 0, behavior: 'smooth' }); } }} aria-label="Chantrea Travel Home">
                   <img src={logoSrc} alt="Chantrea Travel Logo" className="logo-img" />
                 </a>
                 <p className="contact-brand-desc">
