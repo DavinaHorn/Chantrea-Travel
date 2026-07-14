@@ -190,7 +190,7 @@ function App() {
     return {
       currentView: initialView,
       prevView: null as string | null,
-      direction: null as 'forward' | 'backward' | null,
+      direction: null as 'forward' | 'backward' | 'fade' | null,
       isTransitioning: false
     }
   })
@@ -439,7 +439,10 @@ function App() {
     
     const prevIndex = getRouteIndex(prevView)
     const targetIndex = getRouteIndex(targetView)
-    const direction = targetIndex >= prevIndex ? 'forward' : 'backward'
+    const isAboutTransition = 
+      (prevView === 'home' && targetView === 'about') || 
+      (prevView === 'about' && targetView === 'home')
+    const direction = isAboutTransition ? 'fade' : (targetIndex >= prevIndex ? 'forward' : 'backward')
     
     if (transitionTimerRef.current) {
       clearTimeout(transitionTimerRef.current)
@@ -1164,6 +1167,8 @@ function App() {
             viewState.isTransitioning && viewState.direction === 'forward' ? 'slide-forward-enter' : ''
           } ${
             viewState.isTransitioning && viewState.direction === 'backward' ? 'slide-backward-enter' : ''
+          } ${
+            viewState.isTransitioning && viewState.direction === 'fade' ? 'fade-blend-enter' : ''
           }`}>
             {renderView(viewState.currentView)}
           </div>
@@ -1174,6 +1179,8 @@ function App() {
               viewState.direction === 'forward' ? 'slide-forward-exit' : ''
             } ${
               viewState.direction === 'backward' ? 'slide-backward-exit' : ''
+            } ${
+              viewState.direction === 'fade' ? 'fade-blend-exit' : ''
             }`}>
               {renderView(viewState.prevView)}
             </div>

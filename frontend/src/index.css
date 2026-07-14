@@ -789,6 +789,8 @@ body {
   grid-template-columns: 1fr 1.3fr;
   gap: 64px;
   align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 /* Portrait Image Styles (minimalist, borderless, shadowless, flat styling) */
@@ -858,6 +860,8 @@ body {
   align-items: center;
   position: relative;
   width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .homepage-founder-container {
@@ -1272,6 +1276,27 @@ body {
   animation: slideFadeOutToRight 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
   z-index: 1;
   will-change: transform, opacity;
+}
+
+/* Fade Blend Transition for morphing About page */
+.fade-blend-enter {
+  animation: fadeInFade 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 2;
+  will-change: opacity;
+}
+.fade-blend-exit {
+  animation: fadeOutFade 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  z-index: 1;
+  will-change: opacity;
+}
+
+@keyframes fadeInFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOutFade {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 @keyframes slideFadeInFromRight {
