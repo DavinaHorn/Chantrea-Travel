@@ -212,29 +212,8 @@ body {
   box-shadow: 0 4px 12px rgba(102, 45, 145, 0.35);
 }
 
-/* Tablet navbar optimizations to prevent wrapping and overlapping */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .logo-img {
-    height: 40px;
-  }
-  
-  .nav-menu {
-    gap: 16px;
-  }
-  
-  .nav-controls {
-    gap: 16px;
-  }
-  
-  .nav-link {
-    font-size: 14.5px;
-  }
-  
-  .nav-btn {
-    padding: 10px 18px;
-    font-size: 13.5px;
-  }
-}
+
+
 
 
 
@@ -1167,7 +1146,7 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .nav-menu {
     display: none;
   }
@@ -1892,7 +1871,7 @@ body {
   transform: scale(1.35);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .flights-slideshow-container {
     aspect-ratio: 4 / 3;
     margin-top: 8px;

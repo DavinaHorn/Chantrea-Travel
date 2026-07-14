@@ -139,7 +139,7 @@ function App() {
       if (homepageAboutRef.current) {
         const rect = homepageAboutRef.current.getBoundingClientRect()
         const viewportHeight = window.innerHeight
-        const isDesktop = window.innerWidth > 768
+        const isDesktop = window.innerWidth > 1024
         
         if (isDesktop) {
           const startTrigger = viewportHeight * 0.95
