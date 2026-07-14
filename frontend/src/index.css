@@ -1105,16 +1105,37 @@ body {
     justify-content: center;
   }
   
-  .service-row {
-    flex-direction: column;
+  .service-block {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 64px !important;
   }
   
   .service-col-info {
-    padding: 48px 32px;
+    padding: 0 8px !important;
+    text-align: left !important;
+    width: 100% !important;
+    flex: none !important;
   }
   
   .service-col-visual {
-    padding: 32px 16px;
+    padding: 0 !important;
+    width: 100% !important;
+    flex: none !important;
+    display: block !important;
+  }
+
+  #services-flights .service-row {
+    flex-direction: column-reverse !important;
+    gap: 32px !important;
+  }
+
+  #services-hotels .service-row {
+    flex-direction: column !important;
+    gap: 32px !important;
   }
   
   .service-china-vietnam-section {
@@ -1832,36 +1853,6 @@ body {
 }
 
 @media (max-width: 1024px) {
-  .service-block {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    padding: 0 !important;
-    margin-bottom: 64px !important;
-  }
-  
-  .service-col-info {
-    padding: 0 8px !important;
-    text-align: left !important;
-  }
-  
-  .service-col-visual {
-    padding: 0 !important;
-    width: 100% !important;
-    display: block !important;
-  }
-
-  #services-flights .service-row {
-    flex-direction: column-reverse !important;
-    gap: 32px !important;
-  }
-
-  #services-hotels .service-row {
-    flex-direction: column !important;
-    gap: 32px !important;
-  }
-  
   .embedded-slideshow-container {
     aspect-ratio: 1.45 / 1 !important;
     width: 100% !important;
