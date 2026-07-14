@@ -193,6 +193,21 @@ function App() {
     fetchImages()
   }, [viewState.currentView])
 
+  // Redirect to admin panel if the URL contains Google OAuth token hash
+  useEffect(() => {
+    if (window.location.hash.includes('access_token')) {
+      const targetPath = '/admin'
+      window.history.pushState(null, '', targetPath)
+      setPath(targetPath)
+      setViewState({
+        currentView: 'admin',
+        prevView: null,
+        direction: null,
+        isTransitioning: false
+      })
+    }
+  }, [])
+
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveFlightSlide((prev) => (prev + 1) % flightSlides.length)
