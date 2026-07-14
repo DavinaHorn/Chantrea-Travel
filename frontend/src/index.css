@@ -865,6 +865,9 @@ body {
 }
 
 .homepage-founder-container {
+  transform: translateX(calc((1 - var(--about-progress, 0)) * 28%)) scale(calc(1 + (1 - var(--about-progress, 0)) * 0.15));
+  transform-origin: center center;
+  will-change: transform;
   transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -873,6 +876,9 @@ body {
   flex-direction: column;
   gap: 20px;
   text-align: left;
+  opacity: var(--about-progress, 0);
+  transform: translateX(calc((1 - var(--about-progress, 0)) * 40px));
+  will-change: opacity, transform;
   transition: opacity 0.15s ease-out, transform 0.15s ease-out;
 }
 
@@ -1156,9 +1162,21 @@ body {
     gap: 32px;
   }
 
+  .homepage-founder-container {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
   .about-text-content,
   .homepage-about-text-content {
     text-align: center;
+  }
+
+  .homepage-about-text-content {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   .more-info-btn-wrapper {

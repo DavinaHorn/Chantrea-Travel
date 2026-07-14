@@ -201,15 +201,6 @@ function App() {
   const logoRef = useRef<HTMLDivElement | null>(null)
   const [aboutScrollProgress, setAboutScrollProgress] = useState(0)
   const homepageAboutRef = useRef<HTMLDivElement | null>(null)
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -786,13 +777,7 @@ function App() {
                 <div 
                   className="about-founder-container homepage-founder-container"
                   style={{
-                    transform: isMobile 
-                      ? 'none' 
-                      : `translateX(${(1 - aboutScrollProgress) * 28}%) scale(${1 + (1 - aboutScrollProgress) * 0.15})`,
-                    opacity: 1,
-                    transformOrigin: 'center center',
-                    willChange: 'transform',
-                    transition: 'transform 0.15s ease-out'
+                    ['--about-progress' as any]: aboutScrollProgress
                   }}
                 >
                   <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
@@ -806,11 +791,7 @@ function App() {
                 <div 
                   className="homepage-about-text-content"
                   style={{
-                    opacity: aboutScrollProgress,
-                    transform: isMobile 
-                      ? `translateY(${(1 - aboutScrollProgress) * 20}px)` 
-                      : `translateX(${(1 - aboutScrollProgress) * 40}px)`,
-                    willChange: 'opacity, transform'
+                    ['--about-progress' as any]: aboutScrollProgress
                   }}
                 >
                   <h2 className="section-title">Your Trusted Global Travel & Visa Partner</h2>
