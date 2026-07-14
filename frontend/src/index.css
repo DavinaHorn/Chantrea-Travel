@@ -2151,6 +2151,70 @@ img, video {
   background-color: #fecaca;
 }
 
+.admin-btn-edit {
+  flex-grow: 1;
+  padding: 8px 12px;
+  background-color: var(--accent-purple-light);
+  color: var(--accent-purple);
+  border: 1px solid var(--accent-purple);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-btn-edit:hover {
+  background-color: var(--accent-purple);
+  color: #ffffff;
+}
+
+.admin-btn-save {
+  flex-grow: 1;
+  padding: 8px 12px;
+  background-color: #d1fae5;
+  color: #065f46;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-btn-save:hover {
+  background-color: #a7f3d0;
+}
+
+.admin-btn-cancel {
+  flex-grow: 1;
+  padding: 8px 12px;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-btn-cancel:hover {
+  background-color: #e5e7eb;
+}
+
 .admin-upload-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);

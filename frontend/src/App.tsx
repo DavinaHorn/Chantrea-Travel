@@ -12,7 +12,8 @@ import {
   LogOut,
   Image as ImageIcon,
   User,
-  ArrowLeft
+  ArrowLeft,
+  Edit
 } from 'lucide-react'
 import { supabase } from './supabaseClient'
 
@@ -1259,6 +1260,12 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const [isDragging, setIsDragging] = useState(false)
   const [imageName, setImageName] = useState('')
 
+  // Inline editing state
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editName, setEditName] = useState('')
+  const [editPanType, setEditPanType] = useState<'horizontal' | 'vertical'>('horizontal')
+  const [editOrderIndex, setEditOrderIndex] = useState(0)
+
   // Get system default images when database is empty
   const getDefaultsForTab = (tab: string) => {
     if (tab === 'flights') {
@@ -1499,6 +1506,35 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
     }
   }
 
+  // Start Inline Edit
+  const handleStartEdit = (img: any) => {
+    setEditingId(img.id)
+    setEditName(img.name || '')
+    setEditPanType(img.pan_type || 'horizontal')
+    setEditOrderIndex(img.order_index || 0)
+  }
+
+  // Save Inline Edit
+  const handleSaveEdit = async (imgId: string) => {
+    try {
+      const { error } = await supabase
+        .from('website_images')
+        .update({
+          name: editName.trim() || null,
+          pan_type: editPanType,
+          order_index: editOrderIndex
+        })
+        .eq('id', imgId)
+
+      if (error) throw error
+
+      setEditingId(null)
+      fetchImages()
+    } catch (err: any) {
+      alert(`Failed to save edit: ${err.message || err}`)
+    }
+  }
+
   // Render Loading State
   if (authLoading) {
     return (
@@ -1620,37 +1656,91 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
                       </span>
                     )}
                   </div>
-                  <div className="admin-img-meta">
-                    {activeTab !== 'founder' && (
-                      <>
-                        <span className="admin-meta-label">Image Name</span>
-                        <span className="admin-meta-val" style={{ fontStyle: img.name ? 'normal' : 'italic' }}>
-                          {img.name || 'None'}
-                        </span>
-                        <span className="admin-meta-label">Pan Mode</span>
-                        <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
-                        <span className="admin-meta-label">Display Order</span>
-                        <span className="admin-meta-val">{img.order_index}</span>
-                      </>
-                    )}
-                    {activeTab === 'founder' && (
-                      <>
-                        <span className="admin-meta-label">Status</span>
-                        <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
-                          {img.isDefault ? 'Default Portrait' : 'Active Portrait'}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  <div className="admin-img-actions" style={{ justifyContent: 'center' }}>
+                  
+                  {editingId === img.id ? (
+                    /* Inline Editing Mode */
+                    <div className="admin-img-meta" style={{ gap: '4px' }}>
+                      <span className="admin-meta-label">Image Name</span>
+                      <input 
+                        type="text" 
+                        className="admin-select" 
+                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
+                        value={editName} 
+                        onChange={(e) => setEditName(e.target.value)} 
+                        placeholder="e.g. Cambodia"
+                      />
+                      <span className="admin-meta-label">Pan Mode</span>
+                      <select 
+                        className="admin-select" 
+                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
+                        value={editPanType} 
+                        onChange={(e: any) => setEditPanType(e.target.value)}
+                      >
+                        <option value="horizontal">Horizontal</option>
+                        <option value="vertical">Vertical</option>
+                      </select>
+                      <span className="admin-meta-label">Display Order</span>
+                      <input 
+                        type="number" 
+                        className="admin-select" 
+                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', width: '100%' }}
+                        value={editOrderIndex} 
+                        onChange={(e) => setEditOrderIndex(parseInt(e.target.value) || 0)} 
+                      />
+                    </div>
+                  ) : (
+                    /* Standard Info Mode */
+                    <div className="admin-img-meta">
+                      {activeTab !== 'founder' && (
+                        <>
+                          <span className="admin-meta-label">Image Name</span>
+                          <span className="admin-meta-val" style={{ fontStyle: img.name ? 'normal' : 'italic' }}>
+                            {img.name || 'None'}
+                          </span>
+                          <span className="admin-meta-label">Pan Mode</span>
+                          <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
+                          <span className="admin-meta-label">Display Order</span>
+                          <span className="admin-meta-val">{img.order_index}</span>
+                        </>
+                      )}
+                      {activeTab === 'founder' && (
+                        <>
+                          <span className="admin-meta-label">Status</span>
+                          <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
+                            {img.isDefault ? 'Default Portrait' : 'Active Portrait'}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="admin-img-actions" style={{ justifyContent: 'center', display: 'flex', gap: '8px' }}>
                     {img.isDefault ? (
                       <span style={{ fontSize: '12px', color: 'var(--text-light)', fontStyle: 'italic', padding: '4px 0', textAlign: 'center' }}>
                         Upload a file below to replace
                       </span>
                     ) : (
-                      <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
-                        <Trash2 size={14} /> Remove
-                      </button>
+                      editingId === img.id ? (
+                        <>
+                          <button className="admin-btn-save" onClick={() => handleSaveEdit(img.id)}>
+                            Save
+                          </button>
+                          <button className="admin-btn-cancel" onClick={() => setEditingId(null)}>
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {activeTab !== 'founder' && (
+                            <button className="admin-btn-edit" onClick={() => handleStartEdit(img)}>
+                              <Edit size={13} /> Edit
+                            </button>
+                          )}
+                          <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
+                            <Trash2 size={13} /> Remove
+                          </button>
+                        </>
+                      )
                     )}
                   </div>
                 </div>
