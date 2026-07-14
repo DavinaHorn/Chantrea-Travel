@@ -1152,6 +1152,11 @@ body {
     gap: 32px;
   }
 
+  .about-text-content,
+  .homepage-about-text-content {
+    text-align: center;
+  }
+
   .more-info-btn-wrapper {
     justify-content: center;
   }

@@ -813,7 +813,7 @@ function App() {
                     willChange: 'opacity, transform'
                   }}
                 >
-                  <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
+                  <h2 className="section-title">Your Trusted Global Travel & Visa Partner</h2>
                   <p className="about-paragraph">
                     Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <span style={{ whiteSpace: 'nowrap' }}><strong>K.U. Travel</strong></span>, <span style={{ whiteSpace: 'nowrap' }}><strong>Amary Travel</strong></span> (<span style={{ whiteSpace: 'nowrap' }}>Representative of <strong>Carlson Wagonlit Travel</strong></span>), <span style={{ whiteSpace: 'nowrap' }}><strong>Korean Air</strong></span>, and <span style={{ whiteSpace: 'nowrap' }}><strong>EXO Travel</strong></span>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <span style={{ whiteSpace: 'nowrap' }}><strong>CHANTREA Travel</strong></span>.
                   </p>
@@ -995,7 +995,7 @@ function App() {
 
               {/* Right Column: Narrative & Biography */}
               <div className="about-text-content">
-                <h2 className="section-title" style={{ textAlign: 'left' }}>Your Trusted Global Travel & Visa Partner</h2>
+                <h2 className="section-title">Your Trusted Global Travel & Visa Partner</h2>
                 
                 <p className="about-paragraph">
                   Throughout her 22-year career in the travel industry, Davina Horn has worked with leading travel agencies and international travel companies, including <span style={{ whiteSpace: 'nowrap' }}><strong>K.U. Travel</strong></span>, <span style={{ whiteSpace: 'nowrap' }}><strong>Amary Travel</strong></span> (<span style={{ whiteSpace: 'nowrap' }}>Representative of <strong>Carlson Wagonlit Travel</strong></span>), <span style={{ whiteSpace: 'nowrap' }}><strong>Korean Air</strong></span>, and <span style={{ whiteSpace: 'nowrap' }}><strong>EXO Travel</strong></span>. These roles have provided her with extensive experience in airline reservations, corporate travel, hotel bookings, and travel management, forming the foundation of the professional expertise she brings to every client at <span style={{ whiteSpace: 'nowrap' }}><strong>CHANTREA Travel</strong></span>.
