@@ -1324,10 +1324,8 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const compressImage = (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
-      reader.readAsDataURL(file)
       reader.onload = (event) => {
         const img = new Image()
-        img.src = event.target?.result as string
         img.onload = () => {
           const canvas = document.createElement('canvas')
           let width = img.width
@@ -1354,14 +1352,21 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
           canvas.toBlob(
             (blob) => {
               if (blob) resolve(blob)
-              else reject(new Error('Canvas compression failed'))
+              else reject(new Error('Canvas downscaling failed.'))
             },
             'image/jpeg',
             0.82
           )
         }
+        img.onerror = () => {
+          reject(new Error('Selected file is not a valid image format.'))
+        }
+        img.src = event.target?.result as string
       }
-      reader.onerror = (err) => reject(err)
+      reader.onerror = () => {
+        reject(new Error('Failed to read the file from your disk.'))
+      }
+      reader.readAsDataURL(file)
     })
   }
 
@@ -1667,7 +1672,6 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
                     accept="image/*" 
                     style={{ display: 'none' }} 
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                    required
                   />
                 </div>
 
