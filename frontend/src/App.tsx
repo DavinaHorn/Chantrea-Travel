@@ -6,8 +6,15 @@ import {
   CheckCircle, 
   Menu, 
   X, 
-  ArrowRight
+  ArrowRight,
+  Upload,
+  Trash2,
+  LogOut,
+  Image as ImageIcon,
+  User,
+  ArrowLeft
 } from 'lucide-react'
+import { supabase } from './supabaseClient'
 
 interface BlogPost {
   id: string
@@ -74,6 +81,7 @@ const getPageView = (pathString: string) => {
   if (pathString === '/blogs') return 'blogs'
   if (pathString.startsWith('/blog/')) return 'blog-detail'
   if (pathString === '/about') return 'about'
+  if (pathString === '/admin') return 'admin'
   return 'home'
 }
 
@@ -83,6 +91,7 @@ const getRouteIndex = (view: string) => {
     case 'blogs': return 1
     case 'blog-detail': return 2
     case 'about': return 3
+    case 'admin': return 4
     default: return 0
   }
 }
@@ -112,7 +121,7 @@ function App() {
   const [activeFlightSlide, setActiveFlightSlide] = useState(0)
   const [activeHotelSlide, setActiveHotelSlide] = useState(0)
 
-  const flightSlidesList = [
+  const flightSlidesListDefault = [
     { src: '/hotel_cambodia.webp', panType: 'horizontal' },
     { src: '/country_vietnam.webp', panType: 'horizontal' },
     { src: '/country_canada.webp', panType: 'vertical' },
@@ -123,20 +132,74 @@ function App() {
     { src: '/hero_visa.webp', panType: 'horizontal' }
   ]
 
-  const hotelSlidesList = [
+  const hotelSlidesListDefault = [
     { src: '/hotel_cambodia.webp', panType: 'horizontal' },
     { src: '/hotel_singapore.webp', panType: 'vertical' },
     { src: '/hotel_vietnam.webp', panType: 'horizontal' },
     { src: '/hotel_canada.webp', panType: 'vertical' }
   ]
 
+  const [flightSlides, setFlightSlides] = useState(flightSlidesListDefault)
+  const [hotelSlides, setHotelSlides] = useState(hotelSlidesListDefault)
+  const [founderPortrait, setFounderPortrait] = useState('/davina_horn.webp')
+
+  // Fetch dynamic images from Supabase
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('website_images')
+          .select('*')
+          .order('order_index', { ascending: true })
+
+        if (error) {
+          console.error('Error fetching images:', error)
+          return
+        }
+
+        if (data && data.length > 0) {
+          const flights = data.filter(img => img.section === 'flights')
+          const hotels = data.filter(img => img.section === 'hotels')
+          const founder = data.find(img => img.section === 'founder')
+
+          if (flights.length > 0) {
+            setFlightSlides(flights.map(img => ({ src: img.image_url, panType: img.pan_type })))
+          } else {
+            setFlightSlides(flightSlidesListDefault)
+          }
+
+          if (hotels.length > 0) {
+            setHotelSlides(hotels.map(img => ({ src: img.image_url, panType: img.pan_type })))
+          } else {
+            setHotelSlides(hotelSlidesListDefault)
+          }
+
+          if (founder) {
+            setFounderPortrait(founder.image_url)
+          } else {
+            setFounderPortrait('/davina_horn.webp')
+          }
+        } else {
+          // Reset to default fallbacks if database table has 0 rows
+          setFlightSlides(flightSlidesListDefault)
+          setHotelSlides(hotelSlidesListDefault)
+          setFounderPortrait('/davina_horn.webp')
+        }
+      } catch (err) {
+        console.error('Failed to connect to database:', err)
+      }
+    }
+
+    fetchImages()
+  }, [viewState.currentView])
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveFlightSlide((prev) => (prev + 1) % flightSlidesList.length)
-      setActiveHotelSlide((prev) => (prev + 1) % hotelSlidesList.length)
+      setActiveFlightSlide((prev) => (prev + 1) % flightSlides.length)
+      setActiveHotelSlide((prev) => (prev + 1) % hotelSlides.length)
     }, 4000)
     return () => clearInterval(timer)
-  }, [flightSlidesList.length, hotelSlidesList.length])
+  }, [flightSlides.length, hotelSlides.length])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -480,7 +543,7 @@ function App() {
                   <div className="service-col-visual">
                     <div className="embedded-slideshow-container">
                       <div className="slideshow-track">
-                        {flightSlidesList.map((slide, index) => (
+                        {flightSlides.map((slide, index) => (
                           <img 
                             key={index} 
                             src={slide.src} 
@@ -490,7 +553,7 @@ function App() {
                         ))}
                       </div>
                       <div className="slideshow-dots">
-                        {flightSlidesList.map((_, index) => (
+                        {flightSlides.map((_, index) => (
                           <button 
                             key={index} 
                             className={`slideshow-dot ${index === activeFlightSlide ? 'active' : ''}`}
@@ -511,7 +574,7 @@ function App() {
                   <div className="service-col-visual">
                     <div className="embedded-slideshow-container">
                       <div className="slideshow-track">
-                        {hotelSlidesList.map((slide, index) => (
+                        {hotelSlides.map((slide, index) => (
                           <img 
                             key={index} 
                             src={slide.src} 
@@ -521,7 +584,7 @@ function App() {
                         ))}
                       </div>
                       <div className="slideshow-dots">
-                        {hotelSlidesList.map((_, index) => (
+                        {hotelSlides.map((_, index) => (
                           <button 
                             key={index} 
                             className={`slideshow-dot ${index === activeHotelSlide ? 'active' : ''}`}
@@ -666,7 +729,7 @@ function App() {
                     ['--about-progress' as any]: aboutScrollProgress
                   }}
                 >
-                  <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
+                  <img src={founderPortrait} alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
                   <div className="about-founder-info">
                     <h4 className="about-founder-name">Davina Horn</h4>
                     <p className="about-founder-title">Owner & Managing Director</p>
@@ -833,7 +896,7 @@ function App() {
             <div className="about-split">
               {/* Left Column: Portrait Frame without outline boxes, lines, or shadows */}
               <div className="about-founder-container">
-                <img src="/davina_horn.webp" alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
+                <img src={founderPortrait} alt="Davina Horn - Founder of CHANTREA Travel" className="about-founder-img" />
                 <div className="about-founder-info">
                   <h4 className="about-founder-name">Davina Horn</h4>
                   <p className="about-founder-title">Owner & Managing Director</p>
@@ -928,6 +991,10 @@ function App() {
     }
 
     return null;
+  }
+
+  if (viewState.currentView === 'admin') {
+    return <AdminPanel navigate={navigate} />
   }
 
   const logoSrc = '/CTT_LOGO-HP.webp'
@@ -1135,6 +1202,433 @@ function App() {
         </div>
       )}
     </>
+  )
+}
+
+function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => void }) {
+  const [session, setSession] = useState<any>(null)
+  const [authLoading, setAuthLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'flights' | 'hotels' | 'founder'>('flights')
+  
+  const [images, setImages] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  
+  // Upload form state
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [panType, setPanType] = useState<'horizontal' | 'vertical'>('horizontal')
+  const [orderIndex, setOrderIndex] = useState(0)
+  
+  // Auth state management
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      setAuthLoading(false)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+      setAuthLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  // Fetch images for the active tab
+  const fetchImages = async () => {
+    setLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from('website_images')
+        .select('*')
+        .eq('section', activeTab)
+        .order('order_index', { ascending: true })
+      
+      if (error) throw error
+      setImages(data || [])
+    } catch (err) {
+      console.error('Error loading images:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (session && session.user?.email?.endsWith('@chantreatravel.com')) {
+      fetchImages()
+    }
+  }, [session, activeTab])
+
+  // Google Login
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/admin`
+      }
+    })
+  }
+
+  // Logout
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+  }
+
+  // Compression helper
+  const compressImage = (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (event) => {
+        const img = new Image()
+        img.src = event.target?.result as string
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+          const MAX_SIZE = 1600
+          
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height = Math.round((height * MAX_SIZE) / width)
+              width = MAX_SIZE
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width = Math.round((width * MAX_SIZE) / height)
+              height = MAX_SIZE
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          const ctx = canvas.getContext('2d')
+          ctx?.drawImage(img, 0, 0, width, height)
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) resolve(blob)
+              else reject(new Error('Canvas compression failed'))
+            },
+            'image/jpeg',
+            0.82
+          )
+        }
+      }
+      reader.onerror = (err) => reject(err)
+    })
+  }
+
+  // Handle Upload
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedFile) return
+
+    setUploading(true)
+    try {
+      // 1. Compress image client-side
+      const compressedBlob = await compressImage(selectedFile)
+      
+      // 2. Generate clean filename
+      const fileExt = 'jpg'
+      const fileName = `${activeTab}_${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`
+      const filePath = `${activeTab}/${fileName}`
+
+      // 3. Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, compressedBlob, {
+          contentType: 'image/jpeg',
+          cacheControl: '3600'
+        })
+
+      if (uploadError) throw uploadError
+
+      // 4. Get Public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(filePath)
+
+      // 5. Insert / Update Database row
+      if (activeTab === 'founder') {
+        // Founder portrait is single, delete any previous founder images first
+        const { data: oldImages } = await supabase
+          .from('website_images')
+          .select('*')
+          .eq('section', 'founder')
+
+        if (oldImages && oldImages.length > 0) {
+          for (const old of oldImages) {
+            const oldPath = old.image_url.split('/storage/v1/object/public/images/')[1]
+            if (oldPath) {
+              await supabase.storage.from('images').remove([oldPath])
+            }
+            await supabase.from('website_images').delete().eq('id', old.id)
+          }
+        }
+      }
+
+      const { error: dbError } = await supabase
+        .from('website_images')
+        .insert({
+          section: activeTab,
+          image_url: publicUrl,
+          pan_type: panType,
+          order_index: orderIndex
+        })
+
+      if (dbError) throw dbError
+
+      // Reset form & reload list
+      setSelectedFile(null)
+      setOrderIndex(prev => prev + 1)
+      fetchImages()
+    } catch (err: any) {
+      alert(`Upload failed: ${err.message || err}`)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  // Handle Delete
+  const handleDelete = async (img: any) => {
+    if (!confirm('Are you sure you want to remove this image?')) return
+    
+    try {
+      // 1. Delete file from storage
+      const storagePath = img.image_url.split('/storage/v1/object/public/images/')[1]
+      if (storagePath) {
+        const { error: storageError } = await supabase.storage
+          .from('images')
+          .remove([storagePath])
+        if (storageError) console.warn('Storage delete warning:', storageError)
+      }
+
+      // 2. Delete database row
+      const { error: dbError } = await supabase
+        .from('website_images')
+        .delete()
+        .eq('id', img.id)
+
+      if (dbError) throw dbError
+      fetchImages()
+    } catch (err: any) {
+      alert(`Delete failed: ${err.message || err}`)
+    }
+  }
+
+  // Render Loading State
+  if (authLoading) {
+    return (
+      <div className="admin-login-wrapper">
+        <div style={{ color: '#ffffff', fontWeight: 600 }}>Loading authorization session...</div>
+      </div>
+    )
+  }
+
+  const isEmailAuthorized = session?.user?.email?.endsWith('@chantreatravel.com')
+
+  // Render Login View if not authenticated
+  if (!session) {
+    return (
+      <div className="admin-login-wrapper">
+        <div className="admin-login-card">
+          <img src="/CTT_LOGO-HP.webp" alt="CHANTREA Travel Logo" className="admin-login-logo" />
+          <h2 className="admin-login-title">Admin Portal Access</h2>
+          <p className="admin-login-desc">
+            Sign in with your authorized @chantreatravel.com Google account to manage website content and slideshow images.
+          </p>
+          <button className="admin-google-btn" onClick={handleGoogleLogin}>
+            <svg className="admin-google-icon" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+            </svg>
+            Sign in with Google
+          </button>
+          <a href="/" className="admin-nav-btn" style={{ marginTop: '24px', justifyContent: 'center' }} onClick={(e) => { e.preventDefault(); navigate('/'); }}>
+            Back to Public Website
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  // Render Access Denied View if email is not chantreatravel.com
+  if (!isEmailAuthorized) {
+    return (
+      <div className="admin-login-wrapper">
+        <div className="admin-login-card" style={{ maxWidth: '480px' }}>
+          <h2 className="admin-login-title" style={{ color: '#ef4444' }}>Access Denied</h2>
+          <p className="admin-login-desc">
+            Your email <strong>{session.user.email}</strong> is not authorized. Access is strictly restricted to accounts ending in <strong>@chantreatravel.com</strong>.
+          </p>
+          <button className="admin-btn-delete" style={{ width: '100%', padding: '14px', marginBottom: '16px' }} onClick={handleLogout}>
+            <LogOut size={18} /> Sign Out & Switch Account
+          </button>
+          <a href="/" className="admin-nav-btn" style={{ justifyContent: 'center' }} onClick={(e) => { e.preventDefault(); navigate('/'); }}>
+            Back to Public Website
+          </a>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="admin-layout">
+      {/* Sidebar navigation */}
+      <aside className="admin-sidebar">
+        <div className="admin-sidebar-header">
+          <img src="/CTT_LOGO-HP.webp" alt="CHANTREA Travel Logo" style={{ height: '40px', width: 'auto', alignSelf: 'flex-start' }} />
+          <span className="admin-sidebar-title">Admin Console</span>
+          <span className="admin-sidebar-user">{session.user.email}</span>
+        </div>
+        
+        <ul className="admin-nav-list">
+          <li className="admin-nav-item">
+            <button className={`admin-nav-btn ${activeTab === 'flights' ? 'active' : ''}`} onClick={() => setActiveTab('flights')}>
+              <ImageIcon size={18} /> Flight Slideshow
+            </button>
+          </li>
+          <li className="admin-nav-item">
+            <button className={`admin-nav-btn ${activeTab === 'hotels' ? 'active' : ''}`} onClick={() => setActiveTab('hotels')}>
+              <ImageIcon size={18} /> Hotel Slideshow
+            </button>
+          </li>
+          <li className="admin-nav-item">
+            <button className={`admin-nav-btn ${activeTab === 'founder' ? 'active' : ''}`} onClick={() => setActiveTab('founder')}>
+              <User size={18} /> Founder Portrait
+            </button>
+          </li>
+        </ul>
+
+        <button className="admin-nav-btn" style={{ marginTop: 'auto', color: '#ef4444' }} onClick={handleLogout}>
+          <LogOut size={18} /> Sign Out
+        </button>
+      </aside>
+
+      {/* Main content workspace */}
+      <main className="admin-content">
+        <a href="/" className="admin-back-btn" onClick={(e) => { e.preventDefault(); navigate('/'); }}>
+          <ArrowLeft size={16} /> Back to Website homepage
+        </a>
+
+        <div className="admin-section-header">
+          <h1 className="admin-section-title">
+            {activeTab === 'flights' && 'Flight Booking Slideshow'}
+            {activeTab === 'hotels' && 'Hotel Reservations Slideshow'}
+            {activeTab === 'founder' && 'Founder Portrait'}
+          </h1>
+        </div>
+
+        {loading ? (
+          <div style={{ color: 'var(--text-secondary)' }}>Loading section details...</div>
+        ) : (
+          <>
+            {/* Image Lists Grid */}
+            <div className="admin-grid">
+              {images.map((img) => (
+                <div key={img.id} className="admin-img-card">
+                  <div className="admin-img-preview-wrapper">
+                    <img src={img.image_url} alt="Uploaded file" className="admin-img-preview" />
+                  </div>
+                  <div className="admin-img-meta">
+                    {activeTab !== 'founder' && (
+                      <>
+                        <span className="admin-meta-label">Pan Mode</span>
+                        <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
+                        <span className="admin-meta-label">Display Order</span>
+                        <span className="admin-meta-val">{img.order_index}</span>
+                      </>
+                    )}
+                    {activeTab === 'founder' && (
+                      <>
+                        <span className="admin-meta-label">Status</span>
+                        <span className="admin-meta-val" style={{ color: '#10b981' }}>Active Portrait</span>
+                      </>
+                    )}
+                  </div>
+                  <div className="admin-img-actions">
+                    <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
+                      <Trash2 size={14} /> Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {images.length === 0 && (
+                <div style={{ gridColumn: 'span 3', padding: '32px 0', color: 'var(--text-light)', fontStyle: 'italic' }}>
+                  No custom images uploaded. Website is showing default fallback images.
+                </div>
+              )}
+            </div>
+
+            {/* Upload form container */}
+            <div className="admin-upload-card">
+              <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', color: 'var(--text-primary)' }}>
+                {activeTab === 'founder' ? 'Replace Founder Portrait' : 'Add New Slideshow Image'}
+              </h3>
+              
+              <form onSubmit={handleUpload}>
+                <div className="admin-form-group">
+                  <label className="admin-form-label">Select Image File</label>
+                  <div className="admin-file-dropzone" onClick={() => document.getElementById('file-input')?.click()}>
+                    <Upload size={24} style={{ color: 'var(--text-light)', marginBottom: '8px' }} />
+                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      {selectedFile ? selectedFile.name : 'Click to browse files (JPG, PNG, WebP)'}
+                    </p>
+                  </div>
+                  <input 
+                    id="file-input"
+                    type="file" 
+                    accept="image/*" 
+                    style={{ display: 'none' }} 
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    required
+                  />
+                </div>
+
+                {activeTab !== 'founder' && (
+                  <>
+                    <div className="admin-form-group">
+                      <label className="admin-form-label" htmlFor="pan-select">Panning Motion Mode</label>
+                      <select 
+                        id="pan-select"
+                        className="admin-select"
+                        value={panType} 
+                        onChange={(e: any) => setPanType(e.target.value)}
+                      >
+                        <option value="horizontal">Horizontal Pan (For Wide Images)</option>
+                        <option value="vertical">Vertical Pan (For Tall Images)</option>
+                      </select>
+                    </div>
+
+                    <div className="admin-form-group">
+                      <label className="admin-form-label" htmlFor="order-input">Order Index (Display Position)</label>
+                      <input 
+                        id="order-input"
+                        type="number" 
+                        className="admin-select"
+                        value={orderIndex}
+                        onChange={(e) => setOrderIndex(parseInt(e.target.value) || 0)}
+                      />
+                    </div>
+                  </>
+                )}
+
+                <button 
+                  type="submit" 
+                  className="admin-btn-submit" 
+                  disabled={uploading || !selectedFile}
+                >
+                  {uploading ? 'Compressing & Uploading...' : (activeTab === 'founder' ? 'Upload & Replace Portrait' : 'Upload Image')}
+                </button>
+              </form>
+            </div>
+          </>
+        )}
+      </main>
+    </div>
   )
 }
 
