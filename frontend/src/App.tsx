@@ -437,19 +437,27 @@ function App() {
               </div>
 
               {/* Service 1: Worldwide Flight Tickets (Minimalist Slideshow) */}
-              <div id="services-flights" className="service-block reveal-element" style={{ marginBottom: '96px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              <div 
+                id="services-flights" 
+                className="reveal-element" 
+                style={{ 
+                  maxWidth: '1100px', 
+                  margin: '0 auto 96px auto',
+                  width: '100%'
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {/* Top: Information block */}
-                  <div className="service-col-info" style={{ padding: '0', flex: 'none', gap: '20px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <span className="service-block-tag">Flight Booking</span>
                     <h3 className="service-block-title">Worldwide Flight Tickets</h3>
-                    <p className="service-block-text" style={{ maxWidth: '800px' }}>
+                    <p className="service-block-text" style={{ maxWidth: '800px', margin: 0 }}>
                       CHANTREA Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares. Wherever your destination, we connect you with confidence and care.
                     </p>
-                    <ul className="service-block-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '24px', margin: '8px 0' }}>
-                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Travel Consultation & Planning</li>
-                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
-                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
+                    <ul className="service-block-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '24px', margin: '8px 0', padding: 0, listStyle: 'none' }}>
+                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Travel Consultation & Planning</li>
+                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
+                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
                     </ul>
                     <div style={{ marginTop: '8px' }}>
                       <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
@@ -459,7 +467,7 @@ function App() {
                   </div>
 
                   {/* Bottom: Slideshow */}
-                  <div className="flights-slideshow-container">
+                  <div className="flights-slideshow-container" style={{ margin: '8px 0 0 0' }}>
                     <div className="flights-slideshow-track">
                       {flightSlides.map((slide, index) => (
                         <div 
