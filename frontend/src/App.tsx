@@ -141,6 +141,7 @@ function App() {
   const [flightSlides, setFlightSlides] = useState(flightSlidesListDefault)
   const [hotelSlides, setHotelSlides] = useState(hotelSlidesListDefault)
   const [founderPortrait, setFounderPortrait] = useState('/davina_horn.webp')
+  const [blogs, setBlogs] = useState(SAMPLE_BLOGS)
 
   // Fetch dynamic images from Supabase
   useEffect(() => {
@@ -160,6 +161,13 @@ function App() {
           const flights = data.filter(img => img.section === 'flights')
           const hotels = data.filter(img => img.section === 'hotels')
           const founder = data.find(img => img.section === 'founder')
+
+          // Map custom blog images
+          const updatedBlogs = SAMPLE_BLOGS.map(b => {
+            const dbMatch = data.find(img => img.section === `blog-${b.id}`)
+            return dbMatch ? { ...b, image: dbMatch.image_url } : b
+          })
+          setBlogs(updatedBlogs)
 
           if (flights.length > 0) {
             setFlightSlides(flights.map(img => ({ src: img.image_url, panType: img.pan_type, name: img.name })))
@@ -183,6 +191,7 @@ function App() {
           setFlightSlides(flightSlidesListDefault)
           setHotelSlides(hotelSlidesListDefault)
           setFounderPortrait('/davina_horn.webp')
+          setBlogs(SAMPLE_BLOGS)
         }
       } catch (err) {
         console.error('Failed to connect to database:', err)
@@ -817,23 +826,23 @@ function App() {
                 <div className="service-row">
                   <div className="service-col-visual" style={{ flex: '1 1 50%', padding: 0 }}>
                     <img 
-                      src={SAMPLE_BLOGS[0].image} 
-                      alt={SAMPLE_BLOGS[0].title} 
-                      style={{ width: '100%', height: '100%', minHeight: '320px', maxHeight: '420px', objectFit: 'cover', display: 'block' }}
+                      src={blogs[0].image} 
+                      alt={blogs[0].title} 
+                      style={{ width: '100%', height: '100%', minHeight: '320px', maxHeight: '420px', objectFit: 'cover', display: 'block', borderRadius: '20px' }}
                     />
                   </div>
                   <div className="service-col-info" style={{ flex: '1 1 50%', gap: '20px' }}>
-                    <span className="service-block-tag">Featured Post • {SAMPLE_BLOGS[0].date}</span>
-                    <h3 className="service-block-title" style={{ fontSize: '28px' }}>{SAMPLE_BLOGS[0].title}</h3>
+                    <span className="service-block-tag">Featured Post • {blogs[0].date}</span>
+                    <h3 className="service-block-title" style={{ fontSize: '28px' }}>{blogs[0].title}</h3>
                     <p className="service-block-text">
-                      {SAMPLE_BLOGS[0].summary}
+                      {blogs[0].summary}
                     </p>
                     <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
                       <a 
-                        href={`/blog/${SAMPLE_BLOGS[0].id}`} 
+                        href={`/blog/${blogs[0].id}`} 
                         className="nav-btn" 
                         style={{ display: 'inline-block', fontSize: '14px', padding: '10px 20px' }}
-                        onClick={(e) => { e.preventDefault(); navigate(`/blog/${SAMPLE_BLOGS[0].id}`); }}
+                        onClick={(e) => { e.preventDefault(); navigate(`/blog/${blogs[0].id}`); }}
                       >
                         Read This Post
                       </a>
@@ -877,13 +886,13 @@ function App() {
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '32px', marginBottom: '64px' }}>
-            {SAMPLE_BLOGS.map((blog) => (
+            {blogs.map((blog) => (
               <div 
                 key={blog.id} 
                 className="service-block" 
                 style={{ height: '100%', marginBottom: 0, display: 'flex', flexDirection: 'column' }}
               >
-                <div style={{ position: 'relative', height: '240px', overflow: 'hidden' }}>
+                <div style={{ position: 'relative', height: '240px', overflow: 'hidden', borderRadius: '20px' }}>
                   <img 
                     src={blog.image} 
                     alt={blog.title} 
@@ -968,7 +977,7 @@ function App() {
 
     if (view === 'blog-detail') {
       const activeBlogPostId = window.location.pathname.replace('/blog/', '');
-      const blog = SAMPLE_BLOGS.find(b => b.id === activeBlogPostId);
+      const blog = blogs.find(b => b.id === activeBlogPostId);
       if (!blog) {
         return (
           <div className="container page-container-padding">
@@ -1033,7 +1042,7 @@ function App() {
   }
 
   if (viewState.currentView === 'admin') {
-    return <AdminPanel navigate={navigate} />
+    return <AdminPanel navigate={navigate} blogs={blogs} />
   }
 
   const logoSrc = '/CTT_LOGO-HP.webp'
@@ -1244,10 +1253,10 @@ function App() {
   )
 }
 
-function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => void }) {
+function AdminPanel({ navigate, blogs }: { navigate: (to: string, anchor?: string) => void, blogs: any[] }) {
   const [session, setSession] = useState<any>(null)
   const [authLoading, setAuthLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'flights' | 'hotels' | 'founder'>('flights')
+  const [activeTab, setActiveTab] = useState<'flights' | 'hotels' | 'founder' | 'blogs'>('flights')
   
   const [images, setImages] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
@@ -1320,12 +1329,14 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const fetchImages = async () => {
     setLoading(true)
     try {
-      const { data, error } = await supabase
-        .from('website_images')
-        .select('*')
-        .eq('section', activeTab)
-        .order('order_index', { ascending: true })
+      let query = supabase.from('website_images').select('*')
+      if (activeTab === 'blogs') {
+        query = query.like('section', 'blog-%')
+      } else {
+        query = query.eq('section', activeTab)
+      }
       
+      const { data, error } = await query.order('order_index', { ascending: true })
       if (error) throw error
       setImages(data || [])
     } catch (err) {
@@ -1535,6 +1546,89 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
     }
   }
 
+  // Handle Blog Cover Upload & Replace
+  const handleBlogCoverUpload = async (file: File | null, sectionName: string) => {
+    if (!file) return
+    setUploading(true)
+    try {
+      const compressedBlob = await compressImage(file)
+      
+      const fileExt = 'jpg'
+      const fileName = `${sectionName}_${Date.now()}.${fileExt}`
+      const filePath = `blogs/${fileName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from('images')
+        .upload(filePath, compressedBlob, {
+          contentType: 'image/jpeg',
+          cacheControl: '3600'
+        })
+
+      if (uploadError) throw uploadError
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('images')
+        .getPublicUrl(filePath)
+
+      const { data: oldImages } = await supabase
+        .from('website_images')
+        .select('*')
+        .eq('section', sectionName)
+
+      if (oldImages && oldImages.length > 0) {
+        for (const old of oldImages) {
+          const oldPath = old.image_url.split('/storage/v1/object/public/images/')[1]
+          if (oldPath) {
+            await supabase.storage.from('images').remove([oldPath])
+          }
+          await supabase.from('website_images').delete().eq('id', old.id)
+        }
+      }
+
+      const { error: dbError } = await supabase
+        .from('website_images')
+        .insert({
+          section: sectionName,
+          image_url: publicUrl,
+          pan_type: 'horizontal',
+          order_index: 0,
+          name: null
+        })
+
+      if (dbError) throw dbError
+
+      fetchImages()
+    } catch (err: any) {
+      alert(`Blog image upload failed: ${err.message || err}`)
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  // Reset blog cover to default
+  const handleBlogResetDefault = async (sectionName: string) => {
+    if (!confirm('Are you sure you want to restore the default picture for this blog post?')) return
+    try {
+      const { data: oldImages } = await supabase
+        .from('website_images')
+        .select('*')
+        .eq('section', sectionName)
+
+      if (oldImages && oldImages.length > 0) {
+        for (const old of oldImages) {
+          const oldPath = old.image_url.split('/storage/v1/object/public/images/')[1]
+          if (oldPath) {
+            await supabase.storage.from('images').remove([oldPath])
+          }
+          await supabase.from('website_images').delete().eq('id', old.id)
+        }
+      }
+      fetchImages()
+    } catch (err: any) {
+      alert(`Reset failed: ${err.message || err}`)
+    }
+  }
+
   // Render Loading State
   if (authLoading) {
     return (
@@ -1619,6 +1713,11 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
               <User size={18} /> Founder Portrait
             </button>
           </li>
+          <li className="admin-nav-item">
+            <button className={`admin-nav-btn ${activeTab === 'blogs' ? 'active' : ''}`} onClick={() => setActiveTab('blogs')}>
+              <ImageIcon size={18} /> Blog Pictures
+            </button>
+          </li>
         </ul>
 
         <button className="admin-nav-btn" style={{ marginTop: 'auto', color: '#ef4444' }} onClick={handleLogout}>
@@ -1637,6 +1736,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
             {activeTab === 'flights' && 'Flight Booking Slideshow'}
             {activeTab === 'hotels' && 'Hotel Reservations Slideshow'}
             {activeTab === 'founder' && 'Founder Portrait'}
+            {activeTab === 'blogs' && 'Blog Cover Pictures'}
           </h1>
         </div>
 
@@ -1646,10 +1746,25 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
           <>
             {/* Image Lists Grid */}
             <div className="admin-grid">
-              {(images.length > 0 ? images : getDefaultsForTab(activeTab)).map((img) => (
+              {(activeTab === 'blogs' 
+                ? blogs.map((b: any, idx: number) => {
+                    const isDefault = b.image === SAMPLE_BLOGS.find((x: any) => x.id === b.id)?.image
+                    const dbMatch = images.find((img: any) => img.section === `blog-${b.id}`)
+                    return {
+                      id: dbMatch ? dbMatch.id : `blog-${b.id}`,
+                      section: `blog-${b.id}`,
+                      image_url: b.image,
+                      name: b.title,
+                      pan_type: 'horizontal',
+                      order_index: idx,
+                      isDefault
+                    }
+                  })
+                : (images.length > 0 ? images : getDefaultsForTab(activeTab))
+              ).map((img: any) => (
                 <div key={img.id} className="admin-img-card" style={img.isDefault ? { opacity: 0.85, borderStyle: 'dashed' } : {}}>
                   <div className="admin-img-preview-wrapper">
-                    <img src={img.image_url} alt="Slideshow file" className="admin-img-preview" />
+                    <img src={img.image_url} alt="Cover or Slideshow file" className="admin-img-preview" />
                     {img.isDefault && (
                       <span style={{ position: 'absolute', top: '8px', right: '8px', backgroundColor: 'var(--accent-purple)', color: '#ffffff', fontSize: '11px', fontWeight: 700, padding: '4px 8px', borderRadius: '4px' }}>
                         System Default
@@ -1657,89 +1772,132 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
                     )}
                   </div>
                   
-                  {editingId === img.id ? (
-                    /* Inline Editing Mode */
-                    <div className="admin-img-meta" style={{ gap: '4px' }}>
-                      <span className="admin-meta-label">Image Name</span>
-                      <input 
-                        type="text" 
-                        className="admin-select" 
-                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
-                        value={editName} 
-                        onChange={(e) => setEditName(e.target.value)} 
-                        placeholder="e.g. Cambodia"
-                      />
-                      <span className="admin-meta-label">Pan Mode</span>
-                      <select 
-                        className="admin-select" 
-                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
-                        value={editPanType} 
-                        onChange={(e: any) => setEditPanType(e.target.value)}
-                      >
-                        <option value="horizontal">Horizontal</option>
-                        <option value="vertical">Vertical</option>
-                      </select>
-                      <span className="admin-meta-label">Display Order</span>
-                      <input 
-                        type="number" 
-                        className="admin-select" 
-                        style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', width: '100%' }}
-                        value={editOrderIndex} 
-                        onChange={(e) => setEditOrderIndex(parseInt(e.target.value) || 0)} 
-                      />
+                  {activeTab === 'blogs' ? (
+                    /* Blog Cover Info Mode */
+                    <div className="admin-img-meta" style={{ minHeight: '120px' }}>
+                      <span className="admin-meta-label">Blog Title</span>
+                      <span className="admin-meta-val" style={{ fontWeight: 600, fontSize: '13px', lineHeight: '1.4' }}>{img.name}</span>
+                      <span className="admin-meta-label">Status</span>
+                      <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
+                        {img.isDefault ? 'Default Cover' : 'Custom Cover'}
+                      </span>
                     </div>
                   ) : (
-                    /* Standard Info Mode */
-                    <div className="admin-img-meta">
-                      {activeTab !== 'founder' && (
-                        <>
-                          <span className="admin-meta-label">Image Name</span>
-                          <span className="admin-meta-val" style={{ fontStyle: img.name ? 'normal' : 'italic' }}>
-                            {img.name || 'None'}
-                          </span>
-                          <span className="admin-meta-label">Pan Mode</span>
-                          <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
-                          <span className="admin-meta-label">Display Order</span>
-                          <span className="admin-meta-val">{img.order_index}</span>
-                        </>
-                      )}
-                      {activeTab === 'founder' && (
-                        <>
-                          <span className="admin-meta-label">Status</span>
-                          <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
-                            {img.isDefault ? 'Default Portrait' : 'Active Portrait'}
-                          </span>
-                        </>
-                      )}
-                    </div>
+                    editingId === img.id ? (
+                      /* Inline Editing Mode */
+                      <div className="admin-img-meta" style={{ gap: '4px' }}>
+                        <span className="admin-meta-label">Image Name</span>
+                        <input 
+                          type="text" 
+                          className="admin-select" 
+                          style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
+                          value={editName} 
+                          onChange={(e) => setEditName(e.target.value)} 
+                          placeholder="e.g. Cambodia"
+                        />
+                        <span className="admin-meta-label">Pan Mode</span>
+                        <select 
+                          className="admin-select" 
+                          style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', marginBottom: '8px', width: '100%' }}
+                          value={editPanType} 
+                          onChange={(e: any) => setEditPanType(e.target.value)}
+                        >
+                          <option value="horizontal">Horizontal</option>
+                          <option value="vertical">Vertical</option>
+                        </select>
+                        <span className="admin-meta-label">Display Order</span>
+                        <input 
+                          type="number" 
+                          className="admin-select" 
+                          style={{ padding: '4px 8px', fontSize: '12px', height: '28px', minHeight: 'unset', width: '100%' }}
+                          value={editOrderIndex} 
+                          onChange={(e) => setEditOrderIndex(parseInt(e.target.value) || 0)} 
+                        />
+                      </div>
+                    ) : (
+                      /* Standard Info Mode */
+                      <div className="admin-img-meta">
+                        {activeTab !== 'founder' && (
+                          <>
+                            <span className="admin-meta-label">Image Name</span>
+                            <span className="admin-meta-val" style={{ fontStyle: img.name ? 'normal' : 'italic' }}>
+                              {img.name || 'None'}
+                            </span>
+                            <span className="admin-meta-label">Pan Mode</span>
+                            <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
+                            <span className="admin-meta-label">Display Order</span>
+                            <span className="admin-meta-val">{img.order_index}</span>
+                          </>
+                        )}
+                        {activeTab === 'founder' && (
+                          <>
+                            <span className="admin-meta-label">Status</span>
+                            <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
+                              {img.isDefault ? 'Default Portrait' : 'Active Portrait'}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    )
                   )}
 
                   <div className="admin-img-actions" style={{ justifyContent: 'center', display: 'flex', gap: '8px' }}>
-                    {img.isDefault ? (
-                      <span style={{ fontSize: '12px', color: 'var(--text-light)', fontStyle: 'italic', padding: '4px 0', textAlign: 'center' }}>
-                        Upload a file below to replace
-                      </span>
+                    {activeTab === 'blogs' ? (
+                      /* Blog Cover Upload Actions */
+                      <>
+                        <button 
+                          className="admin-btn-edit" 
+                          onClick={() => document.getElementById(`file-input-${img.section}`)?.click()}
+                          disabled={uploading}
+                        >
+                          <Upload size={13} /> {uploading ? 'Processing...' : 'Replace Picture'}
+                        </button>
+                        <input 
+                          id={`file-input-${img.section}`}
+                          type="file"
+                          accept="image/*"
+                          style={{ display: 'none' }}
+                          onChange={(e) => handleBlogCoverUpload(e.target.files?.[0] || null, img.section)}
+                          disabled={uploading}
+                        />
+                        {!img.isDefault && (
+                          <button 
+                            className="admin-btn-delete" 
+                            style={{ flexGrow: 1 }}
+                            onClick={() => handleBlogResetDefault(img.section)}
+                            disabled={uploading}
+                          >
+                            Reset
+                          </button>
+                        )}
+                      </>
                     ) : (
-                      editingId === img.id ? (
-                        <>
-                          <button className="admin-btn-save" onClick={() => handleSaveEdit(img.id)}>
-                            Save
-                          </button>
-                          <button className="admin-btn-cancel" onClick={() => setEditingId(null)}>
-                            Cancel
-                          </button>
-                        </>
+                      img.isDefault ? (
+                        <span style={{ fontSize: '12px', color: 'var(--text-light)', fontStyle: 'italic', padding: '4px 0', textAlign: 'center' }}>
+                          Upload a file below to replace
+                        </span>
                       ) : (
-                        <>
-                          {activeTab !== 'founder' && (
-                            <button className="admin-btn-edit" onClick={() => handleStartEdit(img)}>
-                              <Edit size={13} /> Edit
+                        editingId === img.id ? (
+                          <>
+                            <button className="admin-btn-save" onClick={() => handleSaveEdit(img.id)}>
+                              Save
                             </button>
-                          )}
-                          <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
-                            <Trash2 size={13} /> Remove
-                          </button>
-                        </>
+                            <button className="admin-btn-cancel" onClick={() => setEditingId(null)}>
+                              Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {activeTab !== 'founder' && (
+                              <button className="admin-btn-edit" onClick={() => handleStartEdit(img)}>
+                                <Edit size={13} /> Edit
+                              </button>
+                            )}
+                            <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
+                              <Trash2 size={13} /> Remove
+                            </button>
+                          </>
+                        )
                       )
                     )}
                   </div>
@@ -1748,107 +1906,109 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
             </div>
 
             {/* Upload form container */}
-            <div className="admin-upload-card">
-              <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', color: 'var(--text-primary)' }}>
-                {activeTab === 'founder' ? 'Replace Founder Portrait' : 'Add New Slideshow Image'}
-              </h3>
-              
-              <form onSubmit={handleUpload}>
-                <div className="admin-form-group">
-                  <label className="admin-form-label">Select Image File</label>
-                  <div 
-                    className={`admin-file-dropzone ${isDragging ? 'dragging' : ''}`}
-                    onClick={() => document.getElementById('file-input')?.click()}
-                    onDragOver={(e) => {
-                      e.preventDefault()
-                      setIsDragging(true)
-                    }}
-                    onDragLeave={(e) => {
-                      e.preventDefault()
-                      setIsDragging(false)
-                    }}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      setIsDragging(false)
-                      const files = e.dataTransfer.files
-                      if (files && files.length > 0) {
-                        const file = files[0]
-                        if (file.type.startsWith('image/')) {
-                          setSelectedFile(file)
-                        } else {
-                          alert('Please drop an image file (JPG, PNG, WebP).')
+            {activeTab !== 'blogs' && (
+              <div className="admin-upload-card">
+                <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', color: 'var(--text-primary)' }}>
+                  {activeTab === 'founder' ? 'Replace Founder Portrait' : 'Add New Slideshow Image'}
+                </h3>
+                
+                <form onSubmit={handleUpload}>
+                  <div className="admin-form-group">
+                    <label className="admin-form-label">Select Image File</label>
+                    <div 
+                      className={`admin-file-dropzone ${isDragging ? 'dragging' : ''}`}
+                      onClick={() => document.getElementById('file-input')?.click()}
+                      onDragOver={(e) => {
+                        e.preventDefault()
+                        setIsDragging(true)
+                      }}
+                      onDragLeave={(e) => {
+                        e.preventDefault()
+                        setIsDragging(false)
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault()
+                        setIsDragging(false)
+                        const files = e.dataTransfer.files
+                        if (files && files.length > 0) {
+                          const file = files[0]
+                          if (file.type.startsWith('image/')) {
+                            setSelectedFile(file)
+                          } else {
+                            alert('Please drop an image file (JPG, PNG, WebP).')
+                          }
                         }
-                      }
-                    }}
-                    style={isDragging ? {
-                      borderColor: 'var(--accent-purple)',
-                      backgroundColor: 'var(--accent-purple-light)',
-                      color: 'var(--accent-purple)'
-                    } : {}}
-                  >
-                    <Upload size={24} style={{ color: isDragging ? 'var(--accent-purple)' : 'var(--text-light)', marginBottom: '8px' }} />
-                    <p style={{ fontSize: '13px', color: isDragging ? 'var(--accent-purple)' : 'var(--text-secondary)', fontWeight: isDragging ? 600 : 400 }}>
-                      {selectedFile ? selectedFile.name : (isDragging ? 'Drop your image here!' : 'Drag & drop image here, or click to browse')}
-                    </p>
+                      }}
+                      style={isDragging ? {
+                        borderColor: 'var(--accent-purple)',
+                        backgroundColor: 'var(--accent-purple-light)',
+                        color: 'var(--accent-purple)'
+                      } : {}}
+                    >
+                      <Upload size={24} style={{ color: isDragging ? 'var(--accent-purple)' : 'var(--text-light)', marginBottom: '8px' }} />
+                      <p style={{ fontSize: '13px', color: isDragging ? 'var(--accent-purple)' : 'var(--text-secondary)', fontWeight: isDragging ? 600 : 400 }}>
+                        {selectedFile ? selectedFile.name : (isDragging ? 'Drop your image here!' : 'Drag & drop image here, or click to browse')}
+                      </p>
+                    </div>
+                    <input 
+                      id="file-input"
+                      type="file" 
+                      accept="image/*" 
+                      style={{ display: 'none' }} 
+                      onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    />
                   </div>
-                  <input 
-                    id="file-input"
-                    type="file" 
-                    accept="image/*" 
-                    style={{ display: 'none' }} 
-                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                  />
-                </div>
 
-                {activeTab !== 'founder' && (
-                  <>
-                    <div className="admin-form-group">
-                      <label className="admin-form-label" htmlFor="image-name-input">Image Name / Label (Optional)</label>
-                      <input 
-                        id="image-name-input"
-                        type="text" 
-                        className="admin-select"
-                        placeholder="e.g. Cambodia"
-                        value={imageName}
-                        onChange={(e) => setImageName(e.target.value)}
-                      />
-                    </div>
+                  {activeTab !== 'founder' && (
+                    <>
+                      <div className="admin-form-group">
+                        <label className="admin-form-label" htmlFor="image-name-input">Image Name / Label (Optional)</label>
+                        <input 
+                          id="image-name-input"
+                          type="text" 
+                          className="admin-select"
+                          placeholder="e.g. Cambodia"
+                          value={imageName}
+                          onChange={(e) => setImageName(e.target.value)}
+                        />
+                      </div>
 
-                    <div className="admin-form-group">
-                      <label className="admin-form-label" htmlFor="pan-select">Panning Motion Mode</label>
-                      <select 
-                        id="pan-select"
-                        className="admin-select"
-                        value={panType} 
-                        onChange={(e: any) => setPanType(e.target.value)}
-                      >
-                        <option value="horizontal">Horizontal Pan (For Wide Images)</option>
-                        <option value="vertical">Vertical Pan (For Tall Images)</option>
-                      </select>
-                    </div>
+                      <div className="admin-form-group">
+                        <label className="admin-form-label" htmlFor="pan-select">Panning Motion Mode</label>
+                        <select 
+                          id="pan-select"
+                          className="admin-select"
+                          value={panType} 
+                          onChange={(e: any) => setPanType(e.target.value)}
+                        >
+                          <option value="horizontal">Horizontal Pan (For Wide Images)</option>
+                          <option value="vertical">Vertical Pan (For Tall Images)</option>
+                        </select>
+                      </div>
 
-                    <div className="admin-form-group">
-                      <label className="admin-form-label" htmlFor="order-input">Order Index (Display Position)</label>
-                      <input 
-                        id="order-input"
-                        type="number" 
-                        className="admin-select"
-                        value={orderIndex}
-                        onChange={(e) => setOrderIndex(parseInt(e.target.value) || 0)}
-                      />
-                    </div>
-                  </>
-                )}
+                      <div className="admin-form-group">
+                        <label className="admin-form-label" htmlFor="order-input">Order Index (Display Position)</label>
+                        <input 
+                          id="order-input"
+                          type="number" 
+                          className="admin-select"
+                          value={orderIndex}
+                          onChange={(e) => setOrderIndex(parseInt(e.target.value) || 0)}
+                        />
+                      </div>
+                    </>
+                  )}
 
-                <button 
-                  type="submit" 
-                  className="admin-btn-submit" 
-                  disabled={uploading || !selectedFile}
-                >
-                  {uploading ? 'Compressing & Uploading...' : (activeTab === 'founder' ? 'Upload & Replace Portrait' : 'Upload Image')}
-                </button>
-              </form>
-            </div>
+                  <button 
+                    type="submit" 
+                    className="admin-btn-submit" 
+                    disabled={uploading || !selectedFile}
+                  >
+                    {uploading ? 'Compressing & Uploading...' : (activeTab === 'founder' ? 'Upload & Replace Portrait' : 'Upload Image')}
+                  </button>
+                </form>
+              </div>
+            )}
           </>
         )}
       </main>

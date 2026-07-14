@@ -1137,14 +1137,13 @@ img, video {
     display: block !important;
   }
 
-  #services-flights .service-row {
-    flex-direction: column-reverse !important;
+  .service-row {
+    flex-direction: column !important;
     gap: 32px !important;
   }
 
-  #services-hotels .service-row {
-    flex-direction: column !important;
-    gap: 32px !important;
+  #services-flights .service-row {
+    flex-direction: column-reverse !important;
   }
   
   .service-china-vietnam-section {
