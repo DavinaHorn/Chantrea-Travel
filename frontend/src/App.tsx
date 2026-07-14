@@ -97,21 +97,21 @@ const getRouteIndex = (view: string) => {
 }
 
 const flightSlidesListDefault = [
-  { src: '/hotel_cambodia.webp', panType: 'horizontal' },
-  { src: '/country_vietnam.webp', panType: 'horizontal' },
-  { src: '/country_canada.webp', panType: 'vertical' },
-  { src: '/country_australia.webp', panType: 'horizontal' },
-  { src: '/country_china.webp', panType: 'horizontal' },
-  { src: '/hero_hotel.webp', panType: 'horizontal' },
-  { src: '/hero_flight.webp', panType: 'horizontal' },
-  { src: '/hero_visa.webp', panType: 'horizontal' }
+  { src: '/hotel_cambodia.webp', panType: 'horizontal', name: 'CAMBODIA' },
+  { src: '/country_vietnam.webp', panType: 'horizontal', name: 'VIETNAM' },
+  { src: '/country_canada.webp', panType: 'vertical', name: 'CANADA' },
+  { src: '/country_australia.webp', panType: 'horizontal', name: 'AUSTRALIA' },
+  { src: '/country_china.webp', panType: 'horizontal', name: 'CHINA' },
+  { src: '/hero_hotel.webp', panType: 'horizontal', name: '' },
+  { src: '/hero_flight.webp', panType: 'horizontal', name: '' },
+  { src: '/hero_visa.webp', panType: 'horizontal', name: '' }
 ]
 
 const hotelSlidesListDefault = [
-  { src: '/hotel_cambodia.webp', panType: 'horizontal' },
-  { src: '/hotel_singapore.webp', panType: 'vertical' },
-  { src: '/hotel_vietnam.webp', panType: 'horizontal' },
-  { src: '/hotel_canada.webp', panType: 'vertical' }
+  { src: '/hotel_cambodia.webp', panType: 'horizontal', name: 'CAMBODIA' },
+  { src: '/hotel_singapore.webp', panType: 'vertical', name: 'SINGAPORE' },
+  { src: '/hotel_vietnam.webp', panType: 'horizontal', name: 'VIETNAM' },
+  { src: '/hotel_canada.webp', panType: 'vertical', name: 'CANADA' }
 ]
 
 function App() {
@@ -161,13 +161,13 @@ function App() {
           const founder = data.find(img => img.section === 'founder')
 
           if (flights.length > 0) {
-            setFlightSlides(flights.map(img => ({ src: img.image_url, panType: img.pan_type })))
+            setFlightSlides(flights.map(img => ({ src: img.image_url, panType: img.pan_type, name: img.name })))
           } else {
             setFlightSlides(flightSlidesListDefault)
           }
 
           if (hotels.length > 0) {
-            setHotelSlides(hotels.map(img => ({ src: img.image_url, panType: img.pan_type })))
+            setHotelSlides(hotels.map(img => ({ src: img.image_url, panType: img.pan_type, name: img.name })))
           } else {
             setHotelSlides(hotelSlidesListDefault)
           }
@@ -570,12 +570,18 @@ function App() {
                     <div className="embedded-slideshow-container">
                       <div className="slideshow-track">
                         {flightSlides.map((slide, index) => (
-                          <img 
-                            key={index} 
-                            src={slide.src} 
-                            alt="Worldwide travel destination" 
-                            className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'} ${index === activeFlightSlide ? 'active' : ''}`}
-                          />
+                          <div key={index} className={`slideshow-slide ${index === activeFlightSlide ? 'active' : ''}`}>
+                            <img 
+                              src={slide.src} 
+                              alt="Worldwide travel destination" 
+                              className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'}`}
+                            />
+                            {slide.name && (
+                              <div className="slideshow-slide-overlay">
+                                <span className="slideshow-slide-name">{slide.name}</span>
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </div>
                       <div className="slideshow-dots">
@@ -601,12 +607,18 @@ function App() {
                     <div className="embedded-slideshow-container">
                       <div className="slideshow-track">
                         {hotelSlides.map((slide, index) => (
-                          <img 
-                            key={index} 
-                            src={slide.src} 
-                            alt="Luxury accommodation" 
-                            className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'} ${index === activeHotelSlide ? 'active' : ''}`}
-                          />
+                          <div key={index} className={`slideshow-slide ${index === activeHotelSlide ? 'active' : ''}`}>
+                            <img 
+                              src={slide.src} 
+                              alt="Luxury accommodation" 
+                              className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'}`}
+                            />
+                            {slide.name && (
+                              <div className="slideshow-slide-overlay">
+                                <span className="slideshow-slide-name">{slide.name}</span>
+                              </div>
+                            )}
+                          </div>
                         ))}
                       </div>
                       <div className="slideshow-dots">
@@ -1245,6 +1257,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const [panType, setPanType] = useState<'horizontal' | 'vertical'>('horizontal')
   const [orderIndex, setOrderIndex] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
+  const [imageName, setImageName] = useState('')
 
   // Get system default images when database is empty
   const getDefaultsForTab = (tab: string) => {
@@ -1254,6 +1267,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
         image_url: s.src,
         pan_type: s.panType,
         order_index: idx,
+        name: s.name,
         isDefault: true
       }))
     }
@@ -1263,6 +1277,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
         image_url: s.src,
         pan_type: s.panType,
         order_index: idx,
+        name: s.name,
         isDefault: true
       }))
     }
@@ -1272,6 +1287,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
         image_url: '/davina_horn.webp',
         pan_type: 'horizontal',
         order_index: 0,
+        name: '',
         isDefault: true
       }]
     }
@@ -1438,13 +1454,15 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
           section: activeTab,
           image_url: publicUrl,
           pan_type: panType,
-          order_index: orderIndex
+          order_index: orderIndex,
+          name: imageName.trim() || null
         })
 
       if (dbError) throw dbError
 
       // Reset form & reload list
       setSelectedFile(null)
+      setImageName('')
       setOrderIndex(prev => prev + 1)
       fetchImages()
     } catch (err: any) {
@@ -1605,6 +1623,10 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
                   <div className="admin-img-meta">
                     {activeTab !== 'founder' && (
                       <>
+                        <span className="admin-meta-label">Image Name</span>
+                        <span className="admin-meta-val" style={{ fontStyle: img.name ? 'normal' : 'italic' }}>
+                          {img.name || 'None'}
+                        </span>
                         <span className="admin-meta-label">Pan Mode</span>
                         <span className="admin-meta-val" style={{ textTransform: 'capitalize' }}>{img.pan_type}</span>
                         <span className="admin-meta-label">Display Order</span>
@@ -1690,6 +1712,18 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
 
                 {activeTab !== 'founder' && (
                   <>
+                    <div className="admin-form-group">
+                      <label className="admin-form-label" htmlFor="image-name-input">Image Name / Label (Optional)</label>
+                      <input 
+                        id="image-name-input"
+                        type="text" 
+                        className="admin-select"
+                        placeholder="e.g. Cambodia"
+                        value={imageName}
+                        onChange={(e) => setImageName(e.target.value)}
+                      />
+                    </div>
+
                     <div className="admin-form-group">
                       <label className="admin-form-label" htmlFor="pan-select">Panning Motion Mode</label>
                       <select 

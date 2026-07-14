@@ -1784,21 +1784,52 @@ img, video {
   transform: translateZ(0);
 }
 
+.slideshow-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.slideshow-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
 .slideshow-slide-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 1;
-  border-radius: 24px;
 }
 
-.slideshow-slide-img.active {
-  opacity: 1;
-  z-index: 2;
+/* Vignette top overlay for slide name */
+.slideshow-slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 16px 36px 16px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0) 100%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.slideshow-slide-name {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Pan Animations (Continuous to prevent transition snapping glitch) */
