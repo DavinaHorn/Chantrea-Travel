@@ -6,7 +6,6 @@ import {
   CheckCircle, 
   Menu, 
   X, 
-  ChevronRightSquare,
   ArrowRight
 } from 'lucide-react'
 
@@ -182,10 +181,9 @@ function App() {
   }, [])
 
   // Redesign state variables
-  const [statCustomers, setStatCustomers] = useState(0)
+  const [statCountries, setStatCountries] = useState(0)
   const [statExpertise, setStatExpertise] = useState(0)
-  const [statApproval, setStatApproval] = useState(0)
-  const [statPartners, setStatPartners] = useState(0)
+  const [statReviews, setStatReviews] = useState(0)
   const [statsAnimated, setStatsAnimated] = useState(false)
 
   // Handle browser popstate (back/forward buttons)
@@ -291,14 +289,14 @@ function App() {
     if (statsAnimated) {
       let c = 0
       const cTimer = setInterval(() => {
-        c += 400
-        if (c >= 10000) {
-          setStatCustomers(10000)
+        c += 5
+        if (c >= 130) {
+          setStatCountries(130)
           clearInterval(cTimer)
         } else {
-          setStatCustomers(c)
+          setStatCountries(c)
         }
-      }, 30)
+      }, 25)
 
       let e = 0
       const eTimer = setInterval(() => {
@@ -311,33 +309,21 @@ function App() {
         }
       }, 40)
 
-      let a = 0
-      const aTimer = setInterval(() => {
-        a += 4
-        if (a >= 98) {
-          setStatApproval(98)
-          clearInterval(aTimer)
+      let r = 0
+      const rTimer = setInterval(() => {
+        r += 1
+        if (r >= 5) {
+          setStatReviews(5)
+          clearInterval(rTimer)
         } else {
-          setStatApproval(a)
+          setStatReviews(r)
         }
-      }, 30)
-
-      let p = 0
-      const pTimer = setInterval(() => {
-        p += 2
-        if (p >= 50) {
-          setStatPartners(50)
-          clearInterval(pTimer)
-        } else {
-          setStatPartners(p)
-        }
-      }, 35)
+      }, 100)
 
       return () => {
         clearInterval(cTimer)
         clearInterval(eTimer)
-        clearInterval(aTimer)
-        clearInterval(pTimer)
+        clearInterval(rTimer)
       }
     }
   }, [statsAnimated])
@@ -443,6 +429,22 @@ function App() {
 
           {/* Outer Site Container for Page Content */}
           <div className="container">
+            
+            {/* Stats Counters Section */}
+            <div className="stats-reveal-row reveal-element" style={{ margin: '32px 0 64px 0' }}>
+              <div className="stat-reveal-card">
+                <div className="stat-reveal-num">{statCountries >= 130 ? '130+' : statCountries}</div>
+                <div className="stat-reveal-label">Countries</div>
+              </div>
+              <div className="stat-reveal-card">
+                <div className="stat-reveal-num">{statExpertise >= 22 ? '22+' : statExpertise}</div>
+                <div className="stat-reveal-label">Years Experience</div>
+              </div>
+              <div className="stat-reveal-card">
+                <div className="stat-reveal-num">{statReviews}★</div>
+                <div className="stat-reveal-label">Client Reviews</div>
+              </div>
+            </div>
             
             {/* Our Services Section */}
             <section id="services" className="section">
@@ -567,51 +569,33 @@ function App() {
                     Visa Consultation & Assistance
                   </h4>
                   <p className="service-block-text" style={{ marginBottom: '24px' }}>
-                    Applying for a visa can be a complex process, but our experienced team is here to guide you every step of the way. We provide professional consultation and application assistance for major global destinations:
+                    We provide professional consultation and application assistance for major global destinations:
                   </p>
                   <div className="visas-grid-col">
                     <div className="visa-country-card">
                       <h5 className="visa-country-name">Canada Visas</h5>
-                      <p className="visa-country-desc">Comprehensive documentation checking, invitation assistance, and application tracking for tourist, business, and study visas.</p>
                     </div>
                     <div className="visa-country-card">
                       <h5 className="visa-country-name">Australia Visas</h5>
-                      <p className="visa-country-desc">Assistance with subclass selections, document filing, statement preparation, and submission guidance for Australian visas.</p>
                     </div>
                     <div className="visa-country-card">
                       <h5 className="visa-country-name">United States Visas</h5>
-                      <p className="visa-country-desc">Complete guidance on completing DS-160 forms, scheduling interview appointments, and mock interview preparations.</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Subsection B: China & Vietnam Visa Services */}
-                <div className="service-china-vietnam-section" style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <div className="china-vietnam-left">
-                    <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
-                      China & Vietnam Visa Services
-                    </h4>
-                    <p className="service-block-text" style={{ marginBottom: '20px' }}>
-                      CHANTREA Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand visa requirements, compile supporting files, complete applications, and guide submissions.
-                    </p>
-                    <ul className="service-block-list">
-                      <li className="service-block-item"><CheckCircle size={16} /> Detailed Requirement Checklist</li>
-                      <li className="service-block-item"><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
-                    </ul>
-                  </div>
-                  <div className="china-vietnam-right" style={{ background: 'var(--accent-purple-light)' }}>
-                    <h5 style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 600 }}>Key Processing Metrics</h5>
-                    <div className="china-vietnam-stat-row">
-                      <div className="china-vietnam-stat-card">
-                        <div className="china-vietnam-stat-num">98%</div>
-                        <div className="china-vietnam-stat-label">Approval Rate</div>
-                      </div>
-                      <div className="china-vietnam-stat-card">
-                        <div className="china-vietnam-stat-num">5-7</div>
-                        <div className="china-vietnam-stat-label">Working Days</div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="visa-subsection" style={{ borderBottom: '1px solid var(--border-light)' }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                    China & Vietnam Visa Services
+                  </h4>
+                  <p className="service-block-text" style={{ marginBottom: '20px' }}>
+                    CHANTREA Travel offers dedicated visa assistance for travelers visiting China and Vietnam. We help clients understand requirements, compile files, and complete applications.
+                  </p>
+                  <ul className="service-block-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '24px', padding: 0 }}>
+                    <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Detailed Requirement Checklists</li>
+                    <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Form Compiling & Submission Setup</li>
+                  </ul>
                 </div>
 
                 {/* Subsection C: Cambodian Visa Extensions */}
@@ -621,7 +605,7 @@ function App() {
                       Cambodian Visa Extensions
                     </h4>
                     <p className="service-block-text" style={{ marginBottom: '20px' }}>
-                      For foreign visitors currently residing or visiting inside Cambodia, we provide reliable visa extension assistance to help you maintain compliance with Cambodian immigration regulations.
+                      We provide reliable visa extension assistance to help foreign residents inside Cambodia maintain compliance with local regulations.
                     </p>
                     <ul className="service-block-list">
                       <li className="service-block-item"><CheckCircle size={16} /> Extension Option Strategy</li>
@@ -654,32 +638,16 @@ function App() {
                 </div>
 
                 {/* Subsection D: Chinese Immigration Assistance */}
-                <div className="service-chinese-immigration-section">
-                  <div className="immigration-info">
-                    <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)' }}>
-                      Chinese Immigration Assistance
-                    </h4>
-                    <p className="service-block-text">
-                      We provide comprehensive support for individuals and businesses requiring assistance with Chinese immigration-related procedures, travel planning, and policy checkups.
-                    </p>
-                    <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
-                      Contact Representative
-                    </a>
-                  </div>
-                  <div className="immigration-services-grid">
-                    <div className="immigration-service-row">
-                      <span className="immigration-row-title">Visa Invitation Checklists</span>
-                      <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                    </div>
-                    <div className="immigration-service-row">
-                      <span className="immigration-row-title">Residence Permit Guidance</span>
-                      <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                    </div>
-                    <div className="immigration-service-row">
-                      <span className="immigration-row-title">Legal Travel Clearance Advice</span>
-                      <ChevronRightSquare size={16} style={{ color: 'var(--accent-purple)' }} />
-                    </div>
-                  </div>
+                <div className="visa-subsection" style={{ paddingBottom: 0 }}>
+                  <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px' }}>
+                    Chinese Immigration Assistance
+                  </h4>
+                  <p className="service-block-text" style={{ marginBottom: '24px' }}>
+                    We provide support for individuals and businesses requiring assistance with Chinese immigration procedures, travel planning, and policy checkups.
+                  </p>
+                  <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', padding: '10px 20px', fontSize: '14px', display: 'inline-block' }} onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
+                    Contact Representative
+                  </a>
                 </div>
               </div>
             </section>
@@ -788,27 +756,7 @@ function App() {
               </div>
             </section>
 
-            {/* Stats Counters Section */}
-            <section className="section reveal-element" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
-              <div className="stats-reveal-row reveal-element">
-                <div className="stat-reveal-card">
-                  <div className="stat-reveal-num">{statCustomers >= 10000 ? '10K+' : statCustomers.toLocaleString()}</div>
-                  <div className="stat-reveal-label">Happy Travelers</div>
-                </div>
-                <div className="stat-reveal-card">
-                  <div className="stat-reveal-num">{statExpertise}+</div>
-                  <div className="stat-reveal-label">Years Experience</div>
-                </div>
-                <div className="stat-reveal-card">
-                  <div className="stat-reveal-num">{statApproval}%</div>
-                  <div className="stat-reveal-label">Visa Approval</div>
-                </div>
-                <div className="stat-reveal-card">
-                  <div className="stat-reveal-num">{statPartners}+</div>
-                  <div className="stat-reveal-label">Global Partners</div>
-                </div>
-              </div>
-            </section>
+
 
           </div>
         </>
