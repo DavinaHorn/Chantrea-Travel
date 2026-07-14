@@ -96,7 +96,23 @@ const getRouteIndex = (view: string) => {
   }
 }
 
+const flightSlidesListDefault = [
+  { src: '/hotel_cambodia.webp', panType: 'horizontal' },
+  { src: '/country_vietnam.webp', panType: 'horizontal' },
+  { src: '/country_canada.webp', panType: 'vertical' },
+  { src: '/country_australia.webp', panType: 'horizontal' },
+  { src: '/country_china.webp', panType: 'horizontal' },
+  { src: '/hero_hotel.webp', panType: 'horizontal' },
+  { src: '/hero_flight.webp', panType: 'horizontal' },
+  { src: '/hero_visa.webp', panType: 'horizontal' }
+]
 
+const hotelSlidesListDefault = [
+  { src: '/hotel_cambodia.webp', panType: 'horizontal' },
+  { src: '/hotel_singapore.webp', panType: 'vertical' },
+  { src: '/hotel_vietnam.webp', panType: 'horizontal' },
+  { src: '/hotel_canada.webp', panType: 'vertical' }
+]
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -120,24 +136,6 @@ function App() {
   
   const [activeFlightSlide, setActiveFlightSlide] = useState(0)
   const [activeHotelSlide, setActiveHotelSlide] = useState(0)
-
-  const flightSlidesListDefault = [
-    { src: '/hotel_cambodia.webp', panType: 'horizontal' },
-    { src: '/country_vietnam.webp', panType: 'horizontal' },
-    { src: '/country_canada.webp', panType: 'vertical' },
-    { src: '/country_australia.webp', panType: 'horizontal' },
-    { src: '/country_china.webp', panType: 'horizontal' },
-    { src: '/hero_hotel.webp', panType: 'horizontal' },
-    { src: '/hero_flight.webp', panType: 'horizontal' },
-    { src: '/hero_visa.webp', panType: 'horizontal' }
-  ]
-
-  const hotelSlidesListDefault = [
-    { src: '/hotel_cambodia.webp', panType: 'horizontal' },
-    { src: '/hotel_singapore.webp', panType: 'vertical' },
-    { src: '/hotel_vietnam.webp', panType: 'horizontal' },
-    { src: '/hotel_canada.webp', panType: 'vertical' }
-  ]
 
   const [flightSlides, setFlightSlides] = useState(flightSlidesListDefault)
   const [hotelSlides, setHotelSlides] = useState(hotelSlidesListDefault)
@@ -1233,6 +1231,38 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [panType, setPanType] = useState<'horizontal' | 'vertical'>('horizontal')
   const [orderIndex, setOrderIndex] = useState(0)
+
+  // Get system default images when database is empty
+  const getDefaultsForTab = (tab: string) => {
+    if (tab === 'flights') {
+      return flightSlidesListDefault.map((s, idx) => ({
+        id: `default-flight-${idx}`,
+        image_url: s.src,
+        pan_type: s.panType,
+        order_index: idx,
+        isDefault: true
+      }))
+    }
+    if (tab === 'hotels') {
+      return hotelSlidesListDefault.map((s, idx) => ({
+        id: `default-hotel-${idx}`,
+        image_url: s.src,
+        pan_type: s.panType,
+        order_index: idx,
+        isDefault: true
+      }))
+    }
+    if (tab === 'founder') {
+      return [{
+        id: 'default-founder',
+        image_url: '/davina_horn.webp',
+        pan_type: 'horizontal',
+        order_index: 0,
+        isDefault: true
+      }]
+    }
+    return []
+  }
   
   // Auth state management
   useEffect(() => {
@@ -1543,10 +1573,15 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
           <>
             {/* Image Lists Grid */}
             <div className="admin-grid">
-              {images.map((img) => (
-                <div key={img.id} className="admin-img-card">
+              {(images.length > 0 ? images : getDefaultsForTab(activeTab)).map((img) => (
+                <div key={img.id} className="admin-img-card" style={img.isDefault ? { opacity: 0.85, borderStyle: 'dashed' } : {}}>
                   <div className="admin-img-preview-wrapper">
-                    <img src={img.image_url} alt="Uploaded file" className="admin-img-preview" />
+                    <img src={img.image_url} alt="Slideshow file" className="admin-img-preview" />
+                    {img.isDefault && (
+                      <span style={{ position: 'absolute', top: '8px', right: '8px', backgroundColor: 'var(--accent-purple)', color: '#ffffff', fontSize: '11px', fontWeight: 700, padding: '4px 8px', borderRadius: '4px' }}>
+                        System Default
+                      </span>
+                    )}
                   </div>
                   <div className="admin-img-meta">
                     {activeTab !== 'founder' && (
@@ -1560,22 +1595,25 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
                     {activeTab === 'founder' && (
                       <>
                         <span className="admin-meta-label">Status</span>
-                        <span className="admin-meta-val" style={{ color: '#10b981' }}>Active Portrait</span>
+                        <span className="admin-meta-val" style={{ color: img.isDefault ? '#3b82f6' : '#10b981', fontWeight: 600 }}>
+                          {img.isDefault ? 'Default Portrait' : 'Active Portrait'}
+                        </span>
                       </>
                     )}
                   </div>
-                  <div className="admin-img-actions">
-                    <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
-                      <Trash2 size={14} /> Remove
-                    </button>
+                  <div className="admin-img-actions" style={{ justifyContent: 'center' }}>
+                    {img.isDefault ? (
+                      <span style={{ fontSize: '12px', color: 'var(--text-light)', fontStyle: 'italic', padding: '4px 0', textAlign: 'center' }}>
+                        Upload a file below to replace
+                      </span>
+                    ) : (
+                      <button className="admin-btn-delete" onClick={() => handleDelete(img)}>
+                        <Trash2 size={14} /> Remove
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
-              {images.length === 0 && (
-                <div style={{ gridColumn: 'span 3', padding: '32px 0', color: 'var(--text-light)', fontStyle: 'italic' }}>
-                  No custom images uploaded. Website is showing default fallback images.
-                </div>
-              )}
             </div>
 
             {/* Upload form container */}
