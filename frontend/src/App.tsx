@@ -306,7 +306,7 @@ function App() {
       const targetIndex = getRouteIndex(targetView)
       const direction = targetIndex >= prevIndex ? 'forward' : 'backward'
       
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'auto' })
       
       setViewState({
         currentView: targetView,
@@ -324,7 +324,7 @@ function App() {
           isTransitioning: false
         }))
         transitionTimerRef.current = null
-        window.scrollTo(0, 0)
+        window.scrollTo({ top: 0, behavior: 'auto' })
       }, 650)
     }
     
@@ -464,7 +464,7 @@ function App() {
       transitionTimerRef.current = null
     }
     
-    window.scrollTo(0, 0)
+    window.scrollTo({ top: 0, behavior: 'auto' })
 
     setViewState({
       currentView: targetView,
@@ -483,7 +483,7 @@ function App() {
         isTransitioning: false
       }))
       transitionTimerRef.current = null
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, behavior: 'auto' })
       
       if (anchorId) {
         setTimeout(() => {
