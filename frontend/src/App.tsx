@@ -279,6 +279,23 @@ function App() {
     }
   }, [])
 
+  const resetScrollToTop = () => {
+    const html = document.documentElement
+    const body = document.body
+    const prevHtmlScroll = html.style.scrollBehavior
+    const prevBodyScroll = body.style.scrollBehavior
+    
+    html.style.scrollBehavior = 'auto'
+    body.style.scrollBehavior = 'auto'
+    
+    window.scrollTo({ top: 0, behavior: 'auto' })
+    
+    setTimeout(() => {
+      html.style.scrollBehavior = prevHtmlScroll
+      body.style.scrollBehavior = prevBodyScroll
+    }, 50)
+  }
+
   // Redesign state variables
   const [statCountries, setStatCountries] = useState(0)
   const [statExpertise, setStatExpertise] = useState(0)
@@ -306,7 +323,7 @@ function App() {
       const targetIndex = getRouteIndex(targetView)
       const direction = targetIndex >= prevIndex ? 'forward' : 'backward'
       
-      window.scrollTo({ top: 0, behavior: 'auto' })
+      resetScrollToTop()
       
       setViewState({
         currentView: targetView,
@@ -324,7 +341,7 @@ function App() {
           isTransitioning: false
         }))
         transitionTimerRef.current = null
-        window.scrollTo({ top: 0, behavior: 'auto' })
+        resetScrollToTop()
       }, 650)
     }
     
@@ -464,7 +481,7 @@ function App() {
       transitionTimerRef.current = null
     }
     
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    resetScrollToTop()
 
     setViewState({
       currentView: targetView,
@@ -483,7 +500,7 @@ function App() {
         isTransitioning: false
       }))
       transitionTimerRef.current = null
-      window.scrollTo({ top: 0, behavior: 'auto' })
+      resetScrollToTop()
       
       if (anchorId) {
         setTimeout(() => {
