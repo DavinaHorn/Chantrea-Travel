@@ -398,16 +398,16 @@ function App() {
         }
       }, 40)
 
-      let r = 0
+      let rStep = 0
       const rTimer = setInterval(() => {
-        r += 1
-        if (r >= 5) {
+        rStep += 1
+        if (rStep >= 50) {
           setStatReviews(5)
           clearInterval(rTimer)
         } else {
-          setStatReviews(r)
+          setStatReviews(rStep / 10)
         }
-      }, 100)
+      }, 15)
 
       return () => {
         clearInterval(cTimer)
@@ -530,7 +530,7 @@ function App() {
                 <div className="stat-reveal-label">Years Experience</div>
               </div>
               <div className="stat-reveal-card">
-                <div className="stat-reveal-num">{statReviews}★</div>
+                <div className="stat-reveal-num">{statReviews % 1 === 0 ? statReviews : statReviews.toFixed(1)}★</div>
                 <div className="stat-reveal-label">Client Reviews</div>
               </div>
             </div>
