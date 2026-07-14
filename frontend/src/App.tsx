@@ -206,6 +206,19 @@ function App() {
     }
   }, [])
 
+  // Disable right-click context menu on all images and videos for public visitors
+  useEffect(() => {
+    const handleContextMenu = (e: MouseEvent) => {
+      if (viewState.currentView === 'admin') return
+      const target = e.target as HTMLElement
+      if (target && (target.tagName === 'IMG' || target.tagName === 'VIDEO')) {
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('contextmenu', handleContextMenu)
+    return () => document.removeEventListener('contextmenu', handleContextMenu)
+  }, [viewState.currentView])
+
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveFlightSlide((prev) => (prev + 1) % flightSlides.length)
