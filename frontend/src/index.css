@@ -780,6 +780,11 @@ body {
   padding-bottom: 60px;
 }
 
+.page-container-padding .section:first-of-type,
+.page-container-padding section:first-of-type {
+  padding-top: 0;
+}
+
 /* 
  * About Section Layout
  * Split Story: Left Column Portrait, Right Column narrative text.
@@ -1240,7 +1245,42 @@ body {
   
   .contact-layout {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 48px;
+    text-align: center;
+  }
+  
+  .contact-brand {
+    align-items: center;
+  }
+  
+  .contact-logo {
+    justify-content: center;
+  }
+  
+  .contact-brand-desc {
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .contact-info-list {
+    align-items: center;
+  }
+  
+  .contact-info-item {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .contact-social-row {
+    justify-content: center;
+  }
+  
+  .contact-links-list {
+    align-items: center;
+  }
+  
+  .contact-link {
+    text-align: center;
   }
 }
 

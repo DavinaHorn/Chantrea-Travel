@@ -1189,7 +1189,7 @@ function App() {
                   </li>
                   <li className="contact-info-item">
                     <Mail size={18} />
-                    <span>davina@chantreatravel.com</span>
+                    <span>info@chantreatravel.com</span>
                   </li>
                 </ul>
 
