@@ -314,7 +314,9 @@ function App() {
       })
       
       setPath(newPath)
-      window.scrollTo(0, 0)
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 0)
       
       transitionTimerRef.current = window.setTimeout(() => {
         setViewState(prev => ({
@@ -333,8 +335,11 @@ function App() {
     }
   }, [path])
 
-  // Clear transition timer on unmount
+  // Clear transition timer on unmount and set scroll restoration to manual
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
     return () => {
       if (transitionTimerRef.current) {
         clearTimeout(transitionTimerRef.current)
@@ -469,7 +474,9 @@ function App() {
     
     window.history.pushState(null, '', targetPath)
     setPath(targetPath)
-    window.scrollTo(0, 0)
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    }, 0)
     
     transitionTimerRef.current = window.setTimeout(() => {
       setViewState(prev => ({
