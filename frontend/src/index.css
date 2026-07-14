@@ -1731,278 +1731,165 @@ body {
   color: var(--text-primary);
 }
 
-/* Flights Sticky Stacking Cards Section */
-.flights-stack-section {
-  width: 100%;
-  margin-bottom: 96px;
+/* Simplified Flights Slideshow Section */
+.flights-slideshow-container {
   position: relative;
-}
-
-.flights-stack-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center-aligns all child cards so the scaling silhouette is perfect */
-  position: relative;
-  gap: 0;
-}
-
-.flight-stack-card {
-  position: sticky;
-  /* Top offsets are defined per card index below */
-  height: 460px; /* Balanced card height for desktop stack */
   width: 100%;
+  max-width: 1100px;
+  margin: 16px auto 0 auto;
+  aspect-ratio: 16 / 9;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05), 0 20px 50px rgba(10, 25, 47, 0.15);
-  background-color: var(--bg-card);
-  margin-bottom: 250px; /* creates scroll track height */
-  transform-origin: center top;
-  display: flex;
-  align-items: flex-start; /* Align content to the top so headers are visible when stacked */
+  box-shadow: var(--shadow-lg);
   border: 1px solid var(--border-light);
-  will-change: transform;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--bg-card);
 }
 
-/* Offsets and scale widths for vertical stack card pile on Desktop (stepped silhouette width) */
-.flight-stack-card:nth-child(1) { top: 130px; z-index: 1; width: 90%; }
-.flight-stack-card:nth-child(2) { top: 180px; z-index: 2; width: 92%; }
-.flight-stack-card:nth-child(3) { top: 230px; z-index: 3; width: 94%; }
-.flight-stack-card:nth-child(4) { top: 280px; z-index: 4; width: 96%; }
-.flight-stack-card:nth-child(5) { top: 330px; z-index: 5; width: 98%; }
-.flight-stack-card:nth-child(6) { top: 380px; z-index: 6; width: 100%; margin-bottom: 0; }
-
-/* Custom Reveal behavior integrating with scroll reveal observer */
-.flight-stack-card.reveal-element {
-  opacity: 0;
-  transform: translateY(100px);
+.flights-slideshow-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.flight-stack-card.reveal-element.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Card Image Background */
-.card-bg-img {
+.flight-slide {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+.flight-slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.flight-slide-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
-  transition: transform 0.6s ease;
 }
 
-.flight-stack-card:hover .card-bg-img {
-  transform: scale(1.03);
-}
-
-/* Card Overlay */
-.card-overlay {
+.flight-slide-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(10, 25, 47, 0.95) 0%,
-    rgba(10, 25, 47, 0.4) 60%,
-    rgba(10, 25, 47, 0.1) 100%
+    rgba(10, 25, 47, 0.75) 0%,
+    rgba(10, 25, 47, 0.2) 60%,
+    rgba(10, 25, 47, 0) 100%
   );
   z-index: 2;
 }
 
-.card-overlay.dark-overlay {
-  background: linear-gradient(
-    to right,
-    rgba(10, 25, 47, 0.95) 0%,
-    rgba(10, 25, 47, 0.8) 50%,
-    rgba(10, 25, 47, 0.4) 100%
-  );
-}
-
-/* Card Content Overlay */
-.card-content {
-  position: relative;
+.flight-slide-label-container {
+  position: absolute;
+  bottom: 48px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
   z-index: 3;
-  padding: 20px 40px; /* Reduced vertical padding to keep top title visible */
-  width: 100%;
-  color: var(--text-on-dark);
 }
 
-.card-header-tab {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.card-tab-number {
+.flight-slide-label {
   font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-teal);
-  letter-spacing: 1.5px;
-  opacity: 0.9;
-}
-
-.card-tab-title {
-  font-family: var(--font-heading);
-  font-size: clamp(20px, 2.5vw, 26px);
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 0.5px;
-  text-shadow: 0 2px 4px rgba(10, 25, 47, 0.5);
-}
-
-.card-tag {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-size: clamp(28px, 4.5vw, 54px);
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: #ffffff;
   text-transform: uppercase;
-  color: var(--accent-teal);
-  margin-bottom: 8px;
-  display: block;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
-.card-title {
-  font-family: var(--font-heading);
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 700;
-  line-height: 1.1;
-  margin: 0;
-}
-
-/* Last Card Styles */
-.flight-stack-card.last-card {
-  align-items: center; /* keep content vertically centered on the final card */
-  background-color: #0b0f19;
-}
-
-.last-card-slideshow {
+.flight-slide-nav-btn {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-.last-card-slide-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 1;
-}
-
-.last-card-slide-img.active {
-  opacity: 0.5; /* dimmed so text stands out */
-  z-index: 2;
-}
-
-.last-card-content {
-  max-width: 680px;
-  text-align: left;
-}
-
-.last-card-tag {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--accent-teal);
-  margin-bottom: 12px;
-  display: inline-block;
-}
-
-.last-card-title {
-  font-family: var(--font-heading);
-  font-size: clamp(28px, 3.5vw, 42px);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-
-.last-card-text {
-  font-size: clamp(14px, 1.6vw, 16px);
-  line-height: 1.65;
-  color: rgba(248, 250, 252, 0.8);
-  margin-bottom: 24px;
-}
-
-.last-card-list {
-  list-style: none;
-  margin-bottom: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.flight-slide-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.08);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.flight-slide-nav-btn.prev {
+  left: 28px;
+}
+
+.flight-slide-nav-btn.next {
+  right: 28px;
+}
+
+.flight-slide-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
   gap: 12px;
+  z-index: 10;
 }
 
-.last-card-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 15px;
-  color: rgba(248, 250, 252, 0.9);
+.flight-slide-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-.last-card-item svg {
-  color: var(--accent-teal);
-}
-
-.last-card-btn {
-  background-color: var(--accent-teal);
-  color: #0b0f19;
-  padding: 14px 28px;
-  border-radius: 9999px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  border: 1px solid var(--accent-teal);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: var(--transition-fast);
-}
-
-.last-card-btn:hover {
-  transform: translateY(-2px);
-  background-color: #0f9f8f;
-  border-color: #0f9f8f;
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.35);
-}
-
-/* Responsiveness adjustments */
-@media (max-width: 991px) {
-  .card-overlay.dark-overlay {
-    background: linear-gradient(
-      to top,
-      rgba(10, 25, 47, 0.95) 0%,
-      rgba(10, 25, 47, 0.7) 100%
-    );
-  }
+.flight-slide-dot.active {
+  background: #ffffff;
+  transform: scale(1.35);
 }
 
 @media (max-width: 768px) {
-  .flight-stack-card {
-    height: 380px; /* Shorter card on mobile screen sizes */
-    margin-bottom: 120px;
-    align-items: flex-start;
+  .flights-slideshow-container {
+    aspect-ratio: 4 / 3;
+    margin-top: 8px;
   }
   
-  .flight-stack-card:nth-child(1) { top: 100px; width: 90%; }
-  .flight-stack-card:nth-child(2) { top: 135px; width: 92%; }
-  .flight-stack-card:nth-child(3) { top: 170px; width: 94%; }
-  .flight-stack-card:nth-child(4) { top: 205px; width: 96%; }
-  .flight-stack-card:nth-child(5) { top: 240px; width: 98%; }
-  .flight-stack-card:nth-child(6) { top: 275px; width: 100%; }
-  
-  .card-content {
-    padding: 16px 24px;
+  .flight-slide-nav-btn {
+    width: 42px;
+    height: 42px;
   }
   
-  .last-card-list {
-    margin-bottom: 24px;
+  .flight-slide-nav-btn.prev {
+    left: 16px;
+  }
+  
+  .flight-slide-nav-btn.next {
+    right: 16px;
+  }
+  
+  .flight-slide-label-container {
+    bottom: 36px;
+  }
+  
+  .flight-slide-label {
+    letter-spacing: 3px;
   }
 }

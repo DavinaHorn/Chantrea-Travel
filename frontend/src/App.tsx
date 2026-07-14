@@ -5,6 +5,7 @@ import {
   Mail, 
   CheckCircle, 
   ChevronRight, 
+  ChevronLeft,
   Menu, 
   X, 
   ChevronRightSquare,
@@ -89,98 +90,7 @@ const getRouteIndex = (view: string) => {
   }
 }
 
-interface LastFlightCardProps {
-  navigate: (targetPath: string, anchorId?: string) => void
-}
 
-const LastFlightCard = ({ navigate }: LastFlightCardProps) => {
-  const worldImages = [
-    '/hotel_cambodia.webp',
-    '/country_vietnam.webp',
-    '/country_canada.webp',
-    '/country_australia.webp',
-    '/country_china.webp',
-    '/hero_hotel.webp',
-    '/hero_flight.webp',
-    '/hero_visa.webp'
-  ]
-
-  const [imgIndex, setImgIndex] = useState(0)
-  const speedRef = useRef(1) // Speed multiplier: 1 at start, 15 at end
-  const cardRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!cardRef.current) return
-      const parent = cardRef.current.closest('.flights-stack-container')
-      if (!parent) return
-      
-      const rect = parent.getBoundingClientRect()
-      const totalScroll = rect.height - window.innerHeight
-      if (totalScroll <= 0) return
-      
-      const progress = Math.min(Math.max(-rect.top / totalScroll, 0), 1)
-      speedRef.current = 1 + Math.pow(progress, 2.5) * 14
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    let lastTime = performance.now()
-    let accumulator = 0
-    let frameId: number
-
-    const tick = (now: number) => {
-      const delta = now - lastTime
-      lastTime = now
-
-      accumulator += delta * speedRef.current
-
-      if (accumulator >= 1200) {
-        setImgIndex((prev) => (prev + 1) % worldImages.length)
-        accumulator = accumulator % 1200
-      }
-
-      frameId = requestAnimationFrame(tick)
-    }
-
-    frameId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frameId)
-  }, [])
-
-  return (
-    <div ref={cardRef} className="flight-stack-card last-card reveal-element">
-      <div className="last-card-slideshow">
-        {worldImages.map((src, index) => (
-          <img 
-            key={index} 
-            src={src} 
-            alt="Worldwide travel destination" 
-            className={`last-card-slide-img ${index === imgIndex ? 'active' : ''}`}
-          />
-        ))}
-      </div>
-      <div className="card-overlay dark-overlay"></div>
-      <div className="card-content last-card-content">
-        <span className="last-card-tag">Flight Booking</span>
-        <h3 className="last-card-title">Worldwide Flight Tickets</h3>
-        <p className="last-card-text">
-          CHANTREA Travel Cambodia offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares. Wherever your destination, we connect you with confidence and care.
-        </p>
-        <ul className="last-card-list">
-          <li className="last-card-item"><CheckCircle size={16} /> Travel Consultation & Planning</li>
-          <li className="last-card-item"><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
-          <li className="last-card-item"><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
-        </ul>
-        <a href="#contact" className="last-card-btn" onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
-          Inquire Flights <ArrowRight size={16} />
-        </a>
-      </div>
-    </div>
-  )
-}
 
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -201,6 +111,15 @@ function App() {
   const logoRef = useRef<HTMLDivElement | null>(null)
   const [aboutScrollProgress, setAboutScrollProgress] = useState(0)
   const homepageAboutRef = useRef<HTMLDivElement | null>(null)
+  
+  const [activeFlightSlide, setActiveFlightSlide] = useState(0)
+  const flightSlides = [
+    { country: 'CAMBODIA', img: '/hotel_cambodia.webp' },
+    { country: 'VIETNAM', img: '/country_vietnam.webp' },
+    { country: 'CANADA', img: '/country_canada.webp' },
+    { country: 'AUSTRALIA', img: '/country_australia.webp' },
+    { country: 'CHINA', img: '/country_china.webp' }
+  ]
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -517,71 +436,65 @@ function App() {
                 </p>
               </div>
 
-              {/* Service 1: Worldwide Flight Tickets (Sticky Stacking Cards) */}
-              <div id="services-flights" className="flights-stack-section">
-                <div className="flights-stack-container">
-                  {/* Card 1: Cambodia */}
-                  <div className="flight-stack-card reveal-element">
-                    <img src="/hotel_cambodia.webp" alt="Cambodia" className="card-bg-img" />
-                    <div className="card-overlay"></div>
-                    <div className="card-content">
-                      <div className="card-header-tab">
-                        <span className="card-tab-number">01</span>
-                        <h3 className="card-tab-title">Cambodia</h3>
-                      </div>
+              {/* Service 1: Worldwide Flight Tickets (Minimalist Slideshow) */}
+              <div id="services-flights" className="service-block reveal-element" style={{ marginBottom: '96px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                  {/* Top: Information block */}
+                  <div className="service-col-info" style={{ padding: '0', flex: 'none', gap: '20px' }}>
+                    <span className="service-block-tag">Flight Booking</span>
+                    <h3 className="service-block-title">Worldwide Flight Tickets</h3>
+                    <p className="service-block-text" style={{ maxWidth: '800px' }}>
+                      CHANTREA Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares. Wherever your destination, we connect you with confidence and care.
+                    </p>
+                    <ul className="service-block-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '24px', margin: '8px 0' }}>
+                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Travel Consultation & Planning</li>
+                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
+                      <li className="service-block-item" style={{ margin: 0 }}><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
+                    </ul>
+                    <div style={{ marginTop: '8px' }}>
+                      <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
+                        Inquire Flights <ArrowRight size={16} />
+                      </a>
                     </div>
                   </div>
 
-                  {/* Card 2: Vietnam */}
-                  <div className="flight-stack-card reveal-element">
-                    <img src="/country_vietnam.webp" alt="Vietnam" className="card-bg-img" />
-                    <div className="card-overlay"></div>
-                    <div className="card-content">
-                      <div className="card-header-tab">
-                        <span className="card-tab-number">02</span>
-                        <h3 className="card-tab-title">Vietnam</h3>
-                      </div>
+                  {/* Bottom: Slideshow */}
+                  <div className="flights-slideshow-container">
+                    <div className="flights-slideshow-track">
+                      {flightSlides.map((slide, index) => (
+                        <div 
+                          key={index} 
+                          className={`flight-slide ${index === activeFlightSlide ? 'active' : ''}`}
+                        >
+                          <img src={slide.img} alt={slide.country} className="flight-slide-img" />
+                          <div className="flight-slide-overlay"></div>
+                          <div className="flight-slide-label-container">
+                            <span className="flight-slide-label">{slide.country}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Navigation Buttons */}
+                    <button className="flight-slide-nav-btn prev" onClick={() => setActiveFlightSlide((prev) => (prev - 1 + flightSlides.length) % flightSlides.length)} aria-label="Previous Slide">
+                      <ChevronLeft size={24} />
+                    </button>
+                    <button className="flight-slide-nav-btn next" onClick={() => setActiveFlightSlide((prev) => (prev + 1) % flightSlides.length)} aria-label="Next Slide">
+                      <ChevronRight size={24} />
+                    </button>
+                    
+                    {/* Indicator Dots */}
+                    <div className="flight-slide-dots">
+                      {flightSlides.map((_, index) => (
+                        <button 
+                          key={index} 
+                          className={`flight-slide-dot ${index === activeFlightSlide ? 'active' : ''}`}
+                          onClick={() => setActiveFlightSlide(index)}
+                          aria-label={`Go to slide ${index + 1}`}
+                        />
+                      ))}
                     </div>
                   </div>
-
-                  {/* Card 3: Canada */}
-                  <div className="flight-stack-card reveal-element">
-                    <img src="/country_canada.webp" alt="Canada" className="card-bg-img" />
-                    <div className="card-overlay"></div>
-                    <div className="card-content">
-                      <div className="card-header-tab">
-                        <span className="card-tab-number">03</span>
-                        <h3 className="card-tab-title">Canada</h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 4: Australia */}
-                  <div className="flight-stack-card reveal-element">
-                    <img src="/country_australia.webp" alt="Australia" className="card-bg-img" />
-                    <div className="card-overlay"></div>
-                    <div className="card-content">
-                      <div className="card-header-tab">
-                        <span className="card-tab-number">04</span>
-                        <h3 className="card-tab-title">Australia</h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 5: China */}
-                  <div className="flight-stack-card reveal-element">
-                    <img src="/country_china.webp" alt="China" className="card-bg-img" />
-                    <div className="card-overlay"></div>
-                    <div className="card-content">
-                      <div className="card-header-tab">
-                        <span className="card-tab-number">05</span>
-                        <h3 className="card-tab-title">China</h3>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card 6: Last Card (Worldwide Flight Tickets) */}
-                  <LastFlightCard navigate={navigate} />
                 </div>
               </div>
 
