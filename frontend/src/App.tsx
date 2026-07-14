@@ -543,7 +543,7 @@ function App() {
               {/* Service 3: Visa & Immigration Services (Unified Block) */}
               <div id="services-visas" className="service-block reveal-element">
                 {/* Header inside the box */}
-                <div style={{ padding: '48px 48px 32px 48px', borderBottom: '1px solid var(--border-light)' }}>
+                <div style={{ padding: '0 0 32px 0', borderBottom: '1px solid var(--border-light)' }}>
                   <span className="service-block-tag">Visa & Immigration</span>
                   <h3 className="service-block-title" style={{ marginTop: '8px' }}>Visa & Immigration Support</h3>
                   <p className="service-block-text" style={{ marginTop: '12px' }}>

@@ -409,14 +409,14 @@ body {
   line-height: 1.6;
 }
 
-/* Services */
+/* Services - Flat, borderless presentation */
 .service-block {
-  margin-bottom: 96px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  margin-bottom: 112px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
 }
@@ -427,13 +427,13 @@ body {
 
 .service-row {
   display: flex;
-  align-items: stretch;
-  gap: 0;
+  align-items: center;
+  gap: 64px;
 }
 
 .service-col-info {
-  flex: 1 1 40%;
-  padding: 64px;
+  flex: 1 1 45%;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -442,10 +442,10 @@ body {
 }
 
 .service-col-visual {
-  flex: 1 1 60%;
+  flex: 1 1 55%;
   position: relative;
-  background-color: var(--bg-secondary);
-  padding: 32px;
+  background-color: transparent;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -639,7 +639,7 @@ body {
 
 .china-vietnam-left {
   border-right: 1px solid var(--border-light);
-  padding: 48px;
+  padding: 48px 48px 48px 0;
 }
 
 .china-vietnam-right {
@@ -647,7 +647,7 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  padding: 48px;
+  padding: 48px 0 48px 48px;
 }
 
 .china-vietnam-stat-row {
@@ -693,14 +693,14 @@ body {
 
 .extensions-left {
   border-right: 1px solid var(--border-light);
-  padding: 48px;
+  padding: 48px 48px 48px 0;
 }
 
 .extensions-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px;
+  padding: 48px 0 48px 48px;
 }
 
 .extensions-table {
@@ -736,7 +736,7 @@ body {
 }
 
 .visa-subsection {
-  padding: 48px;
+  padding: 48px 0;
 }
 
 .immigration-info {
@@ -744,7 +744,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 48px;
+  padding: 48px 48px 48px 0;
 }
 
 .immigration-services-grid {
@@ -752,7 +752,7 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  padding: 48px;
+  padding: 48px 0 48px 48px;
 }
 
 .immigration-service-row {
@@ -1740,8 +1740,7 @@ body {
 .flights-embedded-slideshow {
   position: relative;
   width: 100%;
-  max-width: 540px;
-  aspect-ratio: 1.05 / 1;
+  aspect-ratio: 1.6 / 1;
   border-radius: var(--radius-2xl);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
