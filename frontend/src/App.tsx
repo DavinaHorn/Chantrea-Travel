@@ -306,6 +306,8 @@ function App() {
       const targetIndex = getRouteIndex(targetView)
       const direction = targetIndex >= prevIndex ? 'forward' : 'backward'
       
+      window.scrollTo(0, 0)
+      
       setViewState({
         currentView: targetView,
         prevView: prevView,
@@ -314,9 +316,6 @@ function App() {
       })
       
       setPath(newPath)
-      setTimeout(() => {
-        window.scrollTo(0, 0)
-      }, 0)
       
       transitionTimerRef.current = window.setTimeout(() => {
         setViewState(prev => ({
@@ -465,6 +464,8 @@ function App() {
       transitionTimerRef.current = null
     }
     
+    window.scrollTo(0, 0)
+
     setViewState({
       currentView: targetView,
       prevView: prevView,
@@ -474,9 +475,6 @@ function App() {
     
     window.history.pushState(null, '', targetPath)
     setPath(targetPath)
-    setTimeout(() => {
-      window.scrollTo(0, 0)
-    }, 0)
     
     transitionTimerRef.current = window.setTimeout(() => {
       setViewState(prev => ({
