@@ -4,7 +4,6 @@ import {
   Phone, 
   Mail, 
   CheckCircle, 
-  ChevronRight, 
   Menu, 
   X, 
   ChevronRightSquare,
@@ -112,23 +111,33 @@ function App() {
   const homepageAboutRef = useRef<HTMLDivElement | null>(null)
   
   const [activeFlightSlide, setActiveFlightSlide] = useState(0)
-  const worldImages = [
-    '/hotel_cambodia.webp',
-    '/country_vietnam.webp',
-    '/country_canada.webp',
-    '/country_australia.webp',
-    '/country_china.webp',
-    '/hero_hotel.webp',
-    '/hero_flight.webp',
-    '/hero_visa.webp'
+  const [activeHotelSlide, setActiveHotelSlide] = useState(0)
+
+  const flightSlidesList = [
+    { src: '/hotel_cambodia.webp', panType: 'horizontal' },
+    { src: '/country_vietnam.webp', panType: 'horizontal' },
+    { src: '/country_canada.webp', panType: 'vertical' },
+    { src: '/country_australia.webp', panType: 'horizontal' },
+    { src: '/country_china.webp', panType: 'horizontal' },
+    { src: '/hero_hotel.webp', panType: 'horizontal' },
+    { src: '/hero_flight.webp', panType: 'horizontal' },
+    { src: '/hero_visa.webp', panType: 'horizontal' }
+  ]
+
+  const hotelSlidesList = [
+    { src: '/hotel_cambodia.webp', panType: 'horizontal' },
+    { src: '/hotel_singapore.webp', panType: 'vertical' },
+    { src: '/hotel_vietnam.webp', panType: 'horizontal' },
+    { src: '/hotel_canada.webp', panType: 'vertical' }
   ]
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveFlightSlide((prev) => (prev + 1) % worldImages.length)
-    }, 3000)
+      setActiveFlightSlide((prev) => (prev + 1) % flightSlidesList.length)
+      setActiveHotelSlide((prev) => (prev + 1) % hotelSlidesList.length)
+    }, 4000)
     return () => clearInterval(timer)
-  }, [worldImages.length])
+  }, [flightSlidesList.length, hotelSlidesList.length])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -467,22 +476,22 @@ function App() {
 
                   {/* Right side: Slideshow block */}
                   <div className="service-col-visual">
-                    <div className="flights-embedded-slideshow">
-                      <div className="flights-slideshow-track">
-                        {worldImages.map((src, index) => (
+                    <div className="embedded-slideshow-container">
+                      <div className="slideshow-track">
+                        {flightSlidesList.map((slide, index) => (
                           <img 
                             key={index} 
-                            src={src} 
+                            src={slide.src} 
                             alt="Worldwide travel destination" 
-                            className={`flights-slide-img ${index === activeFlightSlide ? 'active' : ''}`}
+                            className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'} ${index === activeFlightSlide ? 'active' : ''}`}
                           />
                         ))}
                       </div>
-                      <div className="flights-slideshow-dots">
-                        {worldImages.map((_, index) => (
+                      <div className="slideshow-dots">
+                        {flightSlidesList.map((_, index) => (
                           <button 
                             key={index} 
-                            className={`flights-slideshow-dot ${index === activeFlightSlide ? 'active' : ''}`}
+                            className={`slideshow-dot ${index === activeFlightSlide ? 'active' : ''}`}
                             onClick={() => setActiveFlightSlide(index)}
                             aria-label={`Go to slide ${index + 1}`}
                           />
@@ -495,7 +504,33 @@ function App() {
 
               {/* Service 2: Global Hotel Reservations */}
               <div id="services-hotels" className="service-block reveal-element">
-                <div className="service-row" style={{ flexDirection: 'row-reverse' }}>
+                <div className="service-row">
+                  {/* Left side: Slideshow block */}
+                  <div className="service-col-visual">
+                    <div className="embedded-slideshow-container">
+                      <div className="slideshow-track">
+                        {hotelSlidesList.map((slide, index) => (
+                          <img 
+                            key={index} 
+                            src={slide.src} 
+                            alt="Luxury accommodation" 
+                            className={`slideshow-slide-img ${slide.panType === 'horizontal' ? 'pan-horizontal' : 'pan-vertical'} ${index === activeHotelSlide ? 'active' : ''}`}
+                          />
+                        ))}
+                      </div>
+                      <div className="slideshow-dots">
+                        {hotelSlidesList.map((_, index) => (
+                          <button 
+                            key={index} 
+                            className={`slideshow-dot ${index === activeHotelSlide ? 'active' : ''}`}
+                            onClick={() => setActiveHotelSlide(index)}
+                            aria-label={`Go to slide ${index + 1}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Right side: Information block */}
                   <div className="service-col-info">
                     <span className="service-block-tag">Accommodations</span>
@@ -508,34 +543,9 @@ function App() {
                       <li className="service-block-item"><CheckCircle size={16} /> Budget-Friendly & Business Lodging</li>
                       <li className="service-block-item"><CheckCircle size={16} /> Fast Secure Booking Confirmations</li>
                     </ul>
-                    <a href="#contact" className="service-block-link" onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
-                      Inquire Hotels <ChevronRight size={16} />
+                    <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '8px' }} onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
+                      Inquire Hotels <ArrowRight size={16} />
                     </a>
-                  </div>
-                  {/* Left side: Hotels Bento Grid */}
-                  <div className="service-col-visual">
-                    <div className="bento-grid bento-grid-hotels">
-                      <div className="bento-card bento-card-hotels-1">
-                        <img src="/hotel_cambodia.webp" alt="Angkor Resort Cambodia" className="bento-img" />
-                        <div className="bento-overlay"></div>
-                        <span className="bento-badge">Cambodia</span>
-                      </div>
-                      <div className="bento-card bento-card-hotels-2">
-                        <img src="/hotel_singapore.webp" alt="Rooftop Pool Singapore" className="bento-img" />
-                        <div className="bento-overlay"></div>
-                        <span className="bento-badge">Singapore</span>
-                      </div>
-                      <div className="bento-card bento-card-hotels-3">
-                        <img src="/hotel_vietnam.webp" alt="Beach Resort Vietnam" className="bento-img" />
-                        <div className="bento-overlay"></div>
-                        <span className="bento-badge">Vietnam</span>
-                      </div>
-                      <div className="bento-card bento-card-hotels-4">
-                        <img src="/hotel_canada.webp" alt="Castle Hotel Canada" className="bento-img" />
-                        <div className="bento-overlay"></div>
-                        <span className="bento-badge">Canada</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

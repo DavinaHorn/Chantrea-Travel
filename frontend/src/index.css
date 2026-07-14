@@ -422,7 +422,7 @@ body {
 }
 
 .service-block:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: none;
 }
 
 .service-row {
@@ -1736,26 +1736,29 @@ body {
   color: var(--text-primary);
 }
 
-/* Simplified Flights Embedded Slideshow Section */
-.flights-embedded-slideshow {
+/* Cinematic Pan-Motion Slideshow System */
+.embedded-slideshow-container {
   position: relative;
   width: 100%;
   aspect-ratio: 1.6 / 1;
-  border-radius: var(--radius-2xl);
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-light);
-  margin: 0 auto;
+  transform: translateZ(0); /* Fixes overflow border-radius clipping bugs */
 }
 
-.flights-slideshow-track {
+.slideshow-track {
   position: relative;
   width: 100%;
   height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  transform: translateZ(0);
 }
 
-.flights-slide-img {
+.slideshow-slide-img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1764,27 +1767,60 @@ body {
   opacity: 0;
   transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
   z-index: 1;
-  border-radius: var(--radius-2xl);
+  border-radius: 24px;
 }
 
-.flights-slide-img.active {
+.slideshow-slide-img.active {
   opacity: 1;
   z-index: 2;
 }
 
-.flights-slideshow-dots {
+/* Pan Animations when Active */
+.slideshow-slide-img.active.pan-horizontal {
+  animation: horizontalPan 12s ease-in-out infinite;
+}
+
+.slideshow-slide-img.active.pan-vertical {
+  animation: verticalPan 12s ease-in-out infinite;
+}
+
+@keyframes horizontalPan {
+  0% {
+    transform: scale(1.12) translateX(-3%);
+  }
+  50% {
+    transform: scale(1.12) translateX(3%);
+  }
+  100% {
+    transform: scale(1.12) translateX(-3%);
+  }
+}
+
+@keyframes verticalPan {
+  0% {
+    transform: scale(1.12) translateY(4%);
+  }
+  50% {
+    transform: scale(1.12) translateY(-4%);
+  }
+  100% {
+    transform: scale(1.12) translateY(4%);
+  }
+}
+
+.slideshow-dots {
   position: absolute;
-  bottom: 24px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
+  gap: 10px;
   z-index: 10;
 }
 
-.flights-slideshow-dot {
-  width: 10px;
-  height: 10px;
+.slideshow-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.45);
   border: none;
@@ -1793,15 +1829,43 @@ body {
   padding: 0;
 }
 
-.flights-slideshow-dot.active {
+.slideshow-dot.active {
   background: #ffffff;
   transform: scale(1.35);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 1024px) {
-  .flights-embedded-slideshow {
-    max-width: 480px;
-    aspect-ratio: 1.1 / 1;
+  .service-block {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 64px !important;
+  }
+  
+  .service-col-info {
+    padding: 0 8px !important;
+    text-align: left !important;
+  }
+  
+  .service-col-visual {
+    padding: 0 !important;
+  }
+
+  #services-flights .service-row {
+    flex-direction: column-reverse !important;
+    gap: 32px !important;
+  }
+
+  #services-hotels .service-row {
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  
+  .embedded-slideshow-container {
+    aspect-ratio: 1.6 / 1 !important;
+    max-width: 100% !important;
   }
 }
