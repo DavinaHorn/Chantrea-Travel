@@ -5,7 +5,6 @@ import {
   Mail, 
   CheckCircle, 
   ChevronRight, 
-  ChevronLeft,
   Menu, 
   X, 
   ChevronRightSquare,
@@ -113,13 +112,23 @@ function App() {
   const homepageAboutRef = useRef<HTMLDivElement | null>(null)
   
   const [activeFlightSlide, setActiveFlightSlide] = useState(0)
-  const flightSlides = [
-    { country: 'CAMBODIA', img: '/hotel_cambodia.webp' },
-    { country: 'VIETNAM', img: '/country_vietnam.webp' },
-    { country: 'CANADA', img: '/country_canada.webp' },
-    { country: 'AUSTRALIA', img: '/country_australia.webp' },
-    { country: 'CHINA', img: '/country_china.webp' }
+  const worldImages = [
+    '/hotel_cambodia.webp',
+    '/country_vietnam.webp',
+    '/country_canada.webp',
+    '/country_australia.webp',
+    '/country_china.webp',
+    '/hero_hotel.webp',
+    '/hero_flight.webp',
+    '/hero_visa.webp'
   ]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveFlightSlide((prev) => (prev + 1) % worldImages.length)
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [worldImages.length])
 
   useEffect(() => {
     const handleNavbarScroll = () => {
@@ -436,71 +445,49 @@ function App() {
                 </p>
               </div>
 
-              {/* Service 1: Worldwide Flight Tickets (Minimalist Slideshow) */}
-              <div 
-                id="services-flights" 
-                className="reveal-element" 
-                style={{ 
-                  maxWidth: '1100px', 
-                  margin: '0 auto 96px auto',
-                  width: '100%'
-                }}
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                  {/* Top: Information block */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Service 1: Worldwide Flight Tickets */}
+              <div id="services-flights" className="service-block reveal-element">
+                <div className="service-row">
+                  {/* Left side: Information block */}
+                  <div className="service-col-info">
                     <span className="service-block-tag">Flight Booking</span>
                     <h3 className="service-block-title">Worldwide Flight Tickets</h3>
-                    <p className="service-block-text" style={{ maxWidth: '800px', margin: 0 }}>
+                    <p className="service-block-text">
                       CHANTREA Travel offers worldwide flight ticket booking through major international airlines, helping you find the most suitable routes and competitive fares. Wherever your destination, we connect you with confidence and care.
                     </p>
-                    <ul className="service-block-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '24px', margin: '8px 0', padding: 0, listStyle: 'none' }}>
-                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Travel Consultation & Planning</li>
-                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
-                      <li className="service-block-item" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><CheckCircle size={16} /> 24/7 Ongoing Traveler Support</li>
+                    <ul className="service-block-list">
+                      <li className="service-block-item"><CheckCircle size={16} /> Travel Consultation & Planning</li>
+                      <li className="service-block-item"><CheckCircle size={16} /> Ticket Issuance & Flight Changes</li>
+                      <li className="service-block-item"><CheckCircle size={16} /> Ongoing Traveler Support</li>
                     </ul>
-                    <div style={{ marginTop: '8px' }}>
-                      <a href="#contact" className="nav-btn" onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
-                        Inquire Flights <ArrowRight size={16} />
-                      </a>
-                    </div>
+                    <a href="#contact" className="nav-btn" style={{ alignSelf: 'flex-start', display: 'inline-flex', alignItems: 'center', gap: '8px' }} onClick={(e) => { e.preventDefault(); navigate('/', 'contact'); }}>
+                      Inquire Flights <ArrowRight size={16} />
+                    </a>
                   </div>
 
-                  {/* Bottom: Slideshow */}
-                  <div className="flights-slideshow-container" style={{ margin: '8px 0 0 0' }}>
-                    <div className="flights-slideshow-track">
-                      {flightSlides.map((slide, index) => (
-                        <div 
-                          key={index} 
-                          className={`flight-slide ${index === activeFlightSlide ? 'active' : ''}`}
-                        >
-                          <img src={slide.img} alt={slide.country} className="flight-slide-img" />
-                          <div className="flight-slide-overlay"></div>
-                          <div className="flight-slide-label-container">
-                            <span className="flight-slide-label">{slide.country}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {/* Navigation Buttons */}
-                    <button className="flight-slide-nav-btn prev" onClick={() => setActiveFlightSlide((prev) => (prev - 1 + flightSlides.length) % flightSlides.length)} aria-label="Previous Slide">
-                      <ChevronLeft size={24} />
-                    </button>
-                    <button className="flight-slide-nav-btn next" onClick={() => setActiveFlightSlide((prev) => (prev + 1) % flightSlides.length)} aria-label="Next Slide">
-                      <ChevronRight size={24} />
-                    </button>
-                    
-                    {/* Indicator Dots */}
-                    <div className="flight-slide-dots">
-                      {flightSlides.map((_, index) => (
-                        <button 
-                          key={index} 
-                          className={`flight-slide-dot ${index === activeFlightSlide ? 'active' : ''}`}
-                          onClick={() => setActiveFlightSlide(index)}
-                          aria-label={`Go to slide ${index + 1}`}
-                        />
-                      ))}
+                  {/* Right side: Slideshow block */}
+                  <div className="service-col-visual">
+                    <div className="flights-embedded-slideshow">
+                      <div className="flights-slideshow-track">
+                        {worldImages.map((src, index) => (
+                          <img 
+                            key={index} 
+                            src={src} 
+                            alt="Worldwide travel destination" 
+                            className={`flights-slide-img ${index === activeFlightSlide ? 'active' : ''}`}
+                          />
+                        ))}
+                      </div>
+                      <div className="flights-slideshow-dots">
+                        {worldImages.map((_, index) => (
+                          <button 
+                            key={index} 
+                            className={`flights-slideshow-dot ${index === activeFlightSlide ? 'active' : ''}`}
+                            onClick={() => setActiveFlightSlide(index)}
+                            aria-label={`Go to slide ${index + 1}`}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
