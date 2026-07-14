@@ -1231,6 +1231,7 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [panType, setPanType] = useState<'horizontal' | 'vertical'>('horizontal')
   const [orderIndex, setOrderIndex] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
 
   // Get system default images when database is empty
   const getDefaultsForTab = (tab: string) => {
@@ -1625,10 +1626,39 @@ function AdminPanel({ navigate }: { navigate: (to: string, anchor?: string) => v
               <form onSubmit={handleUpload}>
                 <div className="admin-form-group">
                   <label className="admin-form-label">Select Image File</label>
-                  <div className="admin-file-dropzone" onClick={() => document.getElementById('file-input')?.click()}>
-                    <Upload size={24} style={{ color: 'var(--text-light)', marginBottom: '8px' }} />
-                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                      {selectedFile ? selectedFile.name : 'Click to browse files (JPG, PNG, WebP)'}
+                  <div 
+                    className={`admin-file-dropzone ${isDragging ? 'dragging' : ''}`}
+                    onClick={() => document.getElementById('file-input')?.click()}
+                    onDragOver={(e) => {
+                      e.preventDefault()
+                      setIsDragging(true)
+                    }}
+                    onDragLeave={(e) => {
+                      e.preventDefault()
+                      setIsDragging(false)
+                    }}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      setIsDragging(false)
+                      const files = e.dataTransfer.files
+                      if (files && files.length > 0) {
+                        const file = files[0]
+                        if (file.type.startsWith('image/')) {
+                          setSelectedFile(file)
+                        } else {
+                          alert('Please drop an image file (JPG, PNG, WebP).')
+                        }
+                      }
+                    }}
+                    style={isDragging ? {
+                      borderColor: 'var(--accent-purple)',
+                      backgroundColor: 'var(--accent-purple-light)',
+                      color: 'var(--accent-purple)'
+                    } : {}}
+                  >
+                    <Upload size={24} style={{ color: isDragging ? 'var(--accent-purple)' : 'var(--text-light)', marginBottom: '8px' }} />
+                    <p style={{ fontSize: '13px', color: isDragging ? 'var(--accent-purple)' : 'var(--text-secondary)', fontWeight: isDragging ? 600 : 400 }}>
+                      {selectedFile ? selectedFile.name : (isDragging ? 'Drop your image here!' : 'Drag & drop image here, or click to browse')}
                     </p>
                   </div>
                   <input 
