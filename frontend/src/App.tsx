@@ -1057,7 +1057,7 @@ function App() {
   return (
     <>
       {/* Header & Navbar */}
-      <header className={`header ${viewState.currentView === 'home' && !isScrolled ? 'header-transparent' : ''}`}>
+      <header className={`header ${viewState.currentView === 'home' && !isScrolled && !viewState.isTransitioning ? 'header-transparent' : ''}`}>
         <div className="container">
           <nav className="navbar" role="navigation" aria-label="Main Navigation">
             {/* Left: Brand Logo */}
@@ -1075,8 +1075,8 @@ function App() {
                 alt="CHANTREA Travel Logo" 
                 className="logo-img" 
                 style={{
-                  opacity: viewState.currentView === 'home' ? Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) : 1,
-                  transform: viewState.currentView === 'home' ? `scale(${0.85 + Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) * 0.15})` : 'scale(1)',
+                  opacity: (viewState.currentView === 'home' && !viewState.isTransitioning) ? Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) : 1,
+                  transform: (viewState.currentView === 'home' && !viewState.isTransitioning) ? `scale(${0.85 + Math.min(Math.max((logoTransitionProgress - 0.4) / 0.6, 0), 1) * 0.15})` : 'scale(1)',
                   transition: 'opacity 0.15s ease-out, transform 0.15s ease-out',
                   willChange: 'opacity, transform'
                 }}
