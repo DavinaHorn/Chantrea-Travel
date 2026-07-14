@@ -533,7 +533,7 @@ function App() {
             <div className="stats-reveal-row reveal-element" style={{ margin: '32px 0 64px 0' }}>
               <div className="stat-reveal-card">
                 <div className="stat-reveal-num">{statCountries >= 130 ? '130+' : statCountries}</div>
-                <div className="stat-reveal-label">Countries</div>
+                <div className="stat-reveal-label">Travelable Countries</div>
               </div>
               <div className="stat-reveal-card">
                 <div className="stat-reveal-num">{statExpertise >= 22 ? '22+' : statExpertise}</div>
