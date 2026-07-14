@@ -1325,6 +1325,7 @@ img, video {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-anchor: none;
 }
 
 /* Base class for page views */
@@ -1332,6 +1333,7 @@ img, video {
   width: 100%;
   background-color: var(--bg-primary);
   min-height: calc(100vh - 90px);
+  overflow-anchor: none;
 }
 
 /* Old view that is sliding out */

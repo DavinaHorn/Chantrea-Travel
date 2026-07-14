@@ -323,6 +323,7 @@ function App() {
           isTransitioning: false
         }))
         transitionTimerRef.current = null
+        window.scrollTo(0, 0)
       }, 650)
     }
     
@@ -477,6 +478,7 @@ function App() {
         isTransitioning: false
       }))
       transitionTimerRef.current = null
+      window.scrollTo(0, 0)
       
       if (anchorId) {
         setTimeout(() => {
