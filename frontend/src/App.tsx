@@ -158,7 +158,10 @@ const TRANSLATIONS = {
     contactHotels: "Hotel Bookings",
     contactVisas: "Visa Services",
     footerCopy: "CHANTREA Travel. All rights reserved. Professional Travel & Visa Services.",
-    contactDesc: "Connecting you to global destinations with confidence and care. Honest advice, reliable flight bookings, global hotel reservations, and visa processing services."
+    contactDesc: "Connecting you to global destinations with confidence and care. Honest advice, reliable flight bookings, global hotel reservations, and visa processing services.",
+    popupTitle: "Choose Your Language",
+    popupDesc: "Please select your preferred language to continue.",
+    popupConfirm: "Confirm"
   },
   km: {
     navServices: "សេវាកម្មរបស់យើង",
@@ -238,7 +241,10 @@ const TRANSLATIONS = {
     contactHotels: "ការកក់សណ្ឋាគារ",
     contactVisas: "សេវាកម្មទិដ្ឋាការ",
     footerCopy: "CHANTREA Travel. រក្សាសិទ្ធិគ្រប់យ៉ាង。សេវាកម្មធ្វើដំណើរ និងទិដ្ឋាការកម្រិតអាជីព。",
-    contactDesc: "ភ្ជាប់ទំនាក់ទំនងអ្នកទៅកាន់គោលដៅពិភពលោកដោយភាពជឿជាក់ និងការយកចិត្តទុកដាក់។ ដំបូន្មានស្មោះត្រង់ ការកក់ជើងហោះហើរដែលអាចទុកចិត្តបាន ការកក់សណ្ឋាគារទូទាំងពិភពលោក និងសេវាកម្មរៀបចំទិដ្ឋាការ។"
+    contactDesc: "ភ្ជាប់ទំនាក់ទំនងអ្នកទៅកាន់គោលដៅពិភពលោកដោយភាពជឿជាក់ និងការយកចិត្តទុកដាក់។ ដំបូន្មានស្មោះត្រង់ ការកក់ជើងហោះហើរដែលអាចទុកចិត្តបាន ការកក់សណ្ឋាគារទូទាំងពិភពលោក និងសេវាកម្មរៀបចំទិដ្ឋាការ។",
+    popupTitle: "ជ្រើសរើសភាសារបស់អ្នក",
+    popupDesc: "សូមជ្រើសរើសភាសាដែលអ្នកពេញចិត្តដើម្បីបន្តដំណើរទៅមុខ។",
+    popupConfirm: "បញ្ជាក់"
   },
   zh: {
     navServices: "我们的服务",
@@ -318,7 +324,10 @@ const TRANSLATIONS = {
     contactHotels: "酒店预订",
     contactVisas: "签证服务",
     footerCopy: "CHANTREA Travel. 版权所有。专业旅游与签证服务。",
-    contactDesc: "以信心和关怀与全球目的地相连。诚挚的建议、可靠的机票预订、全球酒店预订和签证办理服务。"
+    contactDesc: "以信心和关怀与全球目的地相连。诚挚的建议、可靠的机票预订、全球酒店预订和签证办理服务。",
+    popupTitle: "选择您的语言",
+    popupDesc: "请选择您的首选语言以继续访问。",
+    popupConfirm: "确认"
   }
 }
 
@@ -561,6 +570,56 @@ function App() {
             <li className={lang === 'zh' ? 'active' : ''} onClick={() => handleSelect('zh')}>中文</li>
           </ul>
         )}
+      </div>
+    )
+  }
+
+  const [showLangModal, setShowLangModal] = useState(() => {
+    return !localStorage.getItem('langPreferenceSet')
+  })
+
+  const LanguageModal = () => {
+    if (!showLangModal) return null
+
+    const handleSelectLanguage = (l: 'en' | 'km' | 'zh') => {
+      setLang(l)
+      localStorage.setItem('lang', l)
+    }
+
+    const handleConfirm = () => {
+      localStorage.setItem('langPreferenceSet', 'true')
+      setShowLangModal(false)
+    }
+
+    return (
+      <div className="lang-modal-overlay">
+        <div className="lang-modal-card">
+          <h2 className="lang-modal-title">{t('popupTitle')}</h2>
+          <p className="lang-modal-desc">{t('popupDesc')}</p>
+          <div className="lang-modal-options">
+            <button 
+              className={`lang-modal-option ${lang === 'km' ? 'active' : ''}`}
+              onClick={() => handleSelectLanguage('km')}
+            >
+              <span className="lang-option-text">ខ្មែរ</span>
+            </button>
+            <button 
+              className={`lang-modal-option ${lang === 'en' ? 'active' : ''}`}
+              onClick={() => handleSelectLanguage('en')}
+            >
+              <span className="lang-option-text">English</span>
+            </button>
+            <button 
+              className={`lang-modal-option ${lang === 'zh' ? 'active' : ''}`}
+              onClick={() => handleSelectLanguage('zh')}
+            >
+              <span className="lang-option-text">中文</span>
+            </button>
+          </div>
+          <button className="lang-modal-confirm-btn" onClick={handleConfirm}>
+            {t('popupConfirm')}
+          </button>
+        </div>
       </div>
     )
   }
@@ -1713,6 +1772,7 @@ function App() {
           </div>
         </div>
       )}
+      <LanguageModal />
     </>
   )
 }
