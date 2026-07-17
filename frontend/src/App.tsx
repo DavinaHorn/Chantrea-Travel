@@ -489,7 +489,11 @@ function App() {
   const [flightSlides, setFlightSlides] = useState(flightSlidesListDefault)
   const [hotelSlides, setHotelSlides] = useState(hotelSlidesListDefault)
   const [founderPortrait, setFounderPortrait] = useState('/davina_horn.webp')
-  const [blogs, setBlogs] = useState<BlogPost[]>([])
+  const [blogs, setBlogs] = useState<BlogPost[]>(() => {
+    const stored = localStorage.getItem('lang')
+    const initialLang = (stored === 'km' || stored === 'zh') ? stored : 'en'
+    return BLOGS_TRANSLATIONS[initialLang] || SAMPLE_BLOGS
+  })
 
   // Multi-language state & helpers
   const [lang, setLang] = useState<'en' | 'km' | 'zh'>(() => {
