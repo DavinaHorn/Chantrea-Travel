@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Dynamic Palette variables for light mode (default) */
@@ -57,6 +57,16 @@ body {
   background-color: var(--bg-primary);
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+}
+
+body.lang-km {
+  --font-sans: 'Kantumruy Pro', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Kantumruy Pro', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif;
+}
+
+body.lang-zh {
+  --font-sans: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Noto Sans SC', system-ui, -apple-system, sans-serif;
 }
 
 /* Prevent dragging and right-click saving of images and videos */
@@ -240,6 +250,120 @@ img, video {
 
 .menu-toggle:hover {
   background-color: var(--bg-secondary);
+}
+
+/* Language Selector Dropdown Styles */
+.lang-selector-wrapper {
+  position: relative;
+  display: inline-block;
+  align-self: center;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-btn:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent-purple);
+}
+
+.header.header-transparent .lang-btn {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.header.header-transparent .lang-btn:hover {
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  list-style: none;
+  padding: 8px 0;
+  min-width: 120px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.lang-dropdown li {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: center;
+}
+
+.lang-dropdown li:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent-purple);
+}
+
+.lang-dropdown li.active {
+  color: var(--accent-purple);
+  font-weight: 600;
+  background-color: var(--accent-purple-light);
+}
+
+/* Mobile Language Selector styling - in front of hamburger */
+.mobile-lang-container {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile-lang-container {
+    display: block;
+  }
+  
+  .lang-dropdown {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 /* Hero Section (Stretches all the way edge-to-edge) */
