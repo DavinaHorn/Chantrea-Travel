@@ -1656,7 +1656,9 @@ function App() {
                   </li>
                   <li className="contact-info-item">
                     <Mail size={18} />
-                    <span>info@chantreatravel.com</span>
+                    <a href="mailto:info@chantreatravel.com" className="contact-info-link">
+                      info@chantreatravel.com
+                    </a>
                   </li>
                 </ul>
 
