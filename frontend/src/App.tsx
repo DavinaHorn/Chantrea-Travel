@@ -152,7 +152,7 @@ const TRANSLATIONS = {
     blogNotFoundDesc: "The blog post you are looking for does not exist.",
     blogBackBlogs: "Back to Blogs",
     contactGetInTouch: "Get In Touch",
-    contactLocation: "Phnom Penh, Cambodia",
+    contactLocation: "No. 40, St 351, Ou Andoung Muoy Village, Prek Pra, Chbar Ampov, Phnom Penh",
     contactQuickNav: "Quick Navigation",
     contactFlights: "Worldwide Flights",
     contactHotels: "Hotel Bookings",
@@ -235,7 +235,7 @@ const TRANSLATIONS = {
     blogNotFoundDesc: "អត្ថបទប្លុកដែលអ្នកកំពុងស្វែងរកមិនមានទេ។",
     blogBackBlogs: "ត្រឡប់ទៅប្លុកវិញ",
     contactGetInTouch: "ទាក់ទងមកយើង",
-    contactLocation: "ភ្នំពេញ ប្រទេសកម្ពុជា",
+    contactLocation: "ផ្ទះលេខ ៤០, ផ្លូវ ៣៥១, ភូមិអូអណ្ដូងមួយ, សង្កាត់ព្រែកប្រា, ខណ្ឌច្បារអំពៅ, ភ្នំពេញ",
     contactQuickNav: "ការរុករករហ័ស",
     contactFlights: "ជើងហោះហើរទូទាំងពិភពលោក",
     contactHotels: "ការកក់សណ្ឋាគារ",
@@ -318,7 +318,7 @@ const TRANSLATIONS = {
     blogNotFoundDesc: "您寻找的博客文章不存在。",
     blogBackBlogs: "返回博客列表",
     contactGetInTouch: "联系我们",
-    contactLocation: "柬埔寨 金边",
+    contactLocation: "金边市铁桥头区白坝分区乌安东一村第351街40号",
     contactQuickNav: "快速导航",
     contactFlights: "全球机票",
     contactHotels: "酒店预订",
@@ -574,55 +574,7 @@ function App() {
     )
   }
 
-  const [showLangModal, setShowLangModal] = useState(() => {
-    return !localStorage.getItem('langPreferenceSet')
-  })
 
-  const LanguageModal = () => {
-    if (!showLangModal) return null
-
-    const handleSelectLanguage = (l: 'en' | 'km' | 'zh') => {
-      setLang(l)
-      localStorage.setItem('lang', l)
-    }
-
-    const handleConfirm = () => {
-      localStorage.setItem('langPreferenceSet', 'true')
-      setShowLangModal(false)
-    }
-
-    return (
-      <div className="lang-modal-overlay">
-        <div className="lang-modal-card">
-          <h2 className="lang-modal-title">{t('popupTitle')}</h2>
-          <p className="lang-modal-desc">{t('popupDesc')}</p>
-          <div className="lang-modal-options">
-            <button 
-              className={`lang-modal-option ${lang === 'km' ? 'active' : ''}`}
-              onClick={() => handleSelectLanguage('km')}
-            >
-              <span className="lang-option-text">ខ្មែរ</span>
-            </button>
-            <button 
-              className={`lang-modal-option ${lang === 'en' ? 'active' : ''}`}
-              onClick={() => handleSelectLanguage('en')}
-            >
-              <span className="lang-option-text">English</span>
-            </button>
-            <button 
-              className={`lang-modal-option ${lang === 'zh' ? 'active' : ''}`}
-              onClick={() => handleSelectLanguage('zh')}
-            >
-              <span className="lang-option-text">中文</span>
-            </button>
-          </div>
-          <button className="lang-modal-confirm-btn" onClick={handleConfirm}>
-            {t('popupConfirm')}
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   // Update HTML body class dynamically for CSS language overrides
   useEffect(() => {
@@ -1685,11 +1637,22 @@ function App() {
                 <ul className="contact-info-list">
                   <li className="contact-info-item">
                     <MapPin size={18} />
-                    <span>{t('contactLocation')}</span>
+                    <a 
+                      href="https://goo.gl/maps/fpAUeNLHaWQFtZdx7?g_st=ac" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="contact-info-link"
+                    >
+                      {t('contactLocation')}
+                    </a>
                   </li>
                   <li className="contact-info-item">
                     <Phone size={18} />
-                    <span>+855 (0) 86 910 008<br />+855 (0) 17 910 007</span>
+                    <span>
+                      <a href="tel:+85586910008" className="contact-info-link">+855 (0) 86 910 008</a>
+                      <br />
+                      <a href="tel:+85517910007" className="contact-info-link">+855 (0) 17 910 007</a>
+                    </span>
                   </li>
                   <li className="contact-info-item">
                     <Mail size={18} />
@@ -1699,15 +1662,15 @@ function App() {
 
                 {/* Blended inline social link row */}
                 <div className="contact-social-row">
-                  <a href="#" className="contact-social-link" aria-label="Facebook Link" target="_blank" rel="noopener noreferrer">
+                  <a href="https://web.facebook.com/chantreatravel" className="contact-social-link" aria-label="Facebook Link" target="_blank" rel="noopener noreferrer">
                     Facebook
                   </a>
                   <span className="contact-social-divider">•</span>
-                  <a href="#" className="contact-social-link" aria-label="Telegram Link" target="_blank" rel="noopener noreferrer">
+                  <a href="https://t.me/davina_chantreatravel" className="contact-social-link" aria-label="Telegram Link" target="_blank" rel="noopener noreferrer">
                     Telegram
                   </a>
                   <span className="contact-social-divider">•</span>
-                  <a href="#" className="contact-social-link" aria-label="WhatsApp Link" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/qr/AC4DKTU5CXURP1" className="contact-social-link" aria-label="WhatsApp Link" target="_blank" rel="noopener noreferrer">
                     WhatsApp
                   </a>
                 </div>
@@ -1772,7 +1735,6 @@ function App() {
           </div>
         </div>
       )}
-      <LanguageModal />
     </>
   )
 }

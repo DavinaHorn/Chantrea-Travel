@@ -1221,6 +1221,17 @@ img, video {
   margin-top: 2px;
 }
 
+.contact-info-link {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.contact-info-link:hover {
+  color: var(--accent-purple);
+  text-decoration: underline;
+}
+
 /* Blended Inline Social Row Styles */
 .contact-social-row {
   display: flex;
